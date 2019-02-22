@@ -39,13 +39,154 @@ question("Was glauben Sie: haben Studierende eher mehr oder eher weniger Interes
 )
 ```
 
+
+### Aufwand, Interesse und Geschlecht
+
+```{r intro, echo=FALSE}
+gf_point(B_SATS_Aufwand ~ B_SATS_Interesse, color = ~ G01_Geschlecht,  data = Sats) %>%
+  gf_jitter()
+```
+
+
+### Zwei wichtige Fragen
+
+Um `R` (oder jede andere Software) dazu zu bewegen diesen Plot zu generieren (oder generell irgendetwas zu tun),
+gibt es 2 Fragen die Sie sich beantworten können müssen. 
+Bevor Sie fortfahren überlegen Sie, ob Sie herausfinden können **welche beiden Fragen wir im Sinn haben**.
+
+### Die Fragen
+
+Um `R` (oder jede andere Software) dazu zu bewegen diesen Plot zu generieren (oder generell irgendetwas zu tun),
+gibt es 2 Fragen die Sie sich beantworten können müssen:
+
+#### 1. Was soll der Computer für Sie tun?
+  
+#### 2. Was muss der Computer dafür wissen?
+
+### Antworten auf die Fragen
+
+Um die vorliegende Graphik zu erzeugen sind die Antworten wie folgt:
+
+#### 1. Was soll der Computer für Sie tun?
+
+**A.** Erstelle ein Streudiagramm (z.B. eine **Graphik** bestehend aus **Punkten**)
+  
+#### 2. Was muss der Computer dafür wissen?
+
+**A.** Die zugehörigen Daten, aus denen die Grapik erzeugt wird:
+
+  * Die Variable, die auf der $y$-Achse abgetragen werden soll.
+  * Die Variable, die auf der $x$-Achse abgetragen werden soll.
+  * Die Variable, die die Farbe der Punkte bestimmen soll.
+  * Der Datensatz, welcher die Variablen $x$ und $y$ enthält.
+      
+Wir müssen nur lernen wie wir `R` diese Informationen mitteilen.
+
+
+### Das 'Formula' Template
+
+Wir werden die Antworten auf unsere zwei Fragen durch das Ausfüllen der Boxen dieses wichtigen Templates liefern:
+
+<center>
+<h2><strong><span class="invboxed">analyse</span> ( <span class="invboxed">y</span> ~ <span class="invboxed">x</span> , data = <span class="invboxed">Daten</span> )</strong> 
+</h2></center>
+
+&nbsp;
+
+Hierzu müssen wir lediglich identifizieren, welche Teile unserer Antworten in welche Box gehören.
+
+### Die Namen des Spiels
+
+Es ist hilfreich den Boxen Namen zu geben:
+
+<center>
+<h2><strong><span class="boxed">meine.analyse</span> ( <span class="boxed">&nbsp;mein.y&nbsp;</span> ~ <span class="boxed">&nbsp;mein.x&nbsp;</span> , data = <span class="boxed">Meine.Daten</span> , ...)</strong> 
+</h2></center>
+&nbsp;
+
+Diese Namen können uns als Gedächtnisstütze dienen, welche Dinge wohin gehören.
+(Die `...` deuten an, dass weitere Argumente existieren, von denen wir später noch ein paar ergänzen werden.)
+
+
+
+### Die zwei Fragen und das Formel-Template
+
+
+&nbsp;
+<center>
+<h2><strong><span class="boxed">meine.analyse</span> ( <span class="boxed">&nbsp;mein.y&nbsp;</span> ~ <span class="boxed">&nbsp;mein.x&nbsp;</span> , data = <span class="boxed">Meine.Daten</span> , ...)</strong> 
+</h2></center>
+ 
+&nbsp;
+
+
+#### F. Was soll `R` für Sie tun?  A. Ziel
+
+ * Dies bestimmt die Funktionen, die gebraucht werden.
+ 
+ * Für eine Graphik beschreibt die Funktion welche Art von Zeichen genutzt werden (in unserem Beispiel: Punkte).
+ 
+ * Andere Möglichkeiten umfassen Linien, Boxplots, etc.
+
+#### F. Was muss `R` dafür wissen?  A. Argumente 
+
+ * Dies bestimmt die Eingaben in die Funktion.
+ * Für eine Graphik müssen wir die Variablen und den Datensatz, der sie enthält, identifizieren.
+ 
+### Die Puzzleteile zusammenfügen
+
+#### Template
+
+&nbsp;
+<center>
+<h2><strong><span class="boxed">meine.analyse</span> ( <span class="boxed">&nbsp;mein.y&nbsp;</span> ~ <span class="boxed">&nbsp;mein.x&nbsp;</span> , data = <span class="boxed">Meine.Daten</span> , ...)</strong> 
+</h2></center>
+ 
+&nbsp;
+
+#### Puzzleteile
+
+<table align = "center" >
+<tr>
+  <th> Box </th>
+  <th> Befüllen mit </th>
+  <th> Zweck </th>
+</tr>
+<tr>
+  <td> `meine.analyse` </td>
+  <td> `gf_point` </td>
+  <td> Plotte einige Punkte </td>
+</tr>
+<tr>
+  <td> `mein.y` </td>
+  <td> `Aufwand` </td>
+  <td> y-Achsen Variable</td>
+</tr>
+<tr>
+  <td> `mein.x` </td>
+  <td> `Interesse` </td>
+  <td> x-Achsen Variable </td>
+</tr>
+<tr>
+  <td> `Meine.Daten` </td>
+  <td> `Sats`</td>
+  <td> Name des Datensatzes </td>
+</tr>
+<tr>
+  <td> `...` </td>
+  <td> `col = Geschlecht` </td>
+  <td> Farbe der Punkte </td>
+</tr>
+</table>
+
+
 ## mosaic
 
 ### Formelinterface 
 
-`mosaic` (und `ggformula`) verwenden ein einheitliches Formelinterface (`formula`) für grafische Darstellungen, Kennzahlen, aber auch für Modellierung und Inferenz:
+Wie oben schon hergeleitet: `mosaic` (und `ggformula`) verwenden ein einheitliches Formelinterface (`formula`) für grafische Darstellungen, Kennzahlen, aber auch für Modellierung und Inferenz:
 
-In seiner einfachsten Form sieht es so aus:
+In seiner einfachsten Form sieht der `R` Code so aus:
 
 ```{r mosaicTemplate, eval=FALSE}
 meine.analyse(mein.y ~ mein.x, data = Meine.Daten)
@@ -60,11 +201,12 @@ Dabei kann bei Analysen nur einer Variable sogar `mein.y` fehlen.
 
 $$y=f(x)$$
 
-Finden Sie auf Ihrer Tastatur die *Tilde*: `~`. Tippen Sie es innerhalb der Anführungsstriche ein und klicken dann auf `Submit Answer`.
+Finden Sie auf Ihrer Tastatur die *Tilde*: `~`. Tippen Sie es innerhalb der Anführungsstriche ein und klicken dann auf `Submit Answer`. 
 
+*Hinweis:* Beim Apple ist `~` die Tastenkombination `alt`+`n`, ansonsten `Alt Gr`+`+`.
 
 ```{r tilde, exercise = TRUE, eval=FALSE}
-""
+"_"
 ```
 
 ```{r tilde-solution, eval=FALSE}
@@ -76,6 +218,16 @@ Finden Sie auf Ihrer Tastatur die *Tilde*: `~`. Tippen Sie es innerhalb der Anf�
 ```
 
 Einen Schummelzettel für `mosaic` Befehle gibt es auf der Homepage des [ifes](https://www.fom.de/forschung/institute/ifes.html) [hier](https://www.fom.de/fileadmin/fom/forschung/ifes/Cheatsheet-DA-R.pdf).
+
+### Hinweise `R`
+
+- R unterscheidet zwischen Groß- und Kleinbuchstaben.
+- R verwendet den Punkt `.` als Dezimaltrennzeichen.
+- Fehlende Werte werden in R durch `NA` kodiert.
+- Kommentare werden mit dem Rautezeichen `#` eingeleitet.
+- Eine Ergebniszuweisung erfolgt über `<-.`
+- `%>%` (Paket `dplyr`) übergibt Ergebnisse.
+- Hilfe zur Funktion `foo`: `?foo`
 
 ## Survey of Attitudes Toward Statistics
 
@@ -321,6 +473,8 @@ gf_point(B_SATS_Aufwand ~ B_SATS_Interesse, color = ~ G01_Geschlecht,  data = Sa
 
 Über `| G01_Geschlecht` werden *Facetten* des Zusammenhangs zwischen `B_SATS_Aufwand` und `B_SATS_Interesse` je `G01_Geschlecht` sichtbar.
 
+*Hinweis:* Bei Apple ist `|` die Tastenkombination `alt`+`7`, ansonsten `Alt Gr`+`<`.
+
 ```{r facet,  exercise = TRUE}
 gf_point(B_SATS_Aufwand ~ B_SATS_Interesse | G01_Geschlecht,  data = Sats) %>%
   gf_jitter()
@@ -347,4 +501,7 @@ gf_point(B_SATS_Aufwand ~ B_SATS_Interesse | G01_Geschlecht,  data = Sats) %>%
 
 In einem nächsten Tutorial werden Sie kennen lernen wie Erkenntnisse aus Daten kritisch hinterfragt werden können.
 
+### Hinweis
 
+Dieses Tutorium orientiert sich teiweise an einem Tutorial des [StatPREP](http://statprep.org/) Projektes.
+Siehe auch [https://github.com/StatPREP/Lessons/tree/master/US_Births](https://github.com/StatPREP/Lessons/tree/master/US_Births).
