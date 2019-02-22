@@ -221,9 +221,9 @@ Einen Schummelzettel für `mosaic` Befehle gibt es auf der Homepage des [ifes](h
 
 ### Hinweise `R`
 
-- R unterscheidet zwischen Groß- und Kleinbuchstaben.
-- R verwendet den Punkt `.` als Dezimaltrennzeichen.
-- Fehlende Werte werden in R durch `NA` kodiert.
+- `R` unterscheidet zwischen Groß- und Kleinbuchstaben.
+- `R` verwendet den Punkt `.` als Dezimaltrennzeichen.
+- Fehlende Werte werden in `R` durch `NA` kodiert.
 - Kommentare werden mit dem Rautezeichen `#` eingeleitet.
 - Eine Ergebniszuweisung erfolgt über `<-.`
 - `%>%` (Paket `dplyr`) übergibt Ergebnisse.
