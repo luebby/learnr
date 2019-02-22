@@ -328,9 +328,9 @@ __( ~ B_SATS_Interesse, data = Sats)
 
 ```{r Verteilungsform, echo=FALSE}
 question("Welche Verteilungsform liegt für das Interesse vor?",
-         answer("symmetrisch"),
+         answer("symmetrisch", message = "In dem Fall würden sich die Beobachtungen symmetrisch um eine zentrale Lage verteilen."),
          answer("linksschief", correct = TRUE, "Es liegen mehr Beobachtungen im oberen Wertebereich als im unteren vor."),
-         answer("rechtsschief")
+         answer("rechtsschief", message = "In dem Fall würden mehr Beobachtungen im unteren Wertebereich als im oberen Wertebereich vorliegen.")
 )
 ```
 
@@ -497,11 +497,38 @@ gf_point(B_SATS_Aufwand ~ B_SATS_Interesse | G01_Geschlecht,  data = Sats) %>%
   gf_jitter()
 ```
 
-### Ausblick
+`filter()` wählt Beobachtungen aus. Beachte das `==` für ein logisches *gleich*.
+
+```{r filterm}
+Sats.Maenner <- Sats %>%
+  filter(G01_Geschlecht == "maennlich") 
+
+cor(B_SATS_Aufwand ~ B_SATS_Interesse, data = Sats.Maenner)
+```
+
+Ändern Sie die Auswahl um den Korrelationskoeffizienten für `weiblich` zu erhalten.
+
+```{r filterw, exercise = TRUE, eval=FALSE}
+Sats.Frauen <- Sats %>%
+  filter(G01_Geschlecht == "maennlich")
+
+cor(B_SATS_Aufwand ~ B_SATS_Interesse, data = Sats.___)
+```
+
+```{r filterw-solution}
+Sats.Frauen <- Sats %>%
+  filter(G01_Geschlecht == "weiblich")
+
+cor(B_SATS_Aufwand ~ B_SATS_Interesse, data = Sats.Frauen)
+```
+
+## Ausblick
 
 In einem nächsten Tutorial werden Sie kennen lernen wie Erkenntnisse aus Daten kritisch hinterfragt werden können.
 
-### Hinweis
+## Hinweis
 
 Dieses Tutorium orientiert sich teiweise an einem Tutorial des [StatPREP](http://statprep.org/) Projektes.
 Siehe auch [https://github.com/StatPREP/Lessons/tree/master/US_Births](https://github.com/StatPREP/Lessons/tree/master/US_Births).
+
+
