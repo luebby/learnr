@@ -23,41 +23,49 @@ Sats <- Sats %>%
 
 ## Willkommen
 
-Grafiken und Kennzahlen helfen vorliegende Daten zu analysieren. Die Information die in Daten steckt, soll *dargestellt* werden. 
+Daten umfassen in aller Regel viele Informationen. Die enthaltenen *Weisheiten* springen uns jedoch aus einer evtl. großen, evtl. unübersichtlichen Datentabelle nicht direkt entgegen.
 
-In der Regel springt uns die Weisheit nicht direkt aus einer, evtl. großen, evtl. unübersichtlichen Datentabelle entgegen.
+Grafiken und Kennzahlen sind hierbei ein hilfreiches Mittel, um vorliegende Daten zu analysieren. Die Information, die in Daten steckt, soll *dargestellt* werden. 
 
-In diesem Tutorial geht es darum, dass Sie lernen wie Sie mit [mosaic](https://projectmosaic.github.io/mosaic/) und [ggformula](https://projectmosaic.github.io/ggformula/) schnell und einfach Informationen aus Daten entdecken können.
+In diesem Tutorium geht es darum, dass Sie lernen wie Sie mit [mosaic](https://projectmosaic.github.io/mosaic/) und [ggformula](https://projectmosaic.github.io/ggformula/) schnell und einfach Informationen aus Daten entdecken können.
 
 
 ### Interesse?
 
 ```{r interesse, echo=FALSE}
-question("Was glauben Sie: haben Studierende eher mehr oder eher weniger Interesse daran Statistik zu lernen?",
+question("Was glauben Sie: Haben Studierende eher mehr oder eher weniger Interesse daran Statistik zu lernen?",
   answer("Mehr", correct = TRUE, "Richtig: Insbesondere können wir mit Statistik solche Vermutungen empirisch überprüfen :-)"),
   answer("Weniger", message="Nein, aber wir können mit Statistik solche Vermutungen empirisch überprüfen :-)")
 )
 ```
 
+Aber wie kommen wir zu obigem Schluss?
 
 ### Aufwand, Interesse und Geschlecht
+
+Folgend eine Grafik zum Zusammenhang zwischen vermutetem Lernaufwand und Interesse an Statistik auf Basis einer Umfrage - angelehnt an den 
+[SATS-36](https://irp-cdn.multiscreensite.com/281322c3/files/uploaded/Final36scoring.pdf)
+von
+[Candance Schau](https://www.evaluationandstatistics.com/background) 
+(siehe auch Kapitel "Survey of Attitudes Toward Statistics") - die in einigen Semestern auch an der FOM Hochschule durchgeführt wurde.
 
 ```{r intro, echo=FALSE}
 gf_point(B_SATS_Aufwand ~ B_SATS_Interesse, color = ~ G01_Geschlecht,  data = Sats) %>%
   gf_jitter()
 ```
 
+Diese Grafik liefert einen ersten Hinweis darauf, warum die obige Frage wie angegeben beantwortet werden kann.
 
-### Zwei wichtige Fragen
+### Zwei essentielle Fragen
 
 Um `R` (oder jede andere Software) dazu zu bewegen diesen Plot zu generieren (oder generell irgendetwas zu tun),
-gibt es 2 Fragen die Sie sich beantworten können müssen. 
+gibt es zwei Fragen die Sie sich beantworten können müssen. 
 Bevor Sie fortfahren überlegen Sie, ob Sie herausfinden können **welche beiden Fragen wir im Sinn haben**.
 
 ### Die Fragen
 
 Um `R` (oder jede andere Software) dazu zu bewegen diesen Plot zu generieren (oder generell irgendetwas zu tun),
-gibt es 2 Fragen die Sie sich beantworten können müssen:
+gibt es zwei Fragen die Sie sich beantworten können müssen:
 
 #### 1. Was soll der Computer für Sie tun?
   
@@ -65,15 +73,15 @@ gibt es 2 Fragen die Sie sich beantworten können müssen:
 
 ### Antworten auf die Fragen
 
-Um die vorliegende Graphik zu erzeugen sind die Antworten wie folgt:
+Um die vorliegende Grafik zu erzeugen sind die Antworten wie folgt:
 
 #### 1. Was soll der Computer für Sie tun?
 
-**A.** Erstelle ein Streudiagramm (z.B. eine **Graphik** bestehend aus **Punkten**)
+**A.** Erstelle ein Streudiagramm (z. B. eine **Grafik** bestehend aus **Punkten**)
   
 #### 2. Was muss der Computer dafür wissen?
 
-**A.** Die zugehörigen Daten, aus denen die Grapik erzeugt wird:
+**A.** Die zugehörigen Daten, aus denen die Grafik erzeugt wird:
 
   * Die Variable, die auf der $y$-Achse abgetragen werden soll.
   * Die Variable, die auf der $x$-Achse abgetragen werden soll.
@@ -83,9 +91,9 @@ Um die vorliegende Graphik zu erzeugen sind die Antworten wie folgt:
 Wir müssen nur lernen wie wir `R` diese Informationen mitteilen.
 
 
-### Das 'Formula' Template
+### Das *Formula* Template
 
-Wir werden die Antworten auf unsere zwei Fragen durch das Ausfüllen der Boxen dieses wichtigen Templates liefern:
+Wir werden die Antworten auf unsere zwei Fragen durch das entsprechende Benennen der Platzhalter dieses wichtigen Templates liefern:
 
 <center>
 <h2><strong><span class="invboxed">analyse</span> ( <span class="invboxed">y</span> ~ <span class="invboxed">x</span> , data = <span class="invboxed">Daten</span> )</strong> 
@@ -93,9 +101,9 @@ Wir werden die Antworten auf unsere zwei Fragen durch das Ausfüllen der Boxen d
 
 &nbsp;
 
-Hierzu müssen wir lediglich identifizieren, welche Teile unserer Antworten in welche Box gehören.
+Hierzu müssen wir lediglich identifizieren, welche Teile unserer Antworten an welche Position gehören.
 
-### Die Namen des Spiels
+### "Die Namen des Spiels"
 
 Es ist hilfreich den Boxen Namen zu geben:
 
@@ -124,14 +132,14 @@ Diese Namen können uns als Gedächtnisstütze dienen, welche Dinge wohin gehör
 
  * Dies bestimmt die Funktionen, die gebraucht werden.
  
- * Für eine Graphik beschreibt die Funktion welche Art von Zeichen genutzt werden (in unserem Beispiel: Punkte).
+ * Für eine Grafik beschreibt die Funktion welche Art von Zeichen genutzt werden (in unserem Beispiel: Punkte).
  
  * Andere Möglichkeiten umfassen Linien, Boxplots, etc.
 
 #### F. Was muss `R` dafür wissen?  A. Argumente 
 
  * Dies bestimmt die Eingaben in die Funktion.
- * Für eine Graphik müssen wir die Variablen und den Datensatz, der sie enthält, identifizieren.
+ * Für eine Grafik müssen wir die Variablen und den Datensatz, der sie enthält, identifizieren.
  
 ### Die Puzzleteile zusammenfügen
 
@@ -182,9 +190,9 @@ Diese Namen können uns als Gedächtnisstütze dienen, welche Dinge wohin gehör
 
 ## mosaic
 
-### Formelinterface 
+### Formel-Interface 
 
-Wie oben schon hergeleitet: `mosaic` (und `ggformula`) verwenden ein einheitliches Formelinterface (`formula`) für grafische Darstellungen, Kennzahlen, aber auch für Modellierung und Inferenz:
+Wie oben schon hergeleitet: `mosaic` (und `ggformula`) verwenden ein einheitliches Formel-Interface (`formula`) für grafische Darstellungen, Kennzahlen, aber auch für Modellierung und Inferenz:
 
 In seiner einfachsten Form sieht der `R` Code so aus:
 
@@ -193,7 +201,7 @@ meine.analyse(mein.y ~ mein.x, data = Meine.Daten)
 ```
 
 - Was soll `R` tun: Meine Analyse (`meine.analyse`)
-- Was muss `R` dafür wissen: Für welche Variable(n) (z.B. `mein.x`) aus welchem Datensatz (`Meine.Daten`)
+- Was muss `R` dafür wissen: Für welche Variable(n) (z. B. `mein.x`) aus welchem Datensatz (`Meine.Daten`)
 
 Dabei kann bei Analysen nur einer Variable sogar `mein.y` fehlen.
 
@@ -201,7 +209,7 @@ Dabei kann bei Analysen nur einer Variable sogar `mein.y` fehlen.
 
 $$y=f(x)$$
 
-Finden Sie auf Ihrer Tastatur die *Tilde*: `~`. Tippen Sie es innerhalb der Anführungsstriche ein und klicken dann auf `Submit Answer`. 
+Finden Sie auf Ihrer Tastatur die *Tilde*: `~`. Tippen Sie sie innerhalb der Anführungsstriche ein und klicken dann auf `Submit Answer`. 
 
 *Hinweis:* Beim Apple ist `~` die Tastenkombination `alt`+`n`, ansonsten `Alt Gr`+`+`.
 
@@ -217,15 +225,15 @@ Finden Sie auf Ihrer Tastatur die *Tilde*: `~`. Tippen Sie es innerhalb der Anf�
 "Die Tilde (~) werden wir jetzt öfter brauchen."
 ```
 
-Einen Schummelzettel für `mosaic` Befehle gibt es auf der Homepage des [ifes](https://www.fom.de/forschung/institute/ifes.html) [hier](https://www.fom.de/fileadmin/fom/forschung/ifes/Cheatsheet-DA-R.pdf).
+Einen Schummelzettel für `mosaic` Befehle gibt es auf der Homepage des [ifes](https://www.fom.de/forschung/institute/ifes.html) oder direkt  [hier](https://www.fom.de/fileadmin/fom/forschung/ifes/Cheatsheet-DA-R.pdf).
 
-### Hinweise `R`
+### Hinweise zu `R`
 
 - `R` unterscheidet zwischen Groß- und Kleinbuchstaben.
 - `R` verwendet den Punkt `.` als Dezimaltrennzeichen.
 - Fehlende Werte werden in `R` durch `NA` kodiert.
 - Kommentare werden mit dem Rautezeichen `#` eingeleitet.
-- Eine Ergebniszuweisung erfolgt über `<-.`
+- Eine Ergebniszuweisung erfolgt über `<-`.
 - `%>%` (Paket `dplyr`) übergibt Ergebnisse.
 - Hilfe zur Funktion `foo`: `?foo`
 
@@ -238,7 +246,7 @@ Für uns besonders interessant:
 - Interesse (Interest): Individuelles Interesse an Statistik: `B_SATS_Interesse`
 - Aufwand (Effort): Geplanter Aufwand zum Lernen des Fachs Statistik `B_SATS_Aufwand`
 
-*Tipp:* Generell empfiehlt es sich **immer** genau hinzuschauen wie erhoben wurde, wie die Fragen genau gestellt wurden. Hinweise gibt es in der oben genannten [Quelle](https://irp-cdn.multiscreensite.com/281322c3/files/uploaded/Final36scoring.pdf).
+*Tipp:* Generell empfiehlt es sich **immer** genau hinzuschauen wie erhoben wurde und wie die Fragen genau gestellt wurden. Hinweise gibt es in der oben genannten [Quelle](https://irp-cdn.multiscreensite.com/281322c3/files/uploaded/Final36scoring.pdf).
 
 ```{r Likert, echo=FALSE}
 question("Wie viele Antwortalternativen gibt es pro Frage?",
@@ -258,15 +266,15 @@ question("Bei welchem Wert (Score) ist das Interesse am Fach Statistik besonders
 ```
 
 
-### Daten
+### Uns vorliegende Daten
 
-Im Rahmen einer freiwilligen Online-Umfrage zu Beginn des Semesters wurden Daten, u.a. zu den oben genannten Fragestellungen, erhoben.
+Im Rahmen einer freiwilligen Online-Befragung zu Beginn eines Semesters an der FOM wurden Daten, u. a. zu den oben genannten Fragestellungen, erhoben.
 
 ```{r Stripro, echo=FALSE}
 question("Welche Form der Datenerhebung liegt vor?",
          answer("Vollerhebung", message = "Dann müssten *alle* Studierenden den Fragebogen ausgefüllt haben."),
          answer("Einfache Zufallsstichprobe", message = "Dann hätte jede(r) die gleiche Wahrscheinlichkeit auszufüllen."),
-         answer("Gelegenheitsstichprobe", correct = TRUE, "Eine freiwillige Umfrage, das Ergebnis könnte also **verzerrt** sein, z.B. weil interessierte eher teilnehmen als uninteressierte.")
+         answer("Gelegenheitsstichprobe", correct = TRUE, "Eine freiwillige Umfrage, das Ergebnis könnte also **verzerrt** sein, z. B. weil Interessierte eher teilnehmen als Uninteressierte.")
 )
 ```
 
@@ -280,13 +288,14 @@ library(mosaic)
 ```
 
 
-Daten (liegen im selben Verzeichnis) einlesen. Datenformat: `csv` mit Semikolon als Datentrennzeichenn und Komma als Dezimaltrennzeichen. Variablennamen in der ersten Zeile.
+Unsere Daten einlesen (wenn sie im aktuellen Arbeitsverzeichnis liegen): Datenformat `csv` mit Semikolon als Datentrennzeichen und Komma als Dezimaltrennzeichen. Variablennamen in der ersten Zeile. Damit folgt:
 
 
 ```{r Einlesen, eval=FALSE}
 Sats <- read.csv2("SATS-36.csv")
 ```
 
+*Hinweis*: Wenn Sie später selber Daten einlesen müssen Sie ggf. Pfade etc. anpassen
 
 ```{r datatable, echo=FALSE}
 datatable(Sats)
@@ -306,8 +315,8 @@ inspect(Sats)
 
 ```{r Anzahl, echo=FALSE}
 question("Wie viele Beobachtungen liegen vor?",
-         answer("3", message = "Es liegen 3 Variablen vor."),
-         answer("279", correct = TRUE, "Anzahl Beobachtungen: `n`")
+         answer("3", message = "Es liegen 3 Variablen vor. Die Anzahl der Beobachtungen ist `n`=279!"),
+         answer("279", correct = TRUE, "Anzahl Beobachtungen: `n`=279")
 )
 ```
 
@@ -315,10 +324,10 @@ question("Wie viele Beobachtungen liegen vor?",
 
 ### Grafik
 
-Grafiken für nur eine Variable sind u.a.:
+Zur Analyse nur einer Variable sind u. a. folgende passend:
 
-- `gf_histogram()`: Histogramm, geeignet für numerische Variablen, insbesondere mit vielen Ausprägungen, z.B. (quasi-) stetige Variablen.
-- `gf_bar()`: Balkendiagramm, geeignet für kategoriale Variablen, oder auch für diskrete numerische Variablen.
+- `gf_histogram()`: Histogramm - geeignet für numerische Variablen, insbesondere mit vielen Ausprägungen (z. B. (quasi-) stetige Variablen).
+- `gf_bar()`: Balkendiagramm - geeignet für kategoriale Variablen oder auch für diskrete numerische Variablen.
 
 Erzeugen Sie eine Abbildung Ihrer Wahl für die Variable `B_SATS_Interesse`.
 
@@ -334,7 +343,7 @@ question("Welche Verteilungsform liegt für das Interesse vor?",
 )
 ```
 
-Ändern Sie den Code, so dass Sie ein Histogramm der Variable `B_SATS_Aufwand` erhalten.
+Ändern Sie den Code so, dass Sie ein Histogramm der Variable `B_SATS_Aufwand` erhalten. 
 
 ```{r AbbAufwand, exercise = TRUE, eval=FALSE}
 gf_histogram( ~ B_SATS_Interesse, data = Sats)
@@ -348,9 +357,11 @@ gf_histogram( ~ B_SATS_Aufwand, data = Sats)
 "Es muss nur der Name der Variable geändert werden, die untersucht werden soll."
 ```
 
+Nun können Sie also auch die Verteilungsform für die Variable Aufwand bestimmen.
+
 ### Kennzahlen 
 
-Der Befehl `favstats()` berechnet die üblichen Kennzahlen für numerische Variablen. Neben der Frage was `R` tun soll (hier: Kennzahlen berechnen, `favstats()`) ist zu klären was `R` dafür wissen muss, z.B. für welche Variable `B_SATS_Interesse`, und in welchem Datensatz (`data = `) diese vorliegt.
+Der Befehl `favstats()` berechnet die üblichen statistischen Kennzahlen für numerische Variablen. Neben der Frage was `R` tun soll (hier: Kennzahlen berechnen) ist zu klären was `R` dafür wissen muss - z. B. für welche Variable `B_SATS_Interesse` und in welchem Datensatz (`data = `) diese vorliegt.
 
 
 ```{r favstats1, exercise = TRUE, eval=FALSE}
@@ -365,7 +376,7 @@ favstats( ~ B_SATS_Interesse, data = ___)
 favstats( ~ B_SATS_Interesse, data = Sats)
 ```
 
-### Kategoriale Variable
+### Kategoriale Variablen
 
 Die Variable Geschlecht (`G01_Geschlecht`) ist kategorial-nominal. Hier bietet sich z. B. eine Tabelle über `tally()` an:
 
@@ -389,16 +400,35 @@ tally(~ G01_Geschlecht, data = Sats, format = "proportion")
 
 ## Bivariate Analysen
 
+### Abbildungen
+
+Für einen ersten Eindruck des Zusammenhangs zweier Variablen kann ein Streudiagramm, wie wir es bereits zu Beginn gesehen haben, verwendet werden. 
+Ein Streudiagramm (`gf_point()`), welches die beiden numerischen Merkmale `B_SATS_Aufwand` und `B_SATS_Interesse` darstellt, sieht wie folgt aus: Über `%>%` wird das Ergebnis weitergeleitet und `gf_jitter()` *verwackelt* die Punkte ein wenig, um mögliche Überlagerungen identifizierbar zu machen.
+
+```{r point,  exercise = TRUE}
+gf_point(B_SATS_Aufwand ~ B_SATS_Interesse, data = Sats) %>%
+  gf_jitter()
+```
+
+```{r Korrelation, echo=FALSE}
+question("Wie schätzen Sie nach der Abbildung den Zusammenhang zwischen Interesse und Aufwand ein?",
+         answer("Negativ, d. h. je höher das Interesse, desto geringer ist der geplante Aufwand."),
+         answer("Neutral, d. h. es gibt keinen Zusammenhang zwischen Interesse und Aufwand."),
+         answer("Positiv, d. h. je höher das Interesse, desto höher ist der geplante Aufwand.", correct = TRUE)
+)
+```
+
+**Achtung:** Bei Beobachtungsstudien beinhaltet *Korrelation* (Zusammenhang) **nicht** *Kausalität* (Ursache-Wirkung). Korrelation kann ein Indiz für Kausalität sein, es kann aber auch eine *Scheinkorrelation* vorliegen.
+
+
 ```{r Aufwand, echo=FALSE}
-question("Was glauben Sie: wer plant einen höheren Aufwand zum Lernen ein: Männer oder Frauen?",
+question("Was glauben Sie: Wer plant einen höheren Aufwand zum Lernen ein: Männer oder Frauen?",
   answer("Frauen", correct = TRUE, "Richtig: Insbesondere können wir mit Statistik solche Vermutungen empirisch überprüfen."),
   answer("Männer", message="Nein, aber wir können mit Statistik solche Vermutungen empirisch überprüfen.")
 )
 ```
 
-### Abbildungen
-
-Ein Vergleich von Verteilungen kann man z.B. über einen Boxplot, `gf_boxplot()`, herstellen.
+Hierzu kann z. B. ein Vergleich von Verteilungen über einen Boxplot, `gf_boxplot()`, hergestellt werden und die Kennzahlen, auf denen der Boxplot beruht, untermauern das Ergebnis.
 
 ```{r boxplot1, exercise = TRUE, eval=FALSE}
 ___(B_SATS_Aufwand ~ G01_Geschlecht, data = Sats)
@@ -416,32 +446,13 @@ Kennzahlen gehen analog:
 favstats(B_SATS_Aufwand ~ G01_Geschlecht, data = Sats)
 ```
 
-Aber auch einzelne Kennzahlen, wie arithmetischer Mittelwert (`mean()`), Median (`median()`) usw. und Standardabweichung `sd()`.
+Aber auch einzelne Kennzahlen, wie arithmetischer Mittelwert (`mean()`), Median (`median()`) und Standardabweichung `sd()` usw.
 
 Probieren Sie aus.
 
 ```{r desi, exercise = TRUE, eval=FALSE}
 meine.analyse(B_SATS_Aufwand ~ G01_Geschlecht, data = Sats)
 ```
-
-### Facettierung und Mapping
-
-Ein Streudiagramm (`gf_point()`) welches die beiden numerischen Merkmale `B_SATS_Aufwand` und `B_SATS_Interesse` darstellt sieht wie folgt aus. Über `%>%` wird das Ergebnis weitergeleitet und `gf_jitter()` *verwackelt* die Punkte ein wenig.
-
-```{r point,  exercise = TRUE}
-gf_point(B_SATS_Aufwand ~ B_SATS_Interesse, data = Sats) %>%
-  gf_jitter()
-```
-
-```{r Korrelation, echo=FALSE}
-question("Wie schätzen Sie nach der Abbildung den Zusammenhang zwischen Interesse und Aufwand ein?",
-         answer("Negativ, d.h., je höher das Interesse, desto geringer ist der geplante Aufwand."),
-         answer("Neutral, d.h., es gibt keinen Zusammenhang zwischen Interesse und Aufwand."),
-         answer("Positiv, d.h., je höher das Interesse, desto höher ist der geplante Aufwand.", correct = TRUE)
-)
-```
-
-**Achtung:** Bei Beobachtungsstudien beinhaltet *Korrelation* **nicht** *Kausalität*. Korrelation kann ein Indiz für Kausalität sein, es kann aber auch eine *Scheinkorrelation* vorliegen.
 
 ### Korrelation
 
@@ -460,8 +471,10 @@ question("Beweist die Analye: Ein höheres Interesse führt zu einem höheren ge
 )
 ```
 
-### Mapping
+### Gruppierungen
 
+Um Gruppierungen in den Daten kenntlich zu machen und zu vergleichen gibt es unterschiedliche Möglichkeiten. 
+Zum einen können den Gruppierungen verschiedene Farben zugeordnet werden:
 Über `color = ~ G01_Geschlecht` wird die Farbe der Punkte durch die Variable `G01_Geschlecht` bestimmt.
 
 ```{r map,  exercise = TRUE}
@@ -469,8 +482,7 @@ gf_point(B_SATS_Aufwand ~ B_SATS_Interesse, color = ~ G01_Geschlecht,  data = Sa
   gf_jitter()
 ```
 
-### Facettierung
-
+Zum anderen gibt es die Option die Grafik in Felder aufzuteilen:
 Über `| G01_Geschlecht` werden *Facetten* des Zusammenhangs zwischen `B_SATS_Aufwand` und `B_SATS_Interesse` je `G01_Geschlecht` sichtbar.
 
 *Hinweis:* Bei Apple ist `|` die Tastenkombination `alt`+`7`, ansonsten `Alt Gr`+`<`.
@@ -481,11 +493,13 @@ gf_point(B_SATS_Aufwand ~ B_SATS_Interesse | G01_Geschlecht,  data = Sats) %>%
 ```
 
 ```{r Zusammenhang, echo=FALSE}
-question("Was glauben Sie: bei wem ist der lineare Zusammenhang stärker: Bei Männern oder Frauen?",
+question("Was glauben Sie: Bei wem ist der lineare Zusammenhang stärker: Bei Männern oder Frauen?",
   answer("Männer", correct = TRUE, "Richtig: Insbesondere können wir mit Statistik solche Vermutungen empirisch überprüfen."),
   answer("Frauen", message="Nein, aber wir können mit Statistik solche Vermutungen empirisch überprüfen.")
 )
 ```
+
+Lassen Sie uns mal schauen...
 
 ### Zusammengesetze Abbildungen
 
@@ -497,7 +511,9 @@ gf_point(B_SATS_Aufwand ~ B_SATS_Interesse | G01_Geschlecht,  data = Sats) %>%
   gf_jitter()
 ```
 
-`filter()` wählt Beobachtungen aus. Beachte das `==` für ein logisches *gleich*.
+Jetzt sieht man, dass die Regressionsgeraden der Männer stärker ansteigt, was durch unten stehende Korrelationen auch bestätigt wird.
+
+Um sich die beiden Korrelationskoeffizienten einzeln ausgeben zu lassen, wird die Funktion `filter()` genutzt. Beachten Sie das `==` für ein logisches *gleich*.
 
 ```{r filterm}
 Sats.Maenner <- Sats %>%
@@ -524,7 +540,7 @@ cor(B_SATS_Aufwand ~ B_SATS_Interesse, data = Sats.Frauen)
 
 ## Ausblick
 
-In einem nächsten Tutorial werden Sie kennen lernen wie Erkenntnisse aus Daten kritisch hinterfragt werden können.
+In einem nächsten Tutorium werden Sie kennen lernen wie Erkenntnisse aus Daten kritisch hinterfragt werden können.
 
 ## Hinweis
 
