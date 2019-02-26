@@ -1,0 +1,138 @@
+---
+title: "Inferentielles Denken"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+checker <- function(label, user_code, check_code, envir_result, evaluate_result, ...) {
+  list(message = check_code, correct = TRUE, location = "append")
+}
+tutorial_options(exercise.timelimit = 60, exercise.checker = checker)
+
+Linda <- read.csv2("Linda.csv")
+
+Linda <- Linda %>%
+  na.omit()
+```
+
+## Willkommen
+
+Daten umfassen in aller Regel viele Informationen. Aber sie sind in gewisser Hinsicht **zufällig**. Z.B. durch eine *zufällige* Stichprobe. 
+
+Daher: *Nur* weil wir *etwas* in unseren Daten sehen heißt das *nicht*, dass das auch allgemein so ist. Vielleicht wurden wir zu unseren Schlüssen aus Daten vom Zufall verführt...
+
+In diesem Tutorial sollen Sie die Grundgedanken der induktiven Statistik kennenlernen: Kenntnis von Variation und Zufall kann vor vermeintlicher Sicherheit schützen.
+
+
+## Linda
+
+Dürfen wir vorstellen:
+
+> Linda ist 31 Jahre alt, Single, offen und klug. Sie hat Philosophie studiert. Als Studentin interessierte sie sich sehr für Diskriminierung und soziale Gerechtigkeit. Außerdem hat Linda an Anti-Globalisierungs-Demonstrationen teilgenommen. Hier nun zwei alternative Aussagen zu Linda. 
+
+```{r linda, echo=FALSE}
+question("Welche davon ist wahrscheinlicher?",
+  answer("Linda ist Bankangestellte.", correct = TRUE, "Richtig: es ist wahrscheinlicher nur Bankangestellte zu sein als gleichzeitig Bankangestellte und in der Frauenbewegung. Die Lindas die beides sind, sind eine Teilmenge der Lindas die Bankangestellte sind."),
+  answer("Linda ist Bankangestellte und in der Frauenbewegung aktiv.", message="Falsch: es ist wahrscheinlicher nur Bankangestellte zu sein als gleichzeitig Bankangestellte und in der Frauenbewegung. Die Lindas die beides sind, sind eine Teilmenge der Lindas die Bankangestellte sind.")
+)
+```
+
+### Trugschluss
+
+Und, richtig gelegen? Wenn nicht: nicht schlimm: Sie sind in guter Gesellschaft. Siehe das berühmte Paper: Tversky, A., & Kahneman, D. (1983). Extensional versus intuitive reasoning: The conjunction fallacy in probability judgment. Psychological review, 90(4), 293--315. [https://psycnet.apa.org/doi/10.1037/0033-295X.90.4.293](https://psycnet.apa.org/doi/10.1037/0033-295X.90.4.293).
+
+Die Wochenzeitung DIE ZEIT und das briq-Institut haben im Rahmen einer Studie [Was wissen die Deutschen über Wirtschaft?](https://news.briq-institute.org/de/2018/02/08/die-deutschen-wissen-zu-wenig-ueber-wirtschaft/) auch diese Frage gestellt. Richtig lagen gerade einmal $13\,\%$!
+
+
+### FOM Studiernde und Linda
+
+Im Rahmen einer freiwilligen Online-Befragung zu Beginn eines Semesters an der FOM wurden Daten, u. a. zur oben genannten Frage, erhoben.
+
+#### Vorbereitung
+
+Installiertes Paket `mosaic` laden:
+
+```{r mosaic}
+library(mosaic)
+```
+
+
+Die Daten einlesen, Datenformat `csv` mit Semikolon `;` als Datentrennzeichen und Komma `,`als Dezimaltrennzeichen. Variablennamen in der ersten Zeile.
+
+
+```{r Einlesen, eval=FALSE}
+Linda <- read.csv2("Linda.csv")
+```
+
+*Hinweis*: Wenn Sie später selber Daten einlesen müssen Sie ggf. Pfade etc. anpassen.
+
+
+#### Ergebnis FOM Studierende
+
+```{r lindafom, echo=FALSE}
+question("Was glauben Sie?",
+  answer("FOM Studierende haben besser als die Allgemeinheit in der ZEIT Studie abgeschnitten.", correct = TRUE, "Richtig: Insbesondere können wir mit Statistik solche Vermutungen empirisch überprüfen."),
+    answer("FOM Studierende haben in etwa wie die Allgemeinheit in der ZEIT Studie abgeschnitten.", message="Nein, aber wir können wir mit Statistik solche Vermutungen empirisch überprüfen."),
+      answer("FOM Studierende haben schlechter als die Allgemeinheit in der ZEIT Studie abgeschnitten.", message="Nein, aber wir können wir mit Statistik solche Vermutungen empirisch überprüfen.")
+)
+```
+
+```{r tally, exercise = TRUE, eval=FALSE}
+tally( ~ linda, data = Linda)
+```
+
+Die Option `format = "proportion"` ergmöglicht es, im Befehl `tally()` die Anteile auszugeben. Ersetzen Sie den Platzhalter `___` entsprechend um die Anteile zu erhalten.
+
+```{r tallyprop, exercise = TRUE, eval=FALSE}
+tally( ~ linda, data = Linda, ____)
+```
+
+```{r tallyprop-solution}
+tally( ~ linda, data = Linda, format = "proportion")
+```
+
+```{r lindafompop, echo=FALSE}
+question("War das Ergebnis der FOM Studiernden besser als das Ergebnis in der ZEIT Studie?",
+  answer("Ja.", correct = TRUE, "Richtig: 37% (FOM) sind mehr als 13% (DIE ZEIT)."),
+    answer("Nein.", "Falsch: 37% (FOM) sind mehr als 13% (DIE ZEIT).")
+)
+```
+
+```{r stichprobe, echo=FALSE}
+question("Ist das Ergebnis zufällig?",
+  answer("Ja.", correct = TRUE, "Richtig: Andere Stichproben können andere Ergebnisse ergeben."),
+  answer("Nein.", message = "Falsch: Andere Stichproben können andere Ergebnisse ergeben.")
+)
+```
+
+### Datenvorverarbeitung
+
+Da die Antwortalternativen `Linda ist Bankangestellte.` und `Linda ist Bankangestellte und in der Frauenbewegung aktiv.` recht lang sind, werden diese über `mutate()` und `case_when()` umgewandelt:
+
+```{r}
+Linda <- Linda %>%
+  mutate(linda = case_when(linda == "Linda ist Bankangestellte und in der Frauenbewegung aktiv." ~ "Falsch",
+                           linda == "Linda ist Bankangestellte." ~ "Richtig"))
+
+prop( ~ linda, success = "Richtig", data = Linda)
+```
+
+## Simulation
+
+Auch wenn die $13\,\%$ richtige Antworten in der ZEIT Studie natürlich auch nur das Ergebnis einer Stichprobe sind, so gehen wir davon aus, dass das Ergebnis für die Allgemeinbevölkerung gilt, d.h. für den Anteil der richtigen Antworten $\pi$ gilt: $$\pi=0.13$$.
+
+
+## Bootstrapping
+
+## Permutationstest
+
+
+
+
+
+
