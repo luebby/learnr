@@ -114,13 +114,17 @@ question("Ist das Ergebnis zufällig?",
 
 Da die Antwortalternativen `Linda ist Bankangestellte.` und `Linda ist Bankangestellte und in der Frauenbewegung aktiv.` recht lang sind, werden diese über `mutate()` und `case_when()` umgewandelt:
 
-```{r}
+
+```{r case}
 Linda <- Linda %>%
   mutate(linda = case_when(linda == "Linda ist Bankangestellte und in der Frauenbewegung aktiv." ~ "Falsch",
                            linda == "Linda ist Bankangestellte." ~ "Richtig"))
+```
 
+```{r anteil}
 prop( ~ linda, success = "Richtig", data = Linda)
 ```
+
 
 ## Hypothesenprüfung
 
@@ -254,7 +258,7 @@ prop( ~ prop>=0.37, data = Nullvtlg)
 In keiner der $10000$ Simulationen im Modell mit $\pi=0.13$ kam eine Stichprobe mit $n=208$ Beobchtungen vor, die mindestens einen Anteil von $p=0.37$ hatten. Mit einem p-Wert $<\frac{1}{10000}$ würde man die Nullhypothese $H_0: \pi=0.13$ verwerfen.
 
 ```{r Stipro, echo=FALSE}
-question("Ist bei n=20 ein beobachteter Anteil von 0.37 wahrscheinlicher, obwohl in Wirklichkeit der Anteil bei 0,13 liegt?",
+question("Ist bei n=20 ein beobachteter Anteil von 0.37 wahrscheinlicher als bei n=208, wenn in Wirklichkeit der Anteil bei 0.13 liegt?",
   answer("Ja", correct = TRUE, message = "Richtig: Bei kleinerem Stichproben variieren die Anteile stärker."),
   answer("Nein", message = "Falsch: Bei kleinerem Stichproben variieren die Anteile stärker.")
   )
@@ -285,6 +289,98 @@ prop( ~ prop>=0.37, data = Nullvtlg)
 ```
 
 ## Bootstrapping
+
+
+### Punktschätzung
+
+In der **Stichprobe**  der FOM-Studierenden die an der Umfrage teilgenommen haben *beobachten* wir einen Anteil von $p=`r round(prop(~linda, success ="Richtig", data=Linda),2)`. Wie groß der Anteil $\pi$ derjenigen, die richtig antworten, in der **Population** der FOM-Studierenden ist wissen wir nicht.
+
+Was wir aber machen können: wir können den unbekannten Wert $\pi$ *schätzen*. Dies tun wir durch den uns bekannten Anteil der Stichprobe:
+
+$$\hat{\pi}=p=`r round(prop(~linda, success ="Richtig", data=Linda),2)`$$
+
+```{r pidach-setup}
+Linda <- Linda %>%
+  mutate(linda = case_when(linda == "Linda ist Bankangestellte und in der Frauenbewegung aktiv." ~ "Falsch",
+                           linda == "Linda ist Bankangestellte." ~ "Richtig"))
+```
+
+```{r pidach, exercise=TRUE}
+prop(~linda, success = "Richtig", data = Linda)
+```
+
+Eine *andere*, zufällige Stichprobe aus der selben Population könnte einen *anderen* Anteil ergeben: der Anteil ist zufällig, er variiert.
+
+### `resample()`
+
+Aber wie stark variiert der Anteil? $\pm 2\,\%$ oder $\pm 20\,\%$? Dies hängt u.a. vom Stichprobenumfang $n$ ab. Aber hier? Was wären bei unseren Daten andere, *plausible* Anteilswerte?
+
+Glücklicherweise können wir das Ziehen einer zufälligen Stichprobe simulieren. Die simulierte Stichprobe sollte aber den selben Stichprobenumfang wie die uns vorliegenden Daten haben -- und wie es sich für eine zufällige Stichprobe gehört sollte stets jede mögliche Beobachtung der "Population" die gleiche Wahrscheinlichkeit haben Teil der Stichprobe zu sein. Damit dies gelingen kann müssen wie unsere simulierte Stichprobe mit Zurücklegen aus der Originalstichprobe ziehen, die Engländerin sagt dazu *resample*.
+
+
+```{r resample-setup}
+Linda <- Linda %>%
+  mutate(linda = case_when(linda == "Linda ist Bankangestellte und in der Frauenbewegung aktiv." ~ "Falsch",
+                           linda == "Linda ist Bankangestellte." ~ "Richtig"))
+```
+
+```{r resample, exercise=TRUE, eval=FALSE}
+prop(~linda, success ="Richtig", data=resample(Linda))
+```
+
+Wenn Sie öfter auf `Run Code` klicken sehen Sie die Variation des Anteils.
+
+Eine solche simulierte Stichprobe nennt man auch *Bootstrap-Stichprobe*.
+
+### Bootstrap Verteilung
+
+Das gute ist: wir können das über `do() * ` ganz oft simulieren, und so die Verteilung des Anteils simulieren -- Mittelwert (`mean()`) und co. gehen übrigens völlig analog.
+
+```{r bootvtlg}
+set.seed(1896)
+
+Bootvtlg <- do(1000) * prop(~linda, success = "Richtig", data = resample(Linda))
+```
+
+Resampling Verteilung:
+
+```{r boot, exercise = TRUE}
+gf_histogram( ~ prop_Richtig, data = Bootvtlg)
+```
+
+```{r kicenter, echo=FALSE}
+question("Um welchen Wert variieren die Werte beim Resampling??",
+  answer("Um den Wert des Modells der Nullhypothese.", message = "Falsch: Beim Resampling wurden nur die vorhandenen Daten verwendet, kein hypothetisches Modell."),
+  answer("Um den Wert der Stichprobe.", correct = TRUE,  message = "Richtig: Beim Resampling wurden nur die vorhandenen Daten verwendet, kein hypothetisches Modell.")
+  )
+```
+
+### Konfidenzintervall
+
+Über den Befehl `gf_vline(xintercept = ___)` wird eine vertikale Linie an der Stelle `___` eingezeichnet. Ergänzen Sie den Code um eine Linie an der Stelle des Punktschätzers $\hat{\pi}=p=`r round(prop(~linda, success ="Richtig", data=Linda),2)`$ zu ergänzen.
+
+```{r bootsample, exercise = TRUE, eval=FALSE}
+gf_histogram( ~ prop_Richtig, data = Bootvtlg) %>%
+  ___
+```
+
+```{r bootsample-solution}
+gf_histogram( ~ prop_Richtig, data = Bootvtlg) %>%
+  gf_vline(xintercept = 0.37)
+```
+
+In welchem Bereich liegen z.B. $95\,\%$ der Anteile der Resamples? Diese Frage beantwortet z.B. das Bootstrap-Percentil **Konfidenzintervall**:
+
+```{r ki, exercise = TRUE}
+quantile( ~ prop_Richtig, data = Bootvtlg, probs = c(0.025, 0.975))
+```
+
+Oder auch kurz mit dem Befehl `confint()`:
+
+```{r confint, exercise = TRUE}
+confint(Bootvtlg)
+```
+
 
 ## Permutationstest
 
