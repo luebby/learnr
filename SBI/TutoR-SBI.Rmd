@@ -122,10 +122,167 @@ Linda <- Linda %>%
 prop( ~ linda, success = "Richtig", data = Linda)
 ```
 
-## Simulation
+## Hypothesenprüfung
 
 Auch wenn die $13\,\%$ richtige Antworten in der ZEIT Studie natürlich auch nur das Ergebnis einer Stichprobe sind, so gehen wir davon aus, dass das Ergebnis für die Allgemeinbevölkerung gilt, d.h. für den Anteil der richtigen Antworten $\pi$ gilt: $$\pi=0.13$$.
 
+In der Stichprobe der FOM Studierenden sehen wir einen Anteil von $p=`r round(prop( ~ linda, success = "Richtig", data = Linda),2)`$.
+
+*Beweist* eine Abweichung in einer Stichprobe, dass es eine Abweichung gibt?
+
+**Nein!** Zufall und Variation: Vielleicht waren in unser Stichprobe *zufällig* besonders viele, die die Frage richtig beantwortet haben -- vielleicht sogar durch raten.
+
+### Nullmodell
+
+
+Nehmen wir hypothetisch an, dass sich der Anteil der richtigen Antworten in der Umfrage unter FOM Studierenden nicht von dem Anteil in der ZEIT Studie (Allgemeinbevölkerung) unterscheidet.
+
+```{r simp, echo=FALSE}
+question("Welcher Anteil würde in diesem hypothetischen Modell für die FOM Studierenden gelten?",
+  answer("13%", correct = TRUE, "Richtig: wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil wie dort bei 13%."),
+  answer("37%", message = "Falsch: wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil der richtigen Antworten bei FOM Studierenden so hoch wie in der Allgemeinbevölkerung sein."),
+  answer("50%", message = "Falsch: wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil der richtigen Antworten bei FOM Studierenden so hoch wie in der Allgemeinbevölkerung sein.")
+  )
+```
+
+### Simulation Nullmodell
+
+**Wenn** es keinen Unterschied gibt, d. h. auch für FOM Studierende gelte $\pi=0.13$, dann können wir entsprechende *Stichproben* simulieren -- und unter diesem Modell vorhersagen, in welchem Bereich die Anteile $p$ der Stichproben liegen.
+
+In der vorliegenden Stichprobe liegen $n=`r nrow(Linda)`$ Beobachtungen vor:
+
+```{r, nrow}
+nrow(Linda)
+```
+
+Mit dem Befehl `rflip()` können wir einen (fiktiven) Münzwurf simulieren. Dabei ist die Option `n` der Stichprobenumfang und `prob` die Erfolgswahrscheinlichkeit.
+
+```{r rflip, exercise = TRUE, eval=FALSE}
+rflip(n = 208, prob = 0.13)
+```
+
+Wenn Sie öfter auf `Run Code` drücken, sehen Sie, dass auch der Anteil in den (simulierten) Stichproben variiert.
+
+Über `set.seed()` wird der Zufall reproduzierbar, das Ergebnis der $n$ *Münzwürfe* ändert sich nicht mehr:
+
+```{r setseed, exercise = TRUE, eval=FALSE}
+set.seed(1896)
+
+rflip(n = 208, prob = 0.13)
+```
+
+
+### Stichprobenverteilung
+
+Unsicherheit durch Zufall und Variation. Wir können aber viele Stichproben (mit $n=208$) gemäß unseres hypothetischen Modells (mit $\pi=0.13$) simulieren, und gucken wie der Anteil der richtigen Antworten ($p$) dannn variiert.
+
+Dazu wiederholen wir den zufälligen Münzwurf (`rflip()`) mit Hilfe von `do() *`, z. B. simulieren wir $100$ verschiedene Stichproben über:
+
+```{r do}
+set.seed(1896)
+
+Nullvtlg <- do(100) * rflip(n = 208, prob = 0.13)
+```
+
+Die Stichprobenverteilung des Anteils unter den Annahmen des Modells sieht dann wie folgt aus:
+
+```{r hist}
+gf_histogram( ~ prop, data = Nullvtlg)
+```
+
+Für den Mittelwert und Streuung (Standardfehler) der Anteile gilt:
+
+```{r}
+mean( ~ prop, data = Nullvtlg)
+sd( ~ prop, data = Nullvtlg)
+```
+
+Im Mittelwert haben die Stichproben einen Anteil von $\approx 0.13$, aber auch kleinere oder größere Anteile kommen vor.
+
+Vielleicht sind $100$ Simulationen zu wenig. Ändern Sie den Code, so dass wir $10000$ Stichproben simulieren.
+
+```{r stipro, exercise = TRUE, eval=FALSE}
+set.seed(1896)
+
+Nullvtlg <- do(100) * rflip(n = 208, prob = 0.13)
+```
+
+```{r stipro-solution}
+set.seed(1896)
+
+Nullvtlg <- do(10000) * rflip(n = 208, prob = 0.13)
+```
+
+```{r sipro0, include=FALSE}
+set.seed(1896)
+
+Nullvtlg <- do(10000) * rflip(n = 208, prob = 0.13)
+```
+
+### p-Wert
+
+Vergleichen wir das Modell (mit $\pi=0.13$) mit dem Ergebnis unserer Daten, d. h. mit $p=0.37$:
+
+```{r p0, exercise = TRUE}
+gf_histogram( ~ prop, data = Nullvtlg) %>%
+  gf_vline(xintercept = 0.37, color = "red")
+```
+
+
+```{r p0q, echo=FALSE}
+question("Wenn das Modell stimmt: Ist dann der Anteil der Stichprobe ein übliches Ergebnis?",
+  answer("Ja", message = "Falsch: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil 37%."),
+  answer("Nein", correct = TRUE, message = "Richtig: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil 37%.")
+  )
+```
+
+```{r zweifel, echo=FALSE}
+question("Haben Sie datengestüzt Zweifel daran, dass das Modell stimmt?",
+  answer("Ja", correct = TRUE, message = "Richtig: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil 37%. Die Daten scheinen nicht gut zu dem angenommenen Modell zu passen."),
+  answer("Nein", message = "Falsch: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil 37%.Die Daten scheinen nicht gut zu dem angenommenen Modell zu passen.")
+  )
+```
+
+Der **p-Wert** gibt an, wie oft wir im (simulierten) Modell (der Nullhypothese $H_0$) in einer Stichprobe eine mindestens so große Abweichung sehen würden, wie die, die wir in den Daten gesehen haben.
+
+```{r pval, exercise = TRUE}
+prop( ~ prop>=0.37, data = Nullvtlg)
+```
+
+### Stichprobenumfang
+
+In keiner der $10000$ Simulationen im Modell mit $\pi=0.13$ kam eine Stichprobe mit $n=208$ Beobchtungen vor, die mindestens einen Anteil von $p=0.37$ hatten. Mit einem p-Wert $<\frac{1}{10000}$ würde man die Nullhypothese $H_0: \pi=0.13$ verwerfen.
+
+```{r Stipro, echo=FALSE}
+question("Ist bei n=20 ein beobachteter Anteil von 0.37 wahrscheinlicher, obwohl in Wirklichkeit der Anteil bei 0,13 liegt?",
+  answer("Ja", correct = TRUE, message = "Richtig: Bei kleinerem Stichproben variieren die Anteile stärker."),
+  answer("Nein", message = "Falsch: Bei kleinerem Stichproben variieren die Anteile stärker.")
+  )
+```
+
+Ändern Sie den Code so, dass Sie einen Stichprobenumfang von $n=20$ simulieren -- anstelle von $n=208$.
+
+```{r n20, exercise = TRUE, eval=FALSE}
+set.seed(1896)
+
+Nullvtlg <- do(1000) * rflip(n = 208, prob = 0.13)
+
+gf_histogram( ~ prop, data = Nullvtlg) %>%
+  gf_vline(xintercept = 0.37, color = "red")
+
+prop( ~ prop>=0.37, data = Nullvtlg)
+```
+
+```{r n20-solution, eval=FALSE}
+set.seed(1896)
+
+Nullvtlg <- do(1000) * rflip(n = 20, prob = 0.13)
+
+gf_histogram( ~ prop, data = Nullvtlg) %>%
+  gf_vline(xintercept = 0.37, color = "red")
+
+prop( ~ prop>=0.37, data = Nullvtlg)
+```
 
 ## Bootstrapping
 
