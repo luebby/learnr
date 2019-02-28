@@ -260,6 +260,8 @@ Der **p-Wert** gibt an, wie oft wir im (simulierten) Modell (der **Nullhypothese
 prop( ~ prop >= 0.37, data = Nullvtlg)
 ```
 
+Der Anteil der FOM-Studierenden, die die *Linda*-Frage richtig beantworten liegt mit $p=0.37$ daher **signifikant** über $\pi=0.13$, dem Anteil in der Allgemeinbevölkerung laut Studie von DIE ZEIT und das briq-Institut: [Was wissen die Deutschen über Wirtschaft?](https://news.briq-institute.org/de/2018/02/08/die-deutschen-wissen-zu-wenig-ueber-wirtschaft/).
+
 
 ### Stichprobenumfang
 
