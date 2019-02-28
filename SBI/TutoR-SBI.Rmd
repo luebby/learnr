@@ -100,8 +100,8 @@ tally( ~ linda, data = Linda, format = "proportion")
 
 ```{r lindafompop, echo=FALSE}
 question("War das Ergebnis der FOM Studiernden besser als das Ergebnis in der ZEIT Studie?",
-  answer("Ja.", correct = TRUE, "Richtig: 37% (FOM) sind mehr als 13% (DIE ZEIT)."),
-    answer("Nein.", message = "Falsch: 37% (FOM) sind mehr als 13% (DIE ZEIT).")
+  answer("Ja.", correct = TRUE, "Richtig: 36% (FOM) sind mehr als 13% (DIE ZEIT)."),
+    answer("Nein.", message = "Falsch: 36% (FOM) sind mehr als 13% (DIE ZEIT).")
 )
 ```
 
@@ -146,7 +146,7 @@ Nehmen wir hypothetisch an, dass sich der Anteil der richtigen Antworten in der 
 ```{r simp, echo=FALSE}
 question("Welcher Anteil würde in diesem hypothetischen Modell für die FOM Studierenden gelten?",
   answer("13%", correct = TRUE, "Richtig: wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil wie dort bei 13%."),
-  answer("37%", message = "Falsch: wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil der richtigen Antworten bei FOM Studierenden so hoch wie in der Allgemeinbevölkerung sein."),
+  answer("36%", message = "Falsch: wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil der richtigen Antworten bei FOM Studierenden so hoch wie in der Allgemeinbevölkerung sein."),
   answer("50%", message = "Falsch: wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil der richtigen Antworten bei FOM Studierenden so hoch wie in der Allgemeinbevölkerung sein.")
   )
 ```
@@ -165,7 +165,7 @@ nrow(Linda)
 Mit dem Befehl `rflip()` können wir einen (fiktiven) Münzwurf simulieren. Dabei ist die Option `n` der Stichprobenumfang und `prob` die Erfolgswahrscheinlichkeit.
 
 ```{r rflip, exercise = TRUE, eval=FALSE}
-rflip(n = 208, prob = 0.13)
+rflip(n = 212, prob = 0.13)
 ```
 
 Wenn Sie öfter auf `Run Code` drücken, sehen Sie, dass auch der Anteil in den (simulierten) Stichproben variiert.
@@ -175,7 +175,7 @@ Wenn Sie öfter auf `Run Code` drücken, sehen Sie, dass auch der Anteil in den 
 ```{r setseed, exercise = TRUE, eval=FALSE}
 set.seed(1896)
 
-rflip(n = 208, prob = 0.13)
+rflip(n = 212, prob = 0.13)
 ```
 
 
@@ -183,14 +183,14 @@ rflip(n = 208, prob = 0.13)
 
 Unsicherheit durch Zufall und Variation. 
 
-Wir können aber viele Stichproben (mit $n=208$) gemäß unseres hypothetischen Modells (mit $\pi=0.13$) simulieren, und gucken wie der Anteil der richtigen Antworten ($p$) dann variiert.
+Wir können aber viele Stichproben (mit $n=212$) gemäß unseres hypothetischen Modells (mit $\pi=0.13$) simulieren, und gucken wie der Anteil der richtigen Antworten ($p$) dann variiert.
 
 Dazu wiederholen wir den zufälligen Münzwurf (`rflip()`) mit Hilfe von `do() *`, z. B. simulieren wir $100$ verschiedene Stichproben über:
 
 ```{r do}
 set.seed(1896)
 
-Nullvtlg <- do(100) * rflip(n = 208, prob = 0.13)
+Nullvtlg <- do(100) * rflip(n = 212, prob = 0.13)
 ```
 
 Die Stichprobenverteilung des Anteils unter den Annahmen des Modells sieht dann wie folgt aus:
@@ -213,89 +213,89 @@ Vielleicht sind $100$ Simulationen zu wenig. Ändern Sie den Code, so dass wir $
 ```{r stipro, exercise = TRUE, eval=FALSE}
 set.seed(1896)
 
-Nullvtlg <- do(100) * rflip(n = 208, prob = 0.13)
+Nullvtlg <- do(100) * rflip(n = 212, prob = 0.13)
 ```
 
 ```{r stipro-solution}
 set.seed(1896)
 
-Nullvtlg <- do(10000) * rflip(n = 208, prob = 0.13)
+Nullvtlg <- do(10000) * rflip(n = 212, prob = 0.13)
 ```
 
 
 ```{r sipro0, include=FALSE}
 set.seed(1896)
 
-Nullvtlg <- do(10000) * rflip(n = 208, prob = 0.13)
+Nullvtlg <- do(10000) * rflip(n = 212, prob = 0.13)
 ```
 
 
 ### p-Wert
 
-Vergleichen wir das Modell (mit $\pi=0.13$) mit dem Ergebnis unserer Daten, d. h. mit $p=0.37$:
+Vergleichen wir das Modell (mit $\pi=0.13$) mit dem Ergebnis unserer Daten, d. h. mit $p=0.36$:
 
 ```{r p0, exercise = TRUE}
 gf_histogram( ~ prop, data = Nullvtlg) %>%
-  gf_vline(xintercept = 0.37, color = "red")
+  gf_vline(xintercept = 0.36, color = "red")
 ```
 
 
 ```{r p0q, echo=FALSE}
 question("Wenn das Modell stimmt: Ist dann der Anteil der Stichprobe ein übliches Ergebnis?",
-  answer("Ja", message = "Falsch: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil 37%."),
-  answer("Nein", correct = TRUE, message = "Richtig: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil 37%.")
+  answer("Ja", message = "Falsch: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil 36%."),
+  answer("Nein", correct = TRUE, message = "Richtig: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil 36%.")
   )
 ```
 
 ```{r zweifel, echo=FALSE}
 question("Haben Sie datengestüzt Zweifel daran, dass das Modell stimmt?",
-  answer("Ja", correct = TRUE, message = "Richtig: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil von 37%. Die Daten scheinen nicht gut zu dem angenommenen Modell zu passen."),
-  answer("Nein", message = "Falsch: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil von 37%. Die Daten scheinen nicht gut zu dem angenommenen Modell zu passen.")
+  answer("Ja", correct = TRUE, message = "Richtig: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil von 36%. Die Daten scheinen nicht gut zu dem angenommenen Modell zu passen."),
+  answer("Nein", message = "Falsch: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil von 36%. Die Daten scheinen nicht gut zu dem angenommenen Modell zu passen.")
   )
 ```
 
 Der **p-Wert** gibt an, wie oft wir im (simulierten) Modell (der **Nullhypothese** $H_0$) in einer Stichprobe eine mindestens so große Abweichung sehen würden, wie die, die wir in den Daten gesehen haben.
 
 ```{r pval, exercise = TRUE}
-prop( ~ prop >= 0.37, data = Nullvtlg)
+prop( ~ prop >= 0.36, data = Nullvtlg)
 ```
 
-Der Anteil der FOM-Studierenden, die die *Linda*-Frage richtig beantworten liegt mit $p=0.37$ daher **signifikant** über $\pi=0.13$, dem Anteil in der Allgemeinbevölkerung laut Studie von DIE ZEIT und das briq-Institut: [Was wissen die Deutschen über Wirtschaft?](https://news.briq-institute.org/de/2018/02/08/die-deutschen-wissen-zu-wenig-ueber-wirtschaft/).
+Der Anteil der FOM-Studierenden, die die *Linda*-Frage richtig beantworten liegt mit $p=0.36$ daher **signifikant** über $\pi=0.13$, dem Anteil in der Allgemeinbevölkerung laut Studie von DIE ZEIT und das briq-Institut: [Was wissen die Deutschen über Wirtschaft?](https://news.briq-institute.org/de/2018/02/08/die-deutschen-wissen-zu-wenig-ueber-wirtschaft/).
 
 
 ### Stichprobenumfang
 
-In keiner der $10000$ Simulationen im Modell mit $\pi=0.13$ kam eine Stichprobe mit $n=208$ Beobachtungen vor, die mindestens einen Anteil von $p=0.37$ hatten. Mit einem p-Wert $<\frac{1}{10000}$ würde man die Nullhypothese $H_0: \pi=0.13$ verwerfen.
+In keiner der $10000$ Simulationen im Modell mit $\pi=0.13$ kam eine Stichprobe mit $n=212$ Beobachtungen vor, die mindestens einen Anteil von $p=0.36$ hatten. Mit einem p-Wert $<\frac{1}{10000}$ würde man die Nullhypothese $H_0: \pi=0.13$ verwerfen.
 
 ```{r Stipro, echo=FALSE}
-question("Ist bei n=20 ein beobachteter Anteil von 0.37 wahrscheinlicher als bei n=208, wenn in Wirklichkeit der Anteil bei 0.13 liegt?",
+question("Ist bei n=20 ein beobachteter Anteil von 0.36 wahrscheinlicher als bei n=212, wenn in Wirklichkeit der Anteil bei 0.13 liegt?",
   answer("Ja", correct = TRUE, message = "Richtig: Bei kleinerem Stichproben variieren die Anteile stärker."),
   answer("Nein", message = "Falsch: Bei kleinerem Stichproben variieren die Anteile stärker.")
   )
 ```
 
-Ändern Sie den Code so, dass Sie einen Stichprobenumfang von $n=20$ simulieren -- anstelle von $n=208$.
+Ändern Sie den Code so, dass Sie einen Stichprobenumfang von $n=21$ simulieren -- anstelle von $n=212$.
 
 ```{r n20, exercise = TRUE, eval=FALSE}
 set.seed(1896)
 
-Nullvtlg <- do(1000) * rflip(n = 208, prob = 0.13)
+Nullvtlg <- do(1000) * rflip(n = 212, prob = 0.13)
 
 gf_histogram( ~ prop, data = Nullvtlg) %>%
-  gf_vline(xintercept = 0.37, color = "red")
+  gf_vline(xintercept = 0.36, color = "red")
 
-prop( ~ prop>=0.37, data = Nullvtlg)
+prop( ~ prop>=0.36, data = Nullvtlg)
 ```
 
 ```{r n20-solution, eval=FALSE}
 set.seed(1896)
 
-Nullvtlg <- do(1000) * rflip(n = 20, prob = 0.13)
+Nullvtlg <- do(1000) * rflip(n = 21, prob = 0.13)
 
 gf_histogram( ~ prop, data = Nullvtlg) %>%
-  gf_vline(xintercept = 0.37, color = "red")
+  gf_vline(xintercept = 0.36, color = "red")
 
-prop( ~ prop>=0.37, data = Nullvtlg)
+prop( ~ prop>=0.36, data = Nullvtlg)
 ```
 
 
@@ -378,7 +378,7 @@ gf_histogram( ~ prop_Richtig, data = Bootvtlg) %>%
 
 ```{r bootsample-solution}
 gf_histogram( ~ prop_Richtig, data = Bootvtlg) %>%
-  gf_vline(xintercept = 0.37)
+  gf_vline(xintercept = 0.36)
 ```
 
 In welchem Bereich liegen z. B.$95\,\%$ der Anteile der Resamples? Diese Frage beantwortet z. B.das Bootstrap-Perzentil **Konfidenzintervall**:
