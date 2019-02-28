@@ -274,7 +274,7 @@ question("Ist bei n=20 ein beobachteter Anteil von 0.36 wahrscheinlicher als bei
   )
 ```
 
-Ändern Sie den Code so, dass Sie einen Stichprobenumfang von $n=21$ simulieren -- anstelle von $n=212$.
+Ändern Sie den Code so, dass Sie einen Stichprobenumfang von $n=20$ simulieren -- anstelle von $n=212$.
 
 ```{r n20, exercise = TRUE, eval=FALSE}
 set.seed(1896)
@@ -290,7 +290,7 @@ prop( ~ prop>=0.36, data = Nullvtlg)
 ```{r n20-solution, eval=FALSE}
 set.seed(1896)
 
-Nullvtlg <- do(1000) * rflip(n = 21, prob = 0.13)
+Nullvtlg <- do(1000) * rflip(n = 20, prob = 0.13)
 
 gf_histogram( ~ prop, data = Nullvtlg) %>%
   gf_vline(xintercept = 0.36, color = "red")
