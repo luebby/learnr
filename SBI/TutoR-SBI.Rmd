@@ -22,9 +22,9 @@ Linda <- Linda %>%
 
 ## Willkommen
 
-Daten umfassen in aller Regel viele Informationen. Aber sie sind in gewisser Hinsicht **zufällig**. z. B.durch eine *zufällige* Stichprobe. 
+Daten umfassen in aller Regel viele Informationen. Aber sie sind in gewisser Hinsicht **zufällig**, z. B. durch eine *zufällige* Stichprobe. 
 
-Daher: *Nur* weil wir *etwas* in unseren Daten sehen heißt das *nicht*, dass das auch allgemein so ist. Vielleicht wurden wir zu unseren Schlüssen aus Daten vom Zufall verführt...
+Daher: *Nur* weil wir *etwas* in unseren Daten sehen heißt das *nicht*, dass das auch allgemein so ist. Vielleicht wurden wir zu unseren Schlussfolgerungen vom Zufall verführt...
 
 In diesem Tutorial sollen Sie die Grundgedanken der induktiven Statistik kennen lernen: Kenntnis von Variation und Zufall kann vor vermeintlicher Sicherheit schützen.
 
@@ -35,12 +35,12 @@ In diesem Tutorial sollen Sie die Grundgedanken der induktiven Statistik kennen 
 
 Dürfen wir vorstellen:
 
-> Linda ist 31 Jahre alt, Single, offen und klug. Sie hat Philosophie studiert. Als Studentin interessierte sie sich sehr für Diskriminierung und soziale Gerechtigkeit. Außerdem hat Linda an Anti-Globalisierungs-Demonstrationen teilgenommen. Hier nun zwei alternative Aussagen zu Linda. 
+> Linda ist 31 Jahre alt, single, offen und klug. Sie hat Philosophie studiert. Als Studentin interessierte sie sich sehr für Diskriminierung und soziale Gerechtigkeit. Außerdem hat Linda an Anti-Globalisierungs-Demonstrationen teilgenommen. Hier nun zwei alternative Aussagen zu Linda. 
 
 ```{r linda, echo=FALSE}
 question("Welche davon ist wahrscheinlicher?",
-  answer("Linda ist Bankangestellte.", correct = TRUE, "Richtig: es ist wahrscheinlicher nur Bankangestellte zu sein als gleichzeitig Bankangestellte und in der Frauenbewegung. Die Lindas die beides sind, sind eine Teilmenge der Lindas die Bankangestellte sind."),
-  answer("Linda ist Bankangestellte und in der Frauenbewegung aktiv.", message="Falsch: es ist wahrscheinlicher nur Bankangestellte zu sein als gleichzeitig Bankangestellte und in der Frauenbewegung. Die Lindas die beides sind, sind eine Teilmenge der Lindas die Bankangestellte sind.")
+  answer("Linda ist Bankangestellte und in der Frauenbewegung aktiv.", message="Falsch: Es ist wahrscheinlicher nur Bankangestellte zu sein als gleichzeitig Bankangestellte und in der Frauenbewegung. Die Lindas die beides sind, sind eine Teilmenge der Lindas die Bankangestellte sind."),
+  answer("Linda ist Bankangestellte.", correct = TRUE, "Richtig: Es ist wahrscheinlicher nur Bankangestellte zu sein als gleichzeitig Bankangestellte und in der Frauenbewegung. Die Lindas die beides sind, sind eine Teilmenge der Lindas die Bankangestellte sind.")
 )
 ```
 
@@ -51,7 +51,7 @@ Und, richtig gelegen? Wenn nicht: nicht schlimm: Sie sind in guter Gesellschaft.
 Die Wochenzeitung DIE ZEIT und das briq-Institut haben im Rahmen einer Studie [Was wissen die Deutschen über Wirtschaft?](https://news.briq-institute.org/de/2018/02/08/die-deutschen-wissen-zu-wenig-ueber-wirtschaft/) auch diese Frage gestellt. Richtig lagen gerade einmal $13\,\%$!
 
 
-### FOM Studiernde und Linda
+### FOM-Studiernde und Linda
 
 Im Rahmen einer freiwilligen Online-Befragung zu Beginn eines Semesters an der FOM wurden Daten, u. a. zur oben genannten Frage, erhoben.
 
@@ -64,23 +64,23 @@ library(mosaic)
 ```
 
 
-Die Daten einlesen, Datenformat `csv` mit Semikolon `;` als Datentrennzeichen und Komma `,`als Dezimaltrennzeichen. Variablennamen in der ersten Zeile.
+Die Daten einlesen, Datenformat `csv` mit Semikolon `;` als Datentrennzeichen und Komma `,` als Dezimaltrennzeichen. Variablennamen in der ersten Zeile.
 
 
 ```{r Einlesen, eval=FALSE}
 Linda <- read.csv2("Linda.csv")
 ```
 
-*Hinweis*: Wenn Sie später selber Daten einlesen müssen Sie ggf. Pfade etc. anpassen.
+*Hinweis*: Wenn Sie später selber Daten einlesen, müssen Sie ggf. Pfade etc. anpassen.
 
 
-#### Ergebnis FOM Studierende
+#### Ergebnis FOM-Studierende
 
 ```{r lindafom, echo=FALSE}
 question("Was glauben Sie?",
-  answer("FOM Studierende haben besser als die Allgemeinheit in der ZEIT Studie abgeschnitten.", correct = TRUE, "Richtig: Insbesondere können wir mit Statistik solche Vermutungen empirisch überprüfen."),
-    answer("FOM Studierende haben in etwa wie die Allgemeinheit in der ZEIT Studie abgeschnitten.", message="Nein, aber wir können wir mit Statistik solche Vermutungen empirisch überprüfen."),
-      answer("FOM Studierende haben schlechter als die Allgemeinheit in der ZEIT Studie abgeschnitten.", message="Nein, aber wir können wir mit Statistik solche Vermutungen empirisch überprüfen.")
+  answer("FOM-Studierende haben besser als die Allgemeinheit in der ZEIT-Studie abgeschnitten.", correct = TRUE, "Richtig: Insbesondere können wir mit Statistik solche Vermutungen empirisch überprüfen."),
+    answer("FOM-Studierende haben in etwa wie die Allgemeinheit in der ZEIT-Studie abgeschnitten.", message="Nein, aber wir können wir mit Statistik solche Vermutungen empirisch überprüfen."),
+      answer("FOM-Studierende haben schlechter als die Allgemeinheit in der ZEIT-Studie abgeschnitten.", message="Nein, aber wir können wir mit Statistik solche Vermutungen empirisch überprüfen.")
 )
 ```
 
@@ -88,7 +88,7 @@ question("Was glauben Sie?",
 tally( ~ linda, data = Linda)
 ```
 
-Die Option `format = "proportion"` ermöglicht es, im Befehl `tally()` die Anteile auszugeben. Ersetzen Sie den Platzhalter `___` entsprechend um die Anteile zu erhalten.
+Die Option `format = "proportion"` ermöglicht es, im Befehl `tally()` die Anteile auszugeben. Ersetzen Sie den Platzhalter `___` entsprechend um die Anteile zu erhalten:
 
 ```{r tallyprop, exercise = TRUE, eval=FALSE}
 tally( ~ linda, data = Linda, ____)
@@ -99,7 +99,7 @@ tally( ~ linda, data = Linda, format = "proportion")
 ```
 
 ```{r lindafompop, echo=FALSE}
-question("War das Ergebnis der FOM Studiernden besser als das Ergebnis in der ZEIT Studie?",
+question("War das Ergebnis der FOM-Studiernden besser als das Ergebnis in der ZEIT-Studie?",
   answer("Ja.", correct = TRUE, "Richtig: 36% (FOM) sind mehr als 13% (DIE ZEIT)."),
     answer("Nein.", message = "Falsch: 36% (FOM) sind mehr als 13% (DIE ZEIT).")
 )
@@ -114,7 +114,7 @@ question("Ist das Ergebnis zufällig?",
 
 ### Datenvorverarbeitung
 
-Da die Antwortalternativen `Linda ist Bankangestellte.` und `Linda ist Bankangestellte und in der Frauenbewegung aktiv.` recht lang sind, werden diese über `mutate()` und `case_when()` umgewandelt:
+Da die Antwortalternativen `Linda ist Bankangestellte.` und `Linda ist Bankangestellte und in der Frauenbewegung aktiv.` recht lang sind, werden diese über `mutate()` und `case_when()` in "Falsch" und "Richtig" umgewandelt:
 
 
 ```{r case}
@@ -130,31 +130,31 @@ prop( ~ linda, success = "Richtig", data = Linda)
 
 ## Hypothesenprüfung
 
-Auch wenn die $13\,\%$ richtige Antworten in der ZEIT Studie natürlich auch nur das Ergebnis einer Stichprobe sind, so gehen wir davon aus, dass das Ergebnis für die Allgemeinbevölkerung gilt, d. h. für den Anteil der richtigen Antworten $\pi$ gilt: $$\pi=0.13$$.
+Auch wenn die $13\,\%$ richtige Antworten in der ZEIT-Studie natürlich auch nur das Ergebnis einer Stichprobe sind, so gehen wir davon aus, dass das Ergebnis für die Allgemeinbevölkerung gilt, d. h., für den Anteil der richtigen Antworten $\pi$ gilt: $$\pi=0.13$$.
 
-In der Stichprobe der FOM Studierenden sehen wir einen Anteil von $p=`r round(prop( ~ linda, success = "Richtig", data = Linda),2)`$.
+In der Stichprobe der FOM-Studierenden sehen wir einen Anteil von $p=`r round(prop( ~ linda, success = "Richtig", data = Linda),2)`$.
 
-*Beweist* eine Abweichung in einer Stichprobe, dass es eine Abweichung gibt?
+*Beweist* eine Abweichung in einer Stichprobe, dass es eine allgemeine Abweichung gibt?
 
-**Nein!** Zufall und Variation: Vielleicht waren in unser Stichprobe *zufällig* besonders viele, die die Frage richtig beantwortet haben -- vielleicht sogar durch raten.
+**Nein!** Zufall und Variation: Vielleicht waren in unserer Stichprobe *zufällig* besonders viele, die die Frage richtig beantwortet haben -- vielleicht sogar durch raten.
 
 
 ### Nullmodell
 
-Nehmen wir hypothetisch an, dass sich der Anteil der richtigen Antworten in der Umfrage unter FOM Studierenden nicht von dem Anteil in der ZEIT Studie (Allgemeinbevölkerung) unterscheidet.
+Nehmen wir hypothetisch an, dass sich der Anteil der richtigen Antworten in der Umfrage unter FOM-Studierenden nicht von dem Anteil in der ZEIT-Studie (Allgemeinbevölkerung) unterscheidet.
 
 ```{r simp, echo=FALSE}
-question("Welcher Anteil würde in diesem hypothetischen Modell für die FOM Studierenden gelten?",
-  answer("13%", correct = TRUE, "Richtig: wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil wie dort bei 13%."),
-  answer("36%", message = "Falsch: wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil der richtigen Antworten bei FOM Studierenden so hoch wie in der Allgemeinbevölkerung sein."),
-  answer("50%", message = "Falsch: wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil der richtigen Antworten bei FOM Studierenden so hoch wie in der Allgemeinbevölkerung sein.")
+question("Welcher Anteil würde in diesem hypothetischen Modell für die FOM-Studierenden gelten?",
+  answer("13%", correct = TRUE, "Richtig: Wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil wie dort bei 13%."),
+  answer("36%", message = "Falsch: Wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil der richtigen Antworten bei FOM-Studierenden so hoch wie in der Allgemeinbevölkerung sein."),
+  answer("50%", message = "Falsch: Wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil der richtigen Antworten bei FOM-Studierenden so hoch wie in der Allgemeinbevölkerung sein.")
   )
 ```
 
 
 ### Simulation Nullmodell
 
-**Wenn** es keinen Unterschied gibt, d. h. auch für FOM Studierende gelte $\pi=0.13$, dann können wir entsprechende *Stichproben* simulieren -- und unter diesem Modell vorhersagen, in welchem Bereich die Anteile $p$ der Stichproben wahrscheinlich liegen.
+**Wenn** es keinen Unterschied gibt, d. h. auch für FOM-Studierende gelte $\pi=0.13$, dann können wir entsprechende *Stichproben* simulieren -- und unter diesem Modell vorhersagen, in welchem Bereich die Anteile $p$ der Stichproben wahrscheinlich liegen.
 
 In der vorliegenden Stichprobe liegen $n=`r nrow(Linda)`$ Beobachtungen vor:
 
@@ -183,7 +183,7 @@ rflip(n = 212, prob = 0.13)
 
 Unsicherheit durch Zufall und Variation. 
 
-Wir können aber viele Stichproben (mit $n=212$) gemäß unseres hypothetischen Modells (mit $\pi=0.13$) simulieren, und gucken wie der Anteil der richtigen Antworten ($p$) dann variiert.
+Wir können aber viele Stichproben (mit $n=212$) gemäß unseres hypothetischen Modells (mit $\pi=0.13$) simulieren, und sehen wie der Anteil der richtigen Antworten ($p$) dann variiert.
 
 Dazu wiederholen wir den zufälligen Münzwurf (`rflip()`) mit Hilfe von `do() *`, z. B. simulieren wir $100$ verschiedene Stichproben über:
 
@@ -193,13 +193,13 @@ set.seed(1896)
 Nullvtlg <- do(100) * rflip(n = 212, prob = 0.13)
 ```
 
-Die Stichprobenverteilung des Anteils unter den Annahmen des Modells sieht dann wie folgt aus:
+Die Stichprobenverteilung des Anteils unter den Annahmen des Nullmodells sieht dann wie folgt aus:
 
 ```{r hist}
 gf_histogram( ~ prop, data = Nullvtlg)
 ```
 
-Für den Mittelwert und Streuung (Standardfehler) der Anteile gilt:
+Für den Mittelwert und die Streuung (Standardfehler) der Anteile gilt:
 
 ```{r}
 mean( ~ prop, data = Nullvtlg)
@@ -214,12 +214,16 @@ Vielleicht sind $100$ Simulationen zu wenig. Ändern Sie den Code, so dass wir $
 set.seed(1896)
 
 Nullvtlg <- do(100) * rflip(n = 212, prob = 0.13)
+
+gf_histogram( ~ prop, data = Nullvtlg)
 ```
 
 ```{r stipro-solution}
 set.seed(1896)
 
 Nullvtlg <- do(10000) * rflip(n = 212, prob = 0.13)
+
+gf_histogram( ~ prop, data = Nullvtlg)
 ```
 
 
@@ -227,6 +231,8 @@ Nullvtlg <- do(10000) * rflip(n = 212, prob = 0.13)
 set.seed(1896)
 
 Nullvtlg <- do(10000) * rflip(n = 212, prob = 0.13)
+
+gf_histogram( ~ prop, data = Nullvtlg)
 ```
 
 
@@ -241,16 +247,16 @@ gf_histogram( ~ prop, data = Nullvtlg) %>%
 
 
 ```{r p0q, echo=FALSE}
-question("Wenn das Modell stimmt: Ist dann der Anteil der Stichprobe ein übliches Ergebnis?",
-  answer("Ja", message = "Falsch: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil 36%."),
-  answer("Nein", correct = TRUE, message = "Richtig: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil 36%.")
+question("Wenn das Nullmodell stimmt: Ist dann der Anteil der Stichprobe ein übliches Ergebnis?",
+  answer("Ja", message = "Falsch: Wenn das Modell stimmt sind Anteile zwischen ungefähr 8% und 18% wahrscheinlich, nicht ein Anteil 36%."),
+  answer("Nein", correct = TRUE, message = "Richtig: Wenn das Modell stimmt sind Anteile zwischen ungefähr 8% und 18% wahrscheinlich, nicht ein Anteil 36%.")
   )
 ```
 
 ```{r zweifel, echo=FALSE}
-question("Haben Sie datengestüzt Zweifel daran, dass das Modell stimmt?",
-  answer("Ja", correct = TRUE, message = "Richtig: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil von 36%. Die Daten scheinen nicht gut zu dem angenommenen Modell zu passen."),
-  answer("Nein", message = "Falsch: Wenn das Modell stimmt sind Anteile zwischen ungeföhr 8% und 18% wahrscheinlich, nicht ein Anteil von 36%. Die Daten scheinen nicht gut zu dem angenommenen Modell zu passen.")
+question("Haben Sie datengestüzt Zweifel daran, dass das Nullmodell stimmt?",
+  answer("Ja", correct = TRUE, message = "Richtig: Wenn das Nullmodell stimmt sind Anteile zwischen ungefähr 8% und 18% wahrscheinlich, nicht ein Anteil von 36%. Die Daten scheinen nicht gut zu dem angenommenen Modell zu passen."),
+  answer("Nein", message = "Falsch: Wenn das Nullmodell stimmt sind Anteile zwischen ungefähr 8% und 18% wahrscheinlich, nicht ein Anteil von 36%. Die Daten scheinen nicht gut zu dem angenommenen Modell zu passen.")
   )
 ```
 
@@ -260,7 +266,7 @@ Der **p-Wert** gibt an, wie oft wir im (simulierten) Modell (der **Nullhypothese
 prop( ~ prop >= 0.36, data = Nullvtlg)
 ```
 
-Der Anteil der FOM-Studierenden, die die *Linda*-Frage richtig beantworten liegt mit $p=0.36$ daher **signifikant** über $\pi=0.13$, dem Anteil in der Allgemeinbevölkerung laut Studie von DIE ZEIT und das briq-Institut: [Was wissen die Deutschen über Wirtschaft?](https://news.briq-institute.org/de/2018/02/08/die-deutschen-wissen-zu-wenig-ueber-wirtschaft/).
+Der Anteil der FOM-Studierenden, die die *Linda*-Frage richtig beantworten liegt mit $p=0.36$ daher **signifikant** über $\pi=0.13$, dem Anteil in der Allgemeinbevölkerung laut Studie von DIE ZEIT und dem briq-Institut: [Was wissen die Deutschen über Wirtschaft?](https://news.briq-institute.org/de/2018/02/08/die-deutschen-wissen-zu-wenig-ueber-wirtschaft/).
 
 
 ### Stichprobenumfang
@@ -269,8 +275,8 @@ In keiner der $10000$ Simulationen im Modell mit $\pi=0.13$ kam eine Stichprobe 
 
 ```{r Stipro, echo=FALSE}
 question("Ist bei n=20 ein beobachteter Anteil von 0.36 wahrscheinlicher als bei n=212, wenn in Wirklichkeit der Anteil bei 0.13 liegt?",
-  answer("Ja", correct = TRUE, message = "Richtig: Bei kleinerem Stichproben variieren die Anteile stärker."),
-  answer("Nein", message = "Falsch: Bei kleinerem Stichproben variieren die Anteile stärker.")
+  answer("Ja", correct = TRUE, message = "Richtig: Bei kleineren Stichproben variieren die Anteile stärker."),
+  answer("Nein", message = "Falsch: Bei kleineren Stichproben variieren die Anteile stärker.")
   )
 ```
 
@@ -303,9 +309,9 @@ prop( ~ prop>=0.36, data = Nullvtlg)
 
 ### Punktschätzung
 
-In der **Stichprobe**  der FOM-Studierenden die an der Umfrage teilgenommen haben *beobachten* wir einen Anteil von $p=`r round(prop(~linda, success ="Richtig", data=Linda),2)`$. Wie groß der Anteil $\pi$ derjenigen, die richtig antworten, in der **Population** der FOM-Studierenden ist wissen wir nicht.
+In der **Stichprobe**  der FOM-Studierenden, die an der Umfrage teilgenommen haben, *beobachten* wir einen Anteil von $p=`r round(prop(~linda, success ="Richtig", data=Linda),2)`$. Wie groß der Anteil $\pi$ derjenigen, die richtig antworten, in der **Population** der FOM-Studierenden ist wissen wir nicht.
 
-Was wir aber machen können: wir können den unbekannten Wert $\pi$ *schätzen*. Dies tun wir durch den uns bekannten Anteil der Stichprobe:
+Was wir aber machen können: Wir können den unbekannten Wert $\pi$ *schätzen*. Dies tun wir durch den uns bekannten Anteil der Stichprobe:
 
 ```{r pidach-setup}
 Linda <- Linda %>%
@@ -321,13 +327,13 @@ prop(~linda, success = "Richtig", data = Linda)
 $$\hat{\pi}=p=`r round(prop(~linda, success ="Richtig", data=Linda),2)`$$
 
 
-Eine *andere*, zufällige Stichprobe aus der selben Population könnte einen *anderen* Anteil ergeben: der Anteil ist zufällig, er variiert.
+Eine *andere*, zufällige Stichprobe aus derselben Population könnte einen *anderen* Anteil ergeben: Der Anteil ist zufällig, er variiert.
 
 ### `resample()`
 
-Aber wie stark variiert der Anteil? $\pm 2\,\%$ oder $\pm 20\,\%$? Dies hängt u. a. vom Stichprobenumfang $n$ ab. Aber hier? Was wären ,bei unseren Daten andere, *plausible* Anteilswerte?
+Aber wie stark variiert der Anteil? $\pm 2\,\%$ oder $\pm 20\,\%$? Dies hängt u. a. vom Stichprobenumfang $n$ ab. Aber hier? Was wären bei unseren Daten andere, *plausible* Anteilswerte?
 
-Glücklicherweise können wir das Ziehen einer zufälligen Stichprobe simulieren. Die simulierte Stichprobe sollte aber den selben Stichprobenumfang wie die uns vorliegenden Daten haben -- und wie es sich für eine zufällige Stichprobe gehört sollte stets jede mögliche Beobachtung der *Population* die gleiche Wahrscheinlichkeit haben Teil der Stichprobe zu sein. Damit dies gelingen kann müssen wie unsere simulierte Stichprobe mit Zurücklegen aus der Originalstichprobe ziehen, die Engländerin sagt dazu *resample*.
+Glücklicherweise können wir das Ziehen einer zufälligen Stichprobe simulieren. Die simulierte Stichprobe sollte aber denselben Stichprobenumfang wie die uns vorliegenden Daten haben -- und wie es sich für eine zufällige Stichprobe gehört sollte stets jede mögliche Beobachtung der *Population* die gleiche Wahrscheinlichkeit haben Teil der Stichprobe zu sein. Damit dies gelingen kann müssen wir unsere simulierte Stichprobe mit Zurücklegen aus der Originalstichprobe ziehen; die Engländerin sagt dazu *resample*.
 
 
 ```{r resample-setup}
@@ -340,13 +346,13 @@ Linda <- Linda %>%
 prop(~linda, success ="Richtig", data=resample(Linda))
 ```
 
-Wenn Sie öfter auf `Run Code` klicken sehen Sie die Variation des Anteils.
+Wenn Sie öfter auf `Run Code` klicken, sehen Sie die Variation des Anteils.
 
 Eine solche simulierte Stichprobe nennt man auch *Bootstrap-Stichprobe*.
 
-### Bootstrap Verteilung
+### Bootstrap-Verteilung
 
-Das gute ist: wir können das über `do() * ` ganz oft simulieren, und so die Verteilung des Anteils simulieren -- Mittelwert (`mean()`) und co. gehen übrigens völlig analog.
+Das Gute ist: Wir können das über `do() * ` ganz oft simulieren und so die Verteilung des Anteils simulieren -- Mittelwert (`mean()`) und co. gehen übrigens völlig analog.
 
 ```{r bootvtlg}
 set.seed(1896)
@@ -354,7 +360,7 @@ set.seed(1896)
 Bootvtlg <- do(10000) * prop(~linda, success = "Richtig", data = resample(Linda))
 ```
 
-Resampling Verteilung:
+Resampling-Verteilung:
 
 ```{r boot, exercise = TRUE}
 gf_histogram( ~ prop_Richtig, data = Bootvtlg)
@@ -369,7 +375,7 @@ question("Um welchen Wert variieren die Werte beim Resampling??",
 
 ### Konfidenzintervall
 
-Über den Befehl `gf_vline(xintercept = ___)` wird eine vertikale Linie an der Stelle `___` eingezeichnet. Ergänzen Sie den Code um eine Linie an der Stelle des Punktschätzers $\hat{\pi}=p=`r round(prop(~linda, success ="Richtig", data=Linda),2)`$ zu ergänzen.
+Über den Befehl `gf_vline(xintercept = ___)` wird eine vertikale Linie an der Stelle `___` eingezeichnet. Ergänzen Sie den Code, um eine Linie an der Stelle des Punktschätzers $\hat{\pi}=p=`r round(prop(~linda, success ="Richtig", data=Linda),2)`$ zu einzufügen.
 
 ```{r bootsample, exercise = TRUE, eval=FALSE}
 gf_histogram( ~ prop_Richtig, data = Bootvtlg) %>%
@@ -381,7 +387,7 @@ gf_histogram( ~ prop_Richtig, data = Bootvtlg) %>%
   gf_vline(xintercept = 0.36)
 ```
 
-In welchem Bereich liegen z. B.$95\,\%$ der Anteile der Resamples? Diese Frage beantwortet z. B.das Bootstrap-Perzentil **Konfidenzintervall**:
+In welchem Bereich liegen z. B.$95\,\%$ der Anteile der Resamples? Diese Frage beantwortet z. B. das Bootstrap-Perzentil-**Konfidenzintervall**:
 
 ```{r ki, exercise = TRUE}
 quantile( ~ prop_Richtig, data = Bootvtlg, probs = c(0.025, 0.975))
@@ -396,7 +402,7 @@ confint(Bootvtlg)
 
 ## Ausblick
 
-In einem nächsten Tutorium werden Sie kennen lernen wie Sie zwei Gruppen vergleichen können.
+In einem nächsten Tutorial werden Sie kennen lernen wie Sie zwei Gruppen vergleichen können.
 
 
 
