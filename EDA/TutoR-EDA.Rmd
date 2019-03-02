@@ -451,7 +451,7 @@ Aber auch einzelne Kennzahlen, wie arithmetischer Mittelwert (`mean()`), Median 
 Probieren Sie aus.
 
 ```{r desi, exercise = TRUE, eval=FALSE}
-meine.analyse(B_SATS_Aufwand ~ G01_Geschlecht, data = Sats)
+___(B_SATS_Aufwand ~ G01_Geschlecht, data = Sats)
 ```
 
 ### Korrelation
