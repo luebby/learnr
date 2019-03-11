@@ -1,0 +1,446 @@
+---
+title: "Zwei-Gruppen vergleichen"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+checker <- function(label, user_code, check_code, envir_result, evaluate_result, ...) {
+  list(message = check_code, correct = TRUE, location = "append")
+}
+tutorial_options(exercise.timelimit = 60, exercise.checker = checker)
+
+CsrCfp <- read.csv2("CsrCfp.csv")
+
+abw.stipro <- diffmean(roa ~ report, data = CsrCfp)
+
+# Reproduzierbarkeit
+set.seed(1896)
+
+# 1000-faches Permutieren
+Nullvtlg <- do(1000) * diffmean(roa ~ shuffle(report), data = CsrCfp)
+
+# Verteilung
+gf_histogram(~ diffmean, data = Nullvtlg)
+```
+
+## Willkommen
+
+Daten umfassen in aller Regel viele Informationen. Trotzdem sind *Schlüsse* aus Daten aufgrund von zufälliger Variation fast immer auch mit Unsicherheit verbunden.
+
+In diesem Tutorial sollen Sie lernen, wie Sie zwei Gruppen vergleichen können (*A/B Testing*). Wie können Sie induktiv die Daten einer Stichprobe nutzen? 
+
+## Nachhaltigkeit und betriebswirtschaftlicher Erfolg
+
+Nachhaltigkeit von Unternehmen ist ein altes und immer noch aktuelles Thema (CSR: Corporate Social Responsibility). Und, was glauben Sie? lohnt es sich auch finanziell für die Unternehmen (CFP: Corporate Financial Performance)? Was glauben Sie?
+
+###
+
+### Wissenschaft
+
+*Glauben* oder *meinen* sind unter wissenschaftlichen Gesichtspunkten vielleicht keine guten Argumentationsgrundlagen. 
+
+### Literatur
+
+Suchen Sie doch mal, z.B., unter [https://scholar.google.de](https://scholar.google.de), nach Literatur zu dem Thema.
+
+*Tipp:* Geben Sie englischsprachige Begriffe ein, hier z.B. "corporate social responsibility" und "corporate financial performance".
+
+Was sagt die Literatur?
+
+### Quellenlage
+
+Eine Meta-Analye, Friede, G., Busch, T., & Bassen, A. (2015). *ESG and financial performance: aggregated evidence from more than 2000 empirical studies*. Journal of Sustainable Finance & Investment, 5(4), 210-233. [https://doi.org/10.1080/20430795.2015.1118917](https://doi.org/10.1080/20430795.2015.1118917) schreibt:
+
+> The results show that the business case for ESG [environmental, social, and governance] investing is empirically very well founded. Roughly 90% of studies find a nonnegative ESG–CFP relation. More importantly, the large majority of studies reports positive findings. 
+
+### Datenlage
+
+Auch an der FOM ist man dieser Frage nachgegangen, siehe z.B. das Arbeitspapier Hose, C., Lübke, K., Nolte, T. & Obermeier, T. (2014): *Nachhaltigkeit als betriebswirtschaftlicher Wettbewerbsfaktor – Eine Propensity Score Analyse Deutscher Aktiengesellschaften.* Arbeitspapiere der FOM, Nr. 47. Hieraus liegt uns eine (angepasste) Teilmenge der Daten vor.
+
+Zu Vorbereitung installiertes Paket `mosaic` laden:
+
+```{r mosaic}
+library(mosaic)
+```
+
+
+Die Daten einlesen, Datenformat `csv` mit Semikolon `;` als Datentrennzeichen und Komma `,` als Dezimaltrennzeichen. Variablennamen in der ersten Zeile.
+
+```{r Einlesen, eval=FALSE}
+CsrCfp <- read.csv2("CsrCfp.csv")
+```
+
+```{r inspect}
+inspect(CsrCfp)
+```
+
+```{r linda, echo=FALSE}
+question("Von wie vielen Unternehmen liegen Daten vor?",
+  answer("3", message = "Falsch: Es liegen 3 Variablen vor. Die Anzahl Beobachtungen wird mit `n` bezeichnet."),
+  answer("98", correct = TRUE, message = "Richtig: Von `n`=98 Unternehmen liegen 3 Variablen vor.")
+)
+```
+
+Dabei ist:
+
+- `aktie`: Der Name des Unternehmens.
+- `report`: Gab es im Geschäftsbericht des Unternehmens im Jahre 2008 einen Nachhaltigkeitsbericht?
+- `roa`: Gesamtkapitalrentabilität (Return on Assets).
+
+```{r skalennvieau, echo=FALSE}
+question("Welches Skalenniveau hat die Variable `report`?",
+  answer("Kategorial - nominal", correct=TRUE,  message = "Richtig, die Werte (`Ja`, `Nein` können nur unterschieden werden. Bei zwei Ausprägungen spricht man auch von *binären* oder *dichotomen* Variablen."),
+  answer("Kategorial - ordinal", message = "Falsch: die Werte können unterschieden werden, es gibt aber keine natürliche Ordnung."), 
+    answer("Numerisch - intervall", message = "Falsch: die Werte können unterschieden werden, es gibt aber keine natürliche Ordnung. Auch können evtl. Abstände nicht verglichen werden."), 
+    answer("Numerisch - verhältnis", message = "Falsch: die Werte können unterschieden werden, es gibt aber keine natürliche Ordnung. Auch können evtl. Abstände nicht verglichen werden und es gibt keinen absoluten Nullpunkt.")
+)
+```
+
+
+```{r datenerhebung, echo=FALSE}
+question("Welche Form der Datenerhebung liegt vor?",
+  answer("Beobachtungsstudie", correct = TRUE, message = "Richtig: Die Daten wurden nur erhoben, es wurde nicht in die Datenentstehung eingegriffen."),
+  answer("Experiment", message = "Falsch: Die Daten wurden nur erhoben, es wurde nicht in die Datenentstehung eingegriffen.")
+)
+```
+
+
+```{r kausal, echo=FALSE}
+question("Kann aus der Datenanalyse unmittelbar eine Kausalaussage folgen (CSR führt zu CFP)?",
+  answer("Ja", message = "Falsch: Vielleicht führt ja CFP zu CSR -- oder es gibt Kovariablen die beides beeinflussen."),
+  answer("Nein", correct = TRUE, message = "Richtig: Vielleicht führt ja CFP zu CSR -- oder es gibt Kovariablen die beides beeinflussen.")
+)
+```
+
+### Kausalität
+
+Bei *Beobachtungsstudien* (wie hier) kann man sich zunächst *nicht* sicher sein, ob es nicht z.B. Kovariablen gibt, die den Zusammenhang beeinflussen. Wie bei der Korrelation zwischen Störchen und Geburten.
+
+Bei *randomisierten Experimenten* wird den Beobachtungen *zufällig* eine sogenannte "Behandlung" zugewiesen. Dadurch hofft man, dass sich diese gleichmäßig verteilen. Mögliche Kovariablen sind hier z.B. Geschäftsfeld, Unternehmensgröße etc.. Bei der Frage CSR und CFP ist z.B. vorstellbar, dass besonders gut dastehende Unternehmen sich einen Nachhaltigkeitsbereicht "leisten können".
+
+## Explorative Datenanalyse
+
+### Grafisch
+
+Einen ersten grafischen Vergleich ermöglicht ein Boxplot, `gf_boxplot()`:
+
+```{r boxplot, exercise = TRUE}
+gf_boxplot(roa ~ report, data = CsrCfp)
+```
+
+```{r boxmittel, echo=FALSE}
+question("Können Sie einen Unterschied im Mittelwert der Verteilung erkennen?",
+  answer("Ja", message = "Falsch: Ein Boxplot zeigt als Linie den Median, nicht den Mittelwert."),
+  answer("Nein", correct = TRUE, message = "Richtig: Ein Boxplot zeigt als Linie den Median, nicht den Mittelwert -- und auch der Median unterscheidet sich wenig.")
+)
+```
+
+Ein Violinplot (`gf_violin()`) ermöglicht einen direkten Vergleich der grafischen Dichtefunktionen. Ersetzen Sie den Platzhalter `___` entsprechend.
+
+```{r gfviolin, exercise = TRUE, eval=FALSE}
+___(roa ~ report, data = CsrCfp)
+```
+
+```{r gfviolin-solution}
+gf_violin(roa ~ report, data = CsrCfp)
+```
+
+```{r violin, echo=FALSE}
+question("Welche Gruppe scheint mehr Beobachtungen mit einer hohen Gesamtkapitalrentabilität (`roa`) zu haben. Die mit oder ohne Nachhaltigkeitsbericht (`report`)?",
+  answer("Die mit Nachhaltigkeitsbereicht", correct=TRUE, message = "Richtig: Mit Nachhaltikeitsbereicht (`Ja`) gibt es mehr Beobachtungen im oberen Bereich, ohne Nachhaltigkeitsbericht (`Nein`) im unteren Bereich von `roa`."),
+  answer("Die ohne Nachhaltigkeitsbereicht", message = "Falsch: Mit Nachhaltikeitsbereicht (`Ja`) gibt es mehr Beobachtungen im oberen Bereich, ohne Nachhaltigkeitsbericht (`Nein`) im unteren Bereich von `roa`.")
+)
+```
+
+### Kennzahlen
+
+Um die entsprechenden deskriptiven Kennzahlen zu bekommen, muss nur der Befehl angepasst werden. `favstats()` liefert z.B. eine Übersicht der wichtigsten Kennzahlen.
+
+```{r favstats, exercise = TRUE, eval=FALSE}
+___(roa ~ report, data = CsrCfp)
+```
+
+```{r favstats-solution}
+favstats(roa ~ report, data = CsrCfp)
+```
+
+Um nur den arithmetischen Mittelwert (`mean()`) zu bestimmen ersetzen Sie einfach `favstats()` durch `mean()`:
+
+```{r mean, exercise = TRUE, eval=FALSE}
+favstats(roa ~ report, data = CsrCfp)
+```
+
+
+```{r mean-solution}
+mean(roa ~ report, data = CsrCfp)
+```
+
+```{r mittelwert, echo=FALSE}
+question("Welche Gruppe war im Mittelwert des ROA erfolgreicher?",
+  answer("Die mit Nachhaltigkeitsbereicht", correct=TRUE),
+  answer("Die ohne Nachhaltigkeitsbereicht")
+)
+```
+
+### Mittelwertsvergleich
+
+```{r meanvgl}
+mean(roa ~ report, data = CsrCfp)
+```
+
+Es gilt in der Stichprobe: 
+
+\[
+\bar{x}_{Ja}=`r mean(roa ~ report, data = CsrCfp)[1]`>`r mean(roa ~ report, data = CsrCfp)[2]`=\bar{x}_{Nein}
+\]
+
+
+*Hinweis*: Um den un-gruppierten, allgemeinen, unbedingten Mittelwert für die Variable `roa` zu bekommen können Sie die erklärende Variable ($x$, hier `report`) durch `1` ersetzen:
+
+```{r mean1, exercise = TRUE, eval=FALSE}
+mean(roa ~ 1, data = CsrCfp)
+```
+
+
+## Schätzung
+
+Auch wenn die Gesamtkapitalrentabilität am Ende des Jahres fest steht, so sind doch verschiedene Realisierungen möglich (gewesen), so dass sie als *zufällig* aufgefasst werden kann. Durch unternehmerische Entscheidungen hofft man gleichwohl zurecht, dass man Einfluss nehmen kann.
+
+### Punktschätzung
+
+Für den (unbekannten) Mittelwert $\mu$ der Gesamtkapitalrentabilität verwendet man als *Punktschätzer* den beobachteten Wert der Stichprobe:
+
+```{r meanest}
+mean(~ roa, data = CsrCfp)
+```
+
+\[
+\hat{\mu}=\bar{x}=`r mean(~roa, data = CsrCfp)`
+\]
+
+### Konfidenzintervall 
+
+Um die *Verteilung* des Mittelwertes zu schätzen, kann (wieder) Bootstrapping, d.h., resamplen der Stichprobe, verwendet werden:
+
+```{r boot1, exercise=TRUE, eval=FALSE}
+# Reproduzierbarkeit
+set.seed(1896)
+
+# 1000-faches Resampling 
+Bootvtlg.mean <- do(1000) * mean(~ roa, data = resample(CsrCfp))
+
+# Verteilung
+gf_histogram(~ mean, data = Bootvtlg.mean)
+
+# Konfidenzintervall
+confint(Bootvtlg.mean)
+```
+
+### 
+
+```{r Konfidenzintervall, echo=FALSE}
+question("Stimmt die Aussage: 95% der Beobachtungen von `roa` liegen zwischen 0.044 und 0.074?",
+  answer("Ja", message = "Falsch: Das Resampling-Intervall bezieht sich auf den Mittelwert, nicht den Wert der einzelnen Beobachtungen."),
+    answer("Nein", correct = TRUE, message = "Richtig: Das Resampling-Intervall bezieht sich auf den Mittelwert, nicht den Wert der einzelnen Beobachtungen.")
+)
+```
+
+
+### Gruppenvergleich
+
+Analog ist auch eine Analyse der *Differenz* der Mittelwerte möglich:
+
+```{r mean3}
+mean(roa ~ report, data = CsrCfp)
+```
+
+`diffmean()` berechnet direkt die Differenz, d.h. $\bar{x}_{Nein}-\bar{x}_{Ja}$.
+
+```{r diffmean, exercise=TRUE}
+diffmean(roa ~ report, data = CsrCfp)
+```
+
+```{r beweis, echo=FALSE}
+question("Beweist die Analyse, dass $\\mu_{Nein}-\\mu_{Ja} <0 \\Leftrightarrow \\mu_{Nein}<\\mu_{Ja}$ gilt?",
+  answer("Ja", message = "Falsch: In der Stichprobe ist der Mittelwert ohne Nachhaltigkeitsbericht kleiner -- dies kann aber auch zufällig passieren, wenn es in der Population keinen Unterschied gibt."),
+  answer("Nein", correct = TRUE, message = "Richtig: In der Stichprobe ist der Mittelwert ohne Nachhaltigkeitsbericht kleiner -- dies kann aber auch zufällig passieren, wenn es in der Population keinen Unterschied gibt.")
+)
+```
+
+*Hinweis*: Für die Differenz zweier Anteilswerte (kategoriale Daten) kann der Befehl `diffprop()` verwendet werden.
+
+
+### Bootstrapping 
+
+```{r boot2, exercise=TRUE, eval=FALSE}
+# Reproduzierbarkeit
+set.seed(1896)
+
+# 1000-faches Resampling 
+Bootvtlg.diffmean <- do(1000) * diffmean(roa ~ report, data = resample(CsrCfp))
+
+# Verteilung
+gf_histogram(~ diffmean, data = Bootvtlg.diffmean)
+
+# Konfidenzintervall
+confint(Bootvtlg.diffmean)
+```
+
+###
+
+Beachte, dass ein Mittelwert von $0$ vom Konfidenzintervall überdeckt wird.
+
+
+## Hypothesenprüfung
+
+**Wenn** es *keinen* Unterschied in der Verteilung Gesamtkapitalrentabilität zwischen den Unternehmen mit und ohne Nachhaltigkeitsbericht gibt, dann können wir diese *permutieren*. Außerdem gilt unter der **Annahme** *es gibt keinen Unterschied*: 
+
+\[H_0: \mu_{Nein}-\mu_{Ja} = 0 \Leftrightarrow \mu_{Nein}=\mu_{Ja}\]
+
+Die Verteilung für die Differenz der Mittelwerte von `roa`, wenn wir die Werte von `report` vertauschen können, können wir simulieren. In `mosaic` erfolgt dieses permutieren über den Befehl `shuffle()`. Drücken Sie ruhig öfter auf `Run Code` -- die beobachtete Differenz variiert auch unter dem Modell der Nullhypothese:
+
+```{r shuffle, excercise=TRUE}
+diffmean(roa ~ shuffle(report), data = CsrCfp)
+```
+
+### Verteilung unter $H_0$
+
+```{r null, exercise=TRUE, eval=FALSE}
+# Reproduzierbarkeit
+set.seed(1896)
+
+# 1000-faches Permutieren
+Nullvtlg <- do(1000) * diffmean(roa ~ shuffle(report), data = CsrCfp)
+
+# Verteilung
+gf_histogram(~ diffmean, data = Nullvtlg)
+```
+
+Die in der Stichprobe beobachtete Differenz von $\bar{x}_{Nein}-\bar{x}_{Ja}$ liegt bei:
+
+```{r diffmeand, excercise=TRUE}
+diffmean(roa ~ report, data = CsrCfp)
+```
+
+Weisen Sie diesen Wert der Variable `abw.stipro` zu:
+
+```{r zuweisung, exercise=TRUE, eval = FALSE}
+abw.stipro ___ diffmean(roa ~ report, data = CsrCfp)
+```
+
+```{r zuweisung-hint}
+"Eine Zuweisung erfolgt über `<-`"
+```
+
+```{r zuweisung-solution}
+abw.stipro <- diffmean(roa ~ report, data = CsrCfp)
+```
+
+
+Nachdem Sie der Variable $abw.stipro$ den Wert `r diffmean(roa ~ report, data = CsrCfp)` zugewiesen haben können Sie diese auch verwenden.
+
+Zeichnen Sie in die simulierte Verteilung unter $H_0$ den beobachteten Wert der Teststatistik ein. `gf_vline(xintercept = x)` zeichnet an der Stelle `x` eine vertikale Linie.
+
+```{r nullstipro, exercise = TRUE, eval = FALSE}
+gf_histogram(~ diffmean, data = Nullvtlg) %>%
+  gf_vline(xintercept = ___)
+```
+
+```{r nullstipro-solution}
+gf_histogram(~ diffmean, data = Nullvtlg) %>%
+  gf_vline(xintercept = abw.stipro)
+```
+
+```{r ungewoehnlich, echo=FALSE}
+question("Ist die beobachtete Differenz der Mittelwerte der Stichprobe ($-0.013$) (sehr) ungewöhnlich, wenn wir annehmen würden, dass die Verteilung in der Population gleich ist?",
+  answer("Ja", message = "Falsch: Auch wenn es keinen Unterschied in der Population gibt, sieht man recht häufig Differenzen zwischen -0.275 und +0.275."),
+  answer("Nein", correct = TRUE, message = "Richtig: Auch wenn es keinen Unterschied in der Population gibt, sieht man recht häufig Differenzen zwischen -0.275 und +0.275.")
+)
+```
+
+### p-Wert
+
+Der **p-Wert** sagt aus, wie häufig man *unter den Annahmen der Nullhypothese*, hier also der Gleichheit der Verteilungen, man eine mindestens so große Abweichung in einer Stichprobe sieht. 
+
+Hier ungerichtet, zweiseitig:
+
+```{r pwert, exercise = TRUE}
+# Betrag Abweichung Stichprobe bilden:
+abs.abw.stipro <- abs(abw.stipro)
+
+# Betrag Abweichung Nullverteilung bestimmen:
+Nullvtlg <- Nullvtlg %>%
+  mutate(abs.abw.null = abs(diffmean))
+
+# Anteil Simulationen mit mindestens so großer Abweichung
+prop( ~ (abs.abw.null >= abs.abw.stipro), data = Nullvtlg)
+```
+
+```{r pwerttest, echo=FALSE}
+question("Stimmt die Aussage: Die Wahrscheinlichkeit, dass $H_0$ stimmt, liegt bei $0.384$.",
+  answer("Ja", message = "Falsch: Der p-Wert gibt nicht mehr als die (Rand-)Wahrscheinlichkeit der beobachteten Differenz unter dem Modell der Nullhypothese an."),
+  answer("Nein", correct = TRUE, message = "Richtig: Der p-Wert gibt nicht mehr als die (Rand-)Wahrscheinlichkeit der beobachteten Differenz unter dem Modell der Nullhypothese an.")
+)
+```
+
+
+### t-Test
+
+Unter den Annahmen einer Normalverteilung wird eine solche Hypothese klassisch über einen t-Test, Funktion `t.test()` geprüft. Setzen Sie den Befehl entsprechend ein.
+
+```{r ttest, excersise = TRUE, eval = FALSE}
+___(roa ~ report, data = CsrCfp)
+```
+
+```{r ttest-solution}
+t.test(roa ~ report, data = CsrCfp)
+```
+
+*Achtung:* Anstelle von $\mu_{Nein}-\mu_{Ja}$ wird hier $\mu_{Ja}-\mu_{Nein}$ untersucht -- ansonsten ist das Ergebnis aber vergleichbar.
+
+```{r pwerttest2, echo=FALSE}
+question("Zeigt die Analyse, dass es keine Differenz im Mittelwert gibt?",
+  answer("Ja", message = "Falsch: In der Stichprobe gibt es eine Differenz. Die beobachtete Differenz ist nur nicht besonders unwahrscheinlich, wenn die Nullhypothese von keinem Unterschied in der Verteilung stimmt."),
+  answer("Nein", correct = TRUE, message = "Richtig: In der Stichprobe gibt es eine Differenz. Die beobachtete Differenz ist nur nicht besonders unwahrscheinlich, wenn die Nullhypothese von keinem Unterschied in der Verteilung stimmt.")
+)
+```
+
+
+### Variation des p-Wertes
+
+p-Werte und Konfidenzintervalle beziehen sich auf die *Performance* des Verfahrens, nicht auf die konkreten Daten. Und sie variieren von Stichprobe zu Stichprobe.
+
+```{r pwert0, excersise = TRUE}
+t.test(roa ~ report, data = CsrCfp) %>%
+  pval()
+```
+
+Und beim Resampling:
+
+```{r pwertres, exercise = TRUE}
+set.seed(1896)
+
+do(10) * t.test(roa ~ report, data = resample(CsrCfp)) %>%
+  pval()
+```
+
+
+## Ausblick
+
+Wenn Sie mehr als zwei Gruppen vergleichen wollen, gehen einfache Differenzen (`diffmean()` bzw. `diffprop()`) nicht mehr. Hier helfen dann z.B. die $\chi^2$-Statistik (kategorial, `xchisq.test()`) oder $F$-Statistik (numerisch, `aov()`) weiter.
+
+Kausale Inferenz jenseits eines hier nicht möglichen randomisierten Experiments kann über *Directed Acyclic Graphs* oder auch über das *Potential Outcome* Konzept analysiert werden.
+
+In einem nächsten Tutorial analysieren wir über eine *Lineare Regression* einen Zusammenhang zwischen zwei numerischen Variablen.
+
+
+
+
+
+
+
