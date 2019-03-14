@@ -8,7 +8,9 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
+library(dabestr)
 library(mosaic)
+
 checker <- function(label, user_code, check_code, envir_result, evaluate_result, ...) {
   list(message = check_code, correct = TRUE, location = "append")
 }
@@ -32,7 +34,9 @@ gf_histogram(~ diffmean, data = Nullvtlg)
 
 Daten umfassen in aller Regel viele Informationen. Trotzdem sind *Schlüsse* aus Daten aufgrund von zufälliger Variation fast immer auch mit Unsicherheit verbunden.
 
-In diesem Tutorial sollen Sie lernen, wie Sie zwei Gruppen vergleichen können (*A/B Testing*). Wie können Sie induktiv die Daten einer Stichprobe nutzen? 
+In diesem Tutorial sollen Sie lernen, wie Sie zwei Gruppen vergleichen können (*A/B Testing*). Unsere interessierende Variable `Y` wird modelliert duch eine Variable `X`, wobei `X` genau zwei Werte annehmen kann: `Y ~ X`.
+
+Wie können Sie induktiv die Daten einer Stichprobe nutzen? 
 
 ## Nachhaltigkeit und betriebswirtschaftlicher Erfolg
 
@@ -89,8 +93,8 @@ question("Von wie vielen Unternehmen liegen Daten vor?",
 Dabei ist:
 
 - `aktie`: Der Name des Unternehmens.
-- `report`: Gab es im Geschäftsbericht des Unternehmens im Jahre 2008 einen Nachhaltigkeitsbericht?
-- `roa`: Gesamtkapitalrentabilität (Return on Assets).
+- `report`: Gab es im Geschäftsbericht des Unternehmens im Jahre 2008 einen Nachhaltigkeitsbericht? (`X`)
+- `roa`: Gesamtkapitalrentabilität (Return on Assets). (`Y`)
 
 ```{r skalennvieau, echo=FALSE}
 question("Welches Skalenniveau hat die Variable `report`?",
@@ -211,6 +215,7 @@ mean(roa ~ 1, data = CsrCfp)
 
 Auch wenn die Gesamtkapitalrentabilität am Ende des Jahres fest steht, so sind doch verschiedene Realisierungen möglich (gewesen), so dass sie als *zufällig* aufgefasst werden kann. Durch unternehmerische Entscheidungen hofft man gleichwohl zurecht, dass man Einfluss nehmen kann.
 
+
 ### Punktschätzung
 
 Für den (unbekannten) Mittelwert $\mu$ der Gesamtkapitalrentabilität verwendet man als *Punktschätzer* den beobachteten Wert der Stichprobe:
@@ -222,6 +227,7 @@ mean(~ roa, data = CsrCfp)
 \[
 \hat{\mu}=\bar{x}=`r mean(~roa, data = CsrCfp)`
 \]
+
 
 ### Konfidenzintervall 
 
@@ -298,11 +304,11 @@ Beachte, dass ein Mittelwert von $0$ vom Konfidenzintervall überdeckt wird.
 
 ## Hypothesenprüfung
 
-**Wenn** es *keinen* Unterschied in der Verteilung Gesamtkapitalrentabilität zwischen den Unternehmen mit und ohne Nachhaltigkeitsbericht gibt, dann können wir diese *permutieren*. Außerdem gilt unter der **Annahme** *es gibt keinen Unterschied*: 
+**Wenn** es *keinen* Unterschied in der Verteilung Gesamtkapitalrentabilität zwischen den Unternehmen mit und ohne Nachhaltigkeitsbericht gibt, dann können wir diese *permutieren*. Außerdem gilt unter der **Annahme** *es gibt keinen Unterschied*, dann gilt auch
 
 \[H_0: \mu_{Nein}-\mu_{Ja} = 0 \Leftrightarrow \mu_{Nein}=\mu_{Ja}\]
 
-Die Verteilung für die Differenz der Mittelwerte von `roa`, wenn wir die Werte von `report` vertauschen können, können wir simulieren. In `mosaic` erfolgt dieses permutieren über den Befehl `shuffle()`. Drücken Sie ruhig öfter auf `Run Code` -- die beobachtete Differenz variiert auch unter dem Modell der Nullhypothese:
+Die Verteilung der Differenz der Mittelwerte von `roa`, wenn wir die Werte von `report` vertauschen können, können wir simulieren. In `mosaic` erfolgt dieses permutieren über den Befehl `shuffle()`. Drücken Sie ruhig öfter auf `Run Code` -- die beobachtete Differenz variiert auch unter dem Modell der Nullhypothese:
 
 ```{r shuffle, excercise=TRUE}
 diffmean(roa ~ shuffle(report), data = CsrCfp)
@@ -413,22 +419,35 @@ question("Zeigt die Analyse, dass es keine Differenz im Mittelwert gibt?",
 
 ### Variation des p-Wertes
 
-p-Werte und Konfidenzintervalle beziehen sich auf die *Performance* des Verfahrens, nicht auf die konkreten Daten. Und sie variieren von Stichprobe zu Stichprobe.
+p-Werte und Konfidenzintervalle beziehen sich auf die *Performance* des Verfahrens, nicht auf die konkreten Daten. Und sie variieren von Stichprobe zu Stichprobe. 
 
 ```{r pwert0, excersise = TRUE}
 t.test(roa ~ report, data = CsrCfp) %>%
   pval()
 ```
 
-Und beim Resampling:
+Und beim Resampling: Drücken Sie öfter auf `Run Code` um die Variation zu sehen.
 
 ```{r pwertres, exercise = TRUE}
-set.seed(1896)
-
-do(10) * t.test(roa ~ report, data = resample(CsrCfp)) %>%
+t.test(roa ~ report, data = resample(CsrCfp)) %>%
   pval()
 ```
 
+## Ergänzung: Estimation Plots
+
+Das Paket [dabestr](https://cran.r-project.org/package=dabestr) bietet eine konfortable Möglichkeit die Daten samt Konfidenzintervall zu visualisieren. Siehe auch Ho et al. (2018) [https://doi.org/10.1101/377978](https://doi.org/10.1101/377978).
+
+```{r dabestrlib}
+library(dabestr)
+```
+
+Die Funktion `dabest()` erwartet als Argumente die unabhängige Variable `x`, die abhängige Variable `y` sowie die verschiedenen Ausprägungen von `x` als Zeichenkette, wobei der erste Wert die Referenz angibt. Siehe auch [Using dabestr](https://cran.r-project.org/web/packages/dabestr/vignettes/using-dabestr.html)
+
+```{r dabest, exercise = TRUE}
+CsrCfp %>%
+  dabest(x = report, y = roa, idx = c("Nein", "Ja")) %>%
+  plot()
+```
 
 ## Ausblick
 
