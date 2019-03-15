@@ -300,7 +300,7 @@ confint(Bootvtlg.diffmean)
 
 ###
 
-Beachte, dass ein Mittelwert von $0$ vom Konfidenzintervall überdeckt wird. In $2.5\, \%$ der Resamples beträgt die Differenz des Mittelwertes von `roa` maximal `r confint(Bootvtlg.diffmean)$lower` (ist also $\leq$), in $2.5\, \%$ der Resamples ist sie mindestens `r confint(Bootvtlg.diffmean)$lower` (ist also $\geq$). 
+Beachte, dass ein Mittelwert von $0$ vom Konfidenzintervall überdeckt wird. In $2.5\, \%$ der Resamples beträgt die Differenz des Mittelwertes von `roa` maximal `r confint(Bootvtlg.diffmean)$lower` (ist also $\leq$), in $2.5\, \%$ der Resamples ist sie mindestens `r confint(Bootvtlg.diffmean)$upper` (ist also $\geq$). 
 
 
 ## Hypothesenprüfung
@@ -400,7 +400,7 @@ question("Stimmt die Aussage: Die Wahrscheinlichkeit, dass $H_0$ stimmt, liegt b
 
 Unter den Annahmen einer Normalverteilung wird eine solche Hypothese klassisch über einen t-Test, Funktion `t.test()` geprüft. Setzen Sie den Befehl entsprechend ein.
 
-```{r ttest, excersise = TRUE, eval = FALSE}
+```{r ttest, exercise = TRUE, eval = FALSE}
 ___(roa ~ report, data = CsrCfp)
 ```
 
