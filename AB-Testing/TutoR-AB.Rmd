@@ -1,5 +1,5 @@
 ---
-title: "Zwei-Gruppen vergleichen"
+title: "Zwei-Gruppen-Vergleiche"
 output: 
   learnr::tutorial:
     progressive: true
@@ -35,46 +35,50 @@ Nullvtlg <- do(1000) * diffmean(roa ~ shuffle(report), data = CsrCfp)
 
 Daten umfassen in aller Regel viele Informationen. Trotzdem sind *Schlüsse* aus Daten aufgrund von zufälliger Variation fast immer auch mit Unsicherheit verbunden.
 
-In diesem Tutorial sollen Sie lernen, wie Sie zwei Gruppen vergleichen können (*A/B Testing*). Unsere interessierende Variable `Y` wird modelliert duch eine Variable `X`, wobei `X` genau zwei Werte annehmen kann: `Y ~ X`.
+In diesem Tutorial sollen Sie lernen, wie Sie zwei Gruppen vergleichen können (*A/B Testing*). Unsere interessierende Variable `Y` wird modelliert durch eine Variable `X` (`Y ~ X`), wobei `X` genau zwei Werte annehmen kann.
 
 Wie können Sie induktiv die Daten einer Stichprobe nutzen? 
 
 ## Nachhaltigkeit und betriebswirtschaftlicher Erfolg
 
-Nachhaltigkeit von Unternehmen ist ein altes und immer noch aktuelles Thema (CSR: Corporate Social Responsibility). Und, was glauben Sie? lohnt es sich auch finanziell für die Unternehmen (CFP: Corporate Financial Performance)? Was glauben Sie?
+Nachhaltigkeit von Unternehmen ist ein altes und immer noch aktuelles Thema (CSR: *Corporate Social Responsibility*). 
+
+Was glauben Sie?  
+
+Lohnt es sich auch finanziell für die Unternehmen (CFP: *Corporate Financial Performance*)?
 
 ###
 
 ### Wissenschaft
 
-*Glauben* oder *meinen* sind unter wissenschaftlichen Gesichtspunkten vielleicht keine guten Argumentationsgrundlagen. 
+*Glauben* oder *Meinen* bieten unter wissenschaftlichen Gesichtspunkten vielleicht keine guten Argumentationsgrundlagen. 
 
 ### Literatur
 
-Suchen Sie doch mal, z.B., unter [https://scholar.google.de](https://scholar.google.de), nach Literatur zu dem Thema.
+Suchen Sie doch mal, z. B. unter [https://scholar.google.de](https://scholar.google.de), nach Literatur zu genanntem Thema.
 
-*Tipp:* Geben Sie englischsprachige Begriffe ein, hier z.B. "corporate social responsibility" und "corporate financial performance".
+*Tipp:* Geben Sie englischsprachige Begriffe ein, hier z. B. "corporate social responsibility" und "corporate financial performance".
 
 Was sagt die Literatur?
 
 ### Quellenlage
 
-Eine Meta-Analye, Friede, G., Busch, T., & Bassen, A. (2015). *ESG and financial performance: aggregated evidence from more than 2000 empirical studies*. Journal of Sustainable Finance & Investment, 5(4), 210-233. [https://doi.org/10.1080/20430795.2015.1118917](https://doi.org/10.1080/20430795.2015.1118917) schreibt:
+Eine Meta-Analye. Friede, G., Busch, T., & Bassen, A. (2015). *ESG and financial performance: aggregated evidence from more than 2000 empirical studies*. Journal of Sustainable Finance & Investment, 5(4), 210-233. [https://doi.org/10.1080/20430795.2015.1118917](https://doi.org/10.1080/20430795.2015.1118917) schreibt:
 
 > The results show that the business case for ESG [environmental, social, and governance] investing is empirically very well founded. Roughly 90% of studies find a nonnegative ESG–CFP relation. More importantly, the large majority of studies reports positive findings. 
 
 ### Datenlage
 
-Auch an der FOM ist man dieser Frage nachgegangen, siehe z.B. das Arbeitspapier Hose, C., Lübke, K., Nolte, T. & Obermeier, T. (2014): *Nachhaltigkeit als betriebswirtschaftlicher Wettbewerbsfaktor – Eine Propensity Score Analyse Deutscher Aktiengesellschaften.* Arbeitspapiere der FOM, Nr. 47. Hieraus liegt uns eine (angepasste) Teilmenge der Daten vor.
+Auch an der FOM ist man dieser Frage nachgegangen, siehe z. B. das Arbeitspapier Hose, C., Lübke, K., Nolte, T. & Obermeier, T. (2014): *Nachhaltigkeit als betriebswirtschaftlicher Wettbewerbsfaktor – Eine Propensity Score Analyse Deutscher Aktiengesellschaften.* Arbeitspapiere der FOM, Nr. 47. Hieraus liegt uns eine (angepasste) Teilmenge der Daten vor.
 
-Zu Vorbereitung installiertes Paket `mosaic` laden:
+Zur Vorbereitung installiertes Paket `mosaic` laden:
 
 ```{r mosaic}
 library(mosaic)
 ```
 
 
-Die Daten einlesen, Datenformat `csv` mit Semikolon `;` als Datentrennzeichen und Komma `,` als Dezimaltrennzeichen. Variablennamen in der ersten Zeile.
+Die Daten einlesen. Datenformat `csv` mit Semikolon `;` als Datentrennzeichen und Komma `,` als Dezimaltrennzeichen. Variablennamen in der ersten Zeile.
 
 ```{r Einlesen, eval=FALSE}
 CsrCfp <- read.csv2("CsrCfp.csv")
@@ -94,15 +98,15 @@ question("Von wie vielen Unternehmen liegen Daten vor?",
 Dabei ist:
 
 - `aktie`: Der Name des Unternehmens.
-- `report`: Gab es im Geschäftsbericht des Unternehmens im Jahre 2008 einen Nachhaltigkeitsbericht? (`X`)
-- `roa`: Gesamtkapitalrentabilität (Return on Assets). (`Y`)
+- `report`: Indikator, ob es im Geschäftsbericht des Unternehmens im Jahre 2008 einen Nachhaltigkeitsbericht gab. (`X`)
+- `roa`: Gesamtkapitalrentabilität (return on assets). (`Y`)
 
 ```{r skalennvieau, echo=FALSE}
 question("Welches Skalenniveau hat die Variable `report`?",
-  answer("Kategorial - nominal", correct=TRUE,  message = "Richtig, die Werte (`Ja`, `Nein` können nur unterschieden werden. Bei zwei Ausprägungen spricht man auch von *binären* oder *dichotomen* Variablen."),
-  answer("Kategorial - ordinal", message = "Falsch: die Werte können unterschieden werden, es gibt aber keine natürliche Ordnung."), 
-    answer("Numerisch - intervall", message = "Falsch: die Werte können unterschieden werden, es gibt aber keine natürliche Ordnung. Auch können evtl. Abstände nicht verglichen werden."), 
-    answer("Numerisch - verhältnis", message = "Falsch: die Werte können unterschieden werden, es gibt aber keine natürliche Ordnung. Auch können evtl. Abstände nicht verglichen werden und es gibt keinen absoluten Nullpunkt.")
+  answer("Kategorial - nominal", correct=TRUE,  message = "Richtig, es können nur die Werte `Ja`, `Nein` unterschieden werden. Bei zwei Ausprägungen spricht man auch von *binären* oder *dichotomen* Variablen."),
+  answer("Kategorial - ordinal", message = "Falsch: Die Werte können unterschieden werden, es gibt aber keine natürliche Ordnung."), 
+    answer("Numerisch - intervall", message = "Falsch: Die Werte können unterschieden werden, es gibt aber keine natürliche Ordnung. Auch können Abstände nicht verglichen werden."), 
+    answer("Numerisch - verhältnis", message = "Falsch: Die Werte können unterschieden werden, es gibt aber keine natürliche Ordnung. Auch können Abstände nicht verglichen werden und es gibt keinen absoluten Nullpunkt.")
 )
 ```
 
@@ -124,9 +128,10 @@ question("Kann aus der Datenanalyse unmittelbar eine Kausalaussage folgen (CSR f
 
 ### Kausalität
 
-Bei *Beobachtungsstudien* (wie hier) kann man sich zunächst *nicht* sicher sein, ob es nicht z.B. Kovariablen gibt, die den Zusammenhang beeinflussen. Wie bei der Korrelation zwischen Störchen und Geburten.
+Bei *Beobachtungsstudien* (wie hier) kann man sich zunächst *nicht* sicher sein, ob es nicht z. B. Kovariablen gibt, die den Zusammenhang beeinflussen. Wie bei der Korrelation zwischen Störchen und Geburten.
 
-Bei *randomisierten Experimenten* wird den Beobachtungen *zufällig* eine sogenannte "Behandlung" zugewiesen. Dadurch hofft man, dass sich diese gleichmäßig verteilen. Mögliche Kovariablen sind hier z.B. Geschäftsfeld, Unternehmensgröße etc.. Bei der Frage CSR und CFP ist z.B. vorstellbar, dass besonders gut dastehende Unternehmen sich einen Nachhaltigkeitsbereicht "leisten können".
+Bei der Frage von CSR und CFP ist z. B. vorstellbar, dass besonders gut dastehende Unternehmen sich einen Nachhaltigkeitsbericht "leisten können". Mögliche Kovariablen könnten z. B. Geschäftsfeld, Unternehmensgröße etc. sein.  
+Um solchen Fehlinterpretationen möglichst vorzubeugen wird, in der Hoffnung, dass sich die Daten gleichmäßig verteilen, in *randomisierten Experimenten* den Beobachtungen *zufällig* eine sogenannte "Behandlung" zugewiesen. 
 
 ## Explorative Datenanalyse
 
@@ -164,7 +169,7 @@ question("Welche Gruppe scheint mehr Beobachtungen mit einer hohen Gesamtkapital
 
 ### Kennzahlen
 
-Um die entsprechenden deskriptiven Kennzahlen zu bekommen, muss nur der Befehl angepasst werden. `favstats()` liefert z.B. eine Übersicht der wichtigsten Kennzahlen.
+Um die entsprechenden deskriptiven Kennzahlen zu bekommen, muss nur der Befehl angepasst werden. `favstats()` liefert z. B. eine Übersicht der wichtigsten Kennzahlen.
 
 ```{r favstats, exercise = TRUE, eval=FALSE}
 ___(roa ~ report, data = CsrCfp)
@@ -186,13 +191,13 @@ mean(roa ~ report, data = CsrCfp)
 ```
 
 ```{r mittelwert, echo=FALSE}
-question("Welche Gruppe war im Mittelwert des ROA erfolgreicher?",
+question("Welche Gruppe war im Mittelwert des `roa` erfolgreicher?",
   answer("Die mit Nachhaltigkeitsbereicht", correct=TRUE),
   answer("Die ohne Nachhaltigkeitsbereicht")
 )
 ```
 
-### Mittelwertsvergleich
+### Mittelwertvergleich
 
 ```{r meanvgl}
 mean(roa ~ report, data = CsrCfp)
@@ -205,7 +210,7 @@ Es gilt in der Stichprobe:
 \]
 
 
-*Hinweis*: Um den un-gruppierten, allgemeinen, unbedingten Mittelwert für die Variable `roa` zu bekommen können Sie die erklärende Variable ($x$, hier `report`) durch `1` ersetzen:
+*Hinweis*: Um den ungruppierten, allgemeinen, unbedingten Mittelwert für die Variable `roa` zu bekommen können Sie die erklärende Variable `X` (hier: `report`) durch `1` ersetzen:
 
 ```{r mean1, exercise = TRUE, eval=FALSE}
 mean(roa ~ 1, data = CsrCfp)
@@ -214,7 +219,7 @@ mean(roa ~ 1, data = CsrCfp)
 
 ## Schätzung
 
-Auch wenn die Gesamtkapitalrentabilität am Ende des Jahres fest steht, so sind doch verschiedene Realisierungen möglich (gewesen), so dass sie als *zufällig* aufgefasst werden kann. Durch unternehmerische Entscheidungen hofft man gleichwohl zurecht, dass man Einfluss nehmen kann.
+Auch wenn die Gesamtkapitalrentabilität am Ende des Jahres fest steht, so sind doch verschiedene Realisierungen möglich (gewesen), so dass sie als *zufällig* aufgefasst werden kann. Durch unternehmerische Entscheidungen hofft man gleichwohl zurecht, dass man Einfluss darauf nehmen kann.
 
 
 ### Punktschätzung
@@ -232,7 +237,7 @@ mean(~ roa, data = CsrCfp)
 
 ### Konfidenzintervall 
 
-Um die *Verteilung* des Mittelwertes zu schätzen, kann (wieder) Bootstrapping, d.h., resamplen der Stichprobe, verwendet werden:
+Um die *Verteilung* des Mittelwertes zu schätzen kann (wieder) Bootstrapping, d. h. resampeln der Stichprobe, verwendet werden:
 
 ```{r boot1, exercise=TRUE, eval=FALSE}
 # Reproduzierbarkeit
@@ -266,7 +271,7 @@ Analog ist auch eine Analyse der *Differenz* der Mittelwerte möglich:
 mean(roa ~ report, data = CsrCfp)
 ```
 
-`diffmean()` berechnet direkt die Differenz, d.h. $\bar{x}_{Nein}-\bar{x}_{Ja}$.
+`diffmean()` berechnet direkt die Differenz, d. h. $\bar{x}_{Nein}-\bar{x}_{Ja}$.
 
 ```{r diffmean, exercise=TRUE}
 diffmean(roa ~ report, data = CsrCfp)
@@ -284,6 +289,8 @@ question("Beweist die Analyse, dass $\\mu_{Nein}-\\mu_{Ja} <0 \\Leftrightarrow \
 
 ### Bootstrapping 
 
+Bootverteilung für die Differenzen der Mittelwerte:
+
 ```{r boot2, exercise=TRUE, eval=FALSE}
 # Reproduzierbarkeit
 set.seed(1896)
@@ -300,16 +307,16 @@ confint(Bootvtlg.diffmean)
 
 ###
 
-Beachte, dass ein Mittelwert von $0$ vom Konfidenzintervall überdeckt wird. In $2.5\, \%$ der Resamples beträgt die Differenz des Mittelwertes von `roa` maximal `r confint(Bootvtlg.diffmean)$lower` (ist also $\leq$), in $2.5\, \%$ der Resamples ist sie mindestens `r confint(Bootvtlg.diffmean)$upper` (ist also $\geq$). 
+Beachte, dass ein Mittelwert von $0$ vom Konfidenzintervall überdeckt wird. In $2.5\, \%$ der Resampels beträgt die Differenz des Mittelwertes von `roa` maximal ($\leq$) `r confint(Bootvtlg.diffmean)$lower`, in $2.5\, \%$ der Resampels ist sie mindestens ($\geq$) `r confint(Bootvtlg.diffmean)$upper`. 
 
 
 ## Hypothesenprüfung
 
-**Wenn** es *keinen* Unterschied in der Verteilung Gesamtkapitalrentabilität zwischen den Unternehmen mit und ohne Nachhaltigkeitsbericht gibt, dann können wir diese *permutieren*. Außerdem gilt unter der **Annahme** *es gibt keinen Unterschied*, dann gilt auch
+**Wenn** es *keinen* Unterschied in der Verteilung Gesamtkapitalrentabilität zwischen den Unternehmen mit und ohne Nachhaltigkeitsbericht gibt, dann können wir diese *permutieren*. Außerdem gilt unter der **Annahme** *es gibt keinen Unterschied* dann auch
 
 \[H_0: \mu_{Nein}-\mu_{Ja} = 0 \Leftrightarrow \mu_{Nein}=\mu_{Ja}\]
 
-Die Verteilung der Differenz der Mittelwerte von `roa`, wenn wir die Werte von `report` vertauschen können, können wir simulieren. In `mosaic` erfolgt dieses permutieren über den Befehl `shuffle()`. Drücken Sie ruhig öfter auf `Run Code` -- die beobachtete Differenz variiert auch unter dem Modell der Nullhypothese:
+Die Verteilung der Differenzen der Mittelwerte von `roa`, wenn wir die Werte von `report` vertauschen können, können wir simulieren. In `mosaic` erfolgt dieses permutieren über den Befehl `shuffle()`. Drücken Sie ruhig öfter auf `Run Code` -- die beobachtete Differenz variiert auch unter dem Modell der Nullhypothese:
 
 ```{r shuffle, excercise=TRUE}
 diffmean(roa ~ shuffle(report), data = CsrCfp)
@@ -338,6 +345,8 @@ Weisen Sie diesen Wert der Variable `abw.stipro` zu:
 
 ```{r zuweisung, exercise=TRUE, eval = FALSE}
 abw.stipro ___ diffmean(roa ~ report, data = CsrCfp)
+
+abw.stipro
 ```
 
 ```{r zuweisung-hint}
@@ -349,7 +358,7 @@ abw.stipro <- diffmean(roa ~ report, data = CsrCfp)
 ```
 
 
-Nachdem Sie der Variable $abw.stipro$ den Wert `r diffmean(roa ~ report, data = CsrCfp)` zugewiesen haben können Sie diese auch verwenden.
+Nachdem Sie der Variable *abw.stipro* den Wert `r diffmean(roa ~ report, data = CsrCfp)` zugewiesen haben können Sie diese auch verwenden.
 
 Zeichnen Sie in die simulierte Verteilung unter $H_0$ den beobachteten Wert der Teststatistik ein. `gf_vline(xintercept = x)` zeichnet an der Stelle `x` eine vertikale Linie.
 
@@ -372,7 +381,7 @@ question("Ist die beobachtete Differenz der Mittelwerte der Stichprobe ($-0.013$
 
 ### p-Wert
 
-Der **p-Wert** sagt aus, wie häufig man *unter den Annahmen der Nullhypothese*, hier also der Gleichheit der Verteilungen, man eine mindestens so große Abweichung in einer Stichprobe sieht. 
+Der **p-Wert** sagt aus, wie häufig man *unter den Annahmen der Nullhypothese*, hier also der Gleichheit der Verteilungen, eine mindestens so große Abweichung in einer Stichprobe sieht. 
 
 Hier ungerichtet, zweiseitig:
 
@@ -390,15 +399,15 @@ prop( ~ (abs.abw.null >= abs.abw.stipro), data = Nullvtlg)
 
 ```{r pwerttest, echo=FALSE}
 question("Stimmt die Aussage: Die Wahrscheinlichkeit, dass $H_0$ stimmt, liegt bei $0.384$.",
-  answer("Ja", message = "Falsch: Der p-Wert gibt nicht mehr als die (Rand-)Wahrscheinlichkeit der beobachteten Differenz unter dem Modell der Nullhypothese an."),
-  answer("Nein", correct = TRUE, message = "Richtig: Der p-Wert gibt nicht mehr als die (Rand-)Wahrscheinlichkeit der beobachteten Differenz unter dem Modell der Nullhypothese an.")
+  answer("Ja", message = "Falsch: Der p-Wert gibt nicht mehr als die (Rand-) Wahrscheinlichkeit der beobachteten Differenz unter dem Modell der Nullhypothese an."),
+  answer("Nein", correct = TRUE, message = "Richtig: Der p-Wert gibt nicht mehr als die (Rand-) Wahrscheinlichkeit der beobachteten Differenz unter dem Modell der Nullhypothese an.")
 )
 ```
 
 
 ### t-Test
 
-Unter den Annahmen einer Normalverteilung wird eine solche Hypothese klassisch über einen t-Test, Funktion `t.test()` geprüft. Setzen Sie den Befehl entsprechend ein.
+Unter den Annahmen einer Normalverteilung wird eine solche Hypothese klassisch über einen t-Test `t.test()` geprüft. Setzen Sie den Befehl entsprechend ein.
 
 ```{r ttest, exercise = TRUE, eval = FALSE}
 ___(roa ~ report, data = CsrCfp)
@@ -427,7 +436,7 @@ t.test(roa ~ report, data = CsrCfp) %>%
   pval()
 ```
 
-Und beim Resampling: Drücken Sie öfter auf `Run Code` um die Variation zu sehen.
+... und beim Resampling: Drücken Sie öfter auf `Run Code` um die Variation zu sehen.
 
 ```{r pwertres, exercise = TRUE}
 t.test(roa ~ report, data = resample(CsrCfp)) %>%
@@ -436,13 +445,13 @@ t.test(roa ~ report, data = resample(CsrCfp)) %>%
 
 ## Ergänzung: Estimation Plots
 
-Das Paket [dabestr](https://cran.r-project.org/package=dabestr) bietet eine konfortable Möglichkeit die Daten samt Konfidenzintervall zu visualisieren. Siehe auch Ho et al. (2018) [https://doi.org/10.1101/377978](https://doi.org/10.1101/377978).
+Das Paket [dabestr](https://cran.r-project.org/package=dabestr) bietet eine komfortable Möglichkeit die Daten samt Konfidenzintervall zu visualisieren. Siehe auch Ho et al. (2018): [https://doi.org/10.1101/377978](https://doi.org/10.1101/377978).
 
 ```{r dabestrlib}
 library(dabestr)
 ```
 
-Die Funktion `dabest()` erwartet als Argumente die unabhängige Variable `x`, die abhängige Variable `y` sowie die verschiedenen Ausprägungen von `x` als Zeichenkette, wobei der erste Wert die Referenz angibt. Siehe auch [Using dabestr](https://cran.r-project.org/web/packages/dabestr/vignettes/using-dabestr.html)
+Die Funktion `dabest()` erwartet als Argumente die unabhängige Variable `X`, die abhängige Variable `Y` sowie die verschiedenen Ausprägungen von `X` als Zeichenkette, wobei der erste Wert die Referenz angibt. Siehe auch [Using dabestr](https://cran.r-project.org/web/packages/dabestr/vignettes/using-dabestr.html).
 
 ```{r dabest, exercise = TRUE}
 CsrCfp %>%
@@ -452,9 +461,9 @@ CsrCfp %>%
 
 ## Ausblick
 
-Wenn Sie mehr als zwei Gruppen vergleichen wollen, gehen einfache Differenzen (`diffmean()` bzw. `diffprop()`) nicht mehr. Hier helfen dann z.B. die $\chi^2$-Statistik (kategorial, `xchisq.test()`) oder $F$-Statistik (numerisch, `aov()`) weiter.
+Wenn Sie mehr als zwei Gruppen vergleichen wollen, gehen einfache Differenzen (`diffmean()` bzw. `diffprop()`) nicht mehr. Hier helfen dann z. B. die $\chi^2$-Statistik (kategorial, `xchisq.test()`) oder $F$-Statistik (numerisch, `aov()`) weiter.
 
-Kausale Inferenz jenseits eines hier nicht möglichen randomisierten Experiments kann über *Directed Acyclic Graphs* oder auch über das *Potential Outcome* Konzept analysiert werden.
+Kausale Inferenz jenseits eines hier nicht möglichen randomisierten Experiments, kann über *Directed Acyclic Graphs* oder auch über das *Potential Outcome*-Konzept analysiert werden.
 
 In einem nächsten Tutorial analysieren wir über eine *Lineare Regression* einen Zusammenhang zwischen zwei numerischen Variablen.
 
