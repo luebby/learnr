@@ -318,7 +318,7 @@ Beachte, dass ein Mittelwert von $0$ vom Konfidenzintervall überdeckt wird. In 
 
 Die Verteilung der Differenzen der Mittelwerte von `roa`, wenn wir die Werte von `report` vertauschen können, können wir simulieren. In `mosaic` erfolgt dieses permutieren über den Befehl `shuffle()`. Drücken Sie ruhig öfter auf `Run Code` -- die beobachtete Differenz variiert auch unter dem Modell der Nullhypothese:
 
-```{r shuffle, excercise=TRUE}
+```{r shuffle, exercise = TRUE}
 diffmean(roa ~ shuffle(report), data = CsrCfp)
 ```
 
