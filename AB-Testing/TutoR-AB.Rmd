@@ -436,7 +436,7 @@ $\hat{\beta}_0=\bar{x}_{Ja}$, $\hat{\beta}_1=\bar{x}_{Nein}-\bar{x}_{Ja}$.
 
 Und damit insgesamt:
 
-$${roa}_i=`r coef(erglm)[1]`  `r coef(erglm)[2]` \cdot  \begin{cases}1, \,\text{i hat keinen Report veröffentlicht} \\ 0, \,\text{i hat einen Report veröffentlicht}\end{cases} + \epsilon_i $$
+$$\widehat{roa}_i=`r coef(erglm)[1]`  `r coef(erglm)[2]` \cdot  \begin{cases}1, \,\text{i hat keinen Report veröffentlicht} \\ 0, \,\text{i hat einen Report veröffentlicht}\end{cases}  $$
 
 
 
