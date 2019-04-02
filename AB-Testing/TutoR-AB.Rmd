@@ -29,6 +29,9 @@ Bootvtlg.diffmean <- do(1000) * diffmean(roa ~ report, data = resample(CsrCfp))
 set.seed(1896)
 Nullvtlg <- do(1000) * diffmean(roa ~ shuffle(report), data = CsrCfp)
 
+# Lineares Modell
+erglm <- lm(roa ~ report, data = CsrCfp)
+
 ```
 
 ## Willkommen
@@ -314,7 +317,7 @@ Beachte, dass ein Mittelwert von $0$ vom Konfidenzintervall überdeckt wird. In 
 
 **Wenn** es *keinen* Unterschied in der Verteilung Gesamtkapitalrentabilität zwischen den Unternehmen mit und ohne Nachhaltigkeitsbericht gibt, dann können wir diese *permutieren*. Außerdem gilt unter der **Annahme** *es gibt keinen Unterschied* dann auch
 
-\[H_0: \mu_{Nein}-\mu_{Ja} = 0 \Leftrightarrow \mu_{Nein}=\mu_{Ja}\]
+\[\mu_{Nein}-\mu_{Ja} = 0 \Leftrightarrow \mu_{Nein}=\mu_{Ja}\]
 
 Die Verteilung der Differenzen der Mittelwerte von `roa`, wenn wir die Werte von `report` vertauschen können, können wir simulieren. In `mosaic` erfolgt dieses permutieren über den Befehl `shuffle()`. Drücken Sie ruhig öfter auf `Run Code` -- die beobachtete Differenz variiert auch unter dem Modell der Nullhypothese:
 
@@ -404,8 +407,41 @@ question("Stimmt die Aussage: Die Wahrscheinlichkeit, dass $H_0$ stimmt, liegt b
 )
 ```
 
+## (Allgemeine) lineare Modellierung
 
-### t-Test
+Diese Werte kennen wir schon:
+
+```{r einleitung lm}
+# Mittelwerte
+mean(roa ~ report, data = CsrCfp)
+# Differenz der Mittelwerte
+diffmean(roa ~ report, data = CsrCfp)
+```
+
+Was, wenn wir `roa` als (allgemeines) lineares Modell von `report` darstellen? Also
+
+$$\text{roa}=\beta_0 + \beta_1 \cdot \text{report} + \epsilon $$
+
+```{r lm, exercise = TRUE}
+lm(roa ~ report, data = CsrCfp)
+```
+
+###
+
+### Ergebnis
+
+Und wieder dasselbe Ergebnis:
+
+$\hat{\beta}_0=\bar{x}_{Ja}$, $\hat{\beta}_1=\bar{x}_{Nein}-\bar{x}_{Ja}$.
+
+Und damit insgesamt:
+
+$${roa}_i=`r coef(erglm)[1]`  `r coef(erglm)[2]` \cdot  \begin{cases}1, \,\text{i hat keinen Report veröffentlicht} \\ 0, \,\text{i hat einen Report veröffentlicht}\end{cases} + \epsilon_i $$
+
+
+
+
+## t-Test
 
 Unter den Annahmen einer Normalverteilung wird eine solche Hypothese klassisch über einen t-Test `t.test()` geprüft. Setzen Sie den Befehl entsprechend ein.
 
@@ -427,7 +463,7 @@ question("Zeigt die Analyse, dass es keine Differenz im Mittelwert gibt?",
 ```
 
 
-### Variation des p-Wertes
+## Variation des p-Wertes
 
 p-Werte und Konfidenzintervalle beziehen sich auf die *Performance* des Verfahrens, nicht auf die konkreten Daten. Und sie variieren von Stichprobe zu Stichprobe. 
 
@@ -436,7 +472,7 @@ t.test(roa ~ report, data = CsrCfp) %>%
   pval()
 ```
 
-... und beim Resampling: Drücken Sie öfter auf `Run Code` um die Variation zu sehen.
+... und beim Resampling? Drücken Sie öfter auf `Run Code` um die Variation zu sehen.
 
 ```{r pwertres, exercise = TRUE}
 t.test(roa ~ report, data = resample(CsrCfp)) %>%
