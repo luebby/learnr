@@ -1,0 +1,469 @@
+---
+title: "Lineare Regression"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+library(ggfortify)
+
+checker <- function(label, user_code, check_code, envir_result, evaluate_result, ...) {
+  list(message = check_code, correct = TRUE, location = "append")
+}
+tutorial_options(exercise.timelimit = 60, exercise.checker = checker)
+
+Co2Gdp <- read.csv2("co2gdp.csv")
+
+# Regression
+erglm <- lm(log.co2 ~ log.gdp, data = Co2Gdp)
+erglm.cont <- lm(log.co2 ~ continent, data = Co2Gdp)
+
+residuen <- resid(erglm)
+angepasst <- fitted(erglm)
+
+# Bootstrap
+set.seed(1896)
+Bootvtlg <- do(1000)* lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
+```
+
+## Willkommen
+
+**Modellierung** hat viele Ziele. U.a. den, zu *erklären*, aber auch den *vorherzusagen*. Dabei gibt es häufig mindestens zwei Variablen, eine abhängige Variable ($y$), eine unabhängige Variable ($x$). Bei einer mathematischen Modellierung wird eine Funktion gebildet:
+
+$$y=f(x)$$
+
+Eine der einfachsten Formen des Zusammenhangs ist ein linearer Zusammenhang, eine Gerade:
+
+$$y=\beta_0 + \beta_1 \cdot x$$
+Mit dem Achsenabschnitt $\beta_0$ und der Steigung $\beta_1$. 
+
+In der Realität gibt es aber häufig (zufällige?) Abweichungen von einer solchen Gerade, dem Modell. 
+
+Daten = Modell + Rest
+
+Für diesen Rest wird daher ein Residuum $\epsilon$ mit ins Modell genommen:
+
+$$y=\beta_0 + \beta_1 \cdot x + \epsilon$$
+
+```{r anpassung, echo=FALSE}
+question("Wann ist eine Modellanpassung *gut*?",
+  answer("Wenn die Residuen groß sind.", message = "Falsch: der nicht modellierte Rest sollte klein sein."),
+  answer("Wenn die Residuen klein sind.", correct = TRUE, message = "Richtig: der nicht modellierte Rest sollte klein sein.")
+)
+```
+
+###
+
+### Kleinste Quadrate Schätzung
+
+Genau dies versucht anhand einer Stichprobe die *Kleinste-Quadrate-Schätzung*: Schätze Achsenabschnitt und Steigung so, dass $\sum \epsilon^2$ minimal ist. Die *Schätzwerte* für die eigentlich unbekannten Modellparameter $\beta_0$, $\beta_1$ werden mit $\hat{\beta}_0$ und $\hat{\beta}_1$ gekennzeichnet.
+
+
+```{r residuum, echo=FALSE}
+question("Zeigt eine solche Analyse, dass $x$ *kausal* (ursächlich) für $y$ ist?",
+  answer("Ja.", message = "Falsch: welche Variablen wofür verwendet werden ist zunächst eine Entscheidung der Wissenschaftlerin."),
+  answer("Nein.", correct = TRUE, message = "Richtig: welche Variablen wofür verwendet werden ist zunächst eine Entscheidung der Wissenschaftlerin.")
+)
+```
+
+## CO~2~-Emissionen und Wohlstand
+
+Ökonomie und Ökologie. Klimaschutz und wirtschaftlicher Erfolg. Wie sieht der Zusammenhang aus?
+
+
+U.a. die Internetseite [Our World in Data](https://ourworldindata.org/) stellt dafür Daten und Analysen zur Verfügung. Die hier verwendeten Daten stammen aus dem Beispiel [CO~2~ emissions and prosperity](https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions#co2-emissions-and-prosperity).
+
+Zur Vorbereitung der Analyse das vorab installiertes Paket `mosaic` laden:
+
+```{r mosaic}
+library(mosaic)
+```
+
+
+Außerdem müssen die Daten eingelesen werden. Datenformat `csv` mit Semikolon `;` als Datentrennzeichen und Komma `,` als Dezimaltrennzeichen. Variablennamen in der ersten Zeile.
+
+```{r Einlesen, eval=FALSE}
+Co2Gdp <- read.csv2("co2gdp.csv")
+```
+
+Die verwendeten Variablen sind auf Länderebene (`country`):
+
+- `log.co2`: Der Logarithmus der CO~2~-Emissionen je Einwohner in Tonnen im Jahr 2014.
+- `log.gdp`: Der Logarithmus des realen Bruttoinlandsprodukt je Einwohner.
+
+
+Für eine detaillierte Beschreibung siehe [Our World in Data](https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions#co2-emissions-and-prosperity).
+
+```{r skalennvieau, echo=FALSE}
+question("Welches Skalenniveau hat die Variable `log.gdp`?",
+  answer("Kategorial - nominal", message = "Falsch: die Werte können nicht nur unterschieden werden. Es gibt auch eine Reihenfolge, Abstände und einen natürlichen Nullpunkt."),
+  answer("Kategorial - ordinal", message = "Falsch: die Werte können nicht nur unterschieden und in eine Reihenfolge gebracht werden. Es gibt auch natürliche Abstände und einen natürlichen Nullpunkt."), 
+    answer("Numerisch - intervall", message = "Falsch: die Werte können nicht nur unterschieden und in eine Reihenfolge mit natürlichen Abständen. Es gibt auch einen natürlichen Nullpunkt."), 
+    answer("Numerisch - verhältnis", correct=TRUE, message = "Richtig: die Werte können unterschieden werden, es gibt aber eine natürliche Ordnung. Auch können die Abstände verglichen werden und es gibt einen absoluten Nullpunkt.")
+)
+```
+
+
+```{r scatterplot , exercise = TRUE}
+gf_point(log.co2 ~ log.gdp, data = Co2Gdp)
+```
+
+
+```{r zshg, echo=FALSE}
+question("Was können Sie anhand der Abbildung über den Zusammenhang von Wohlstand und CO~2~-Emissionen aussagen?",
+  answer("Es scheint keinen Zusammenhang zu geben.", message = "Falsch: das Streudiagramm lässt einen positiven Zusammenhang vermuten."),
+    answer("Es scheint einen negativen Zusammenhang zu geben.", message = "Falsch: das Streudiagramm lässt einen positiven Zusammenhang vermuten."),
+    answer("Es scheint einen positiven Zusammenhang zu geben.", message = "Richtig: das Streudiagramm lässt einen positiven Zusammenhang vermuten.")
+)
+```
+
+
+```{r kausal, echo=FALSE}
+question("Kann aus der Datenanalyse unmittelbar eine Kausalaussage folgen (Wohlstand führt zu CO~2~-Emissionen)?",
+  answer("Ja", message = "Falsch: da eine Beobachtungsstudie vorliegt sind keine unmittelbaren Kausalaussagen möglich."),
+  answer("Nein", correct = TRUE, message = "Richtig: da eine Beobachtungsstudie vorliegt sind keine unmittelbaren Kausalaussagen möglich.")
+)
+```
+
+## Korrelation und Lineare Regression
+
+Eine Kennzahl für den linearen Zusammenhang ist der Korrelationskoeffizient $r_{xy}$. Dieser kann in R durch den Befehl `cor()` berechnet werden:
+
+```{r cor , exercise = TRUE}
+cor(log.co2 ~ log.gdp, data = Co2Gdp)
+```
+
+###
+
+### Einordnung Korrelation
+
+Da gilt $-1 \leq r \leq +1$ liegt hier mit $r=`r round(cor(log.co2 ~ log.gdp, data = Co2Gdp),2)`$ eine hohe positive Korrelation vor. 
+
+### Lineare Regression
+
+Aber wir wollen ein Modell mit $$\text{log.co2}=\beta_0 + \beta_1 \cdot \text{log.gdp} + \epsilon$$ anpassen.
+
+Dazu muss nur der Befehl `cor()` durch `lm()` ersetzt werden.
+
+```{r lm, exercise = TRUE}
+cor(log.co2 ~ log.gdp, data = Co2Gdp)
+```
+
+```{r lm-solution}
+lm(log.co2 ~ log.gdp, data = Co2Gdp)
+```
+
+###
+
+### Ergebnis Regression
+
+Die geschätzten Koeffizienten des Modell sind also:
+
+- $\hat{\beta}_0=`r round(coef(erglm)[1],4)`$ (`(Intercept)`)
+- $\hat{\beta}_1=`r round(coef(erglm)[2],4)`$ (`log.gdp`)
+
+Und damit haben wir als Modell:
+
+$$\widehat{\text{log.co2}}=`r round(coef(erglm)[1],4)` + `r round(coef(erglm)[2],4)` \cdot \text{log.gdp}$$
+
+Über folgenden Befehl erhalten Sie das (logarithmierte) BIP je Einwohner für Deutschland:
+
+```{r brdgdp, exercise = TRUE}
+Co2Gdp %>%
+  filter(country == "Germany") %>%
+  select(log.gdp)
+```
+
+Setzen Sie diese Werte ein um die im Modell prognostizierten CO~2~-Emissionen zu bestimmen ($\hat{y}_{\text{Germany}}$).
+
+```{r progco2, exercise = TRUE}
+
+```
+
+```{r progco2-solution}
+-10.195+1.186*10.69017
+```
+
+Vergleichen Sie dies mit den beobachteten Wert ((${y}_{\text{Germany}}$):
+
+```{r brdco2, exercise = TRUE}
+Co2Gdp %>%
+  filter(country == "Germany") %>%
+  select(log.co2)
+```
+
+###
+
+### Mehr zur linearen Regression
+
+Mehr erfahren wir, wenn wir das Ergebnis der linearen Modellierung einem R Objekt, z.B. `erglm` zuweisen, d.h.:
+
+```{r erglm}
+erglm <- lm(log.co2 ~ log.gdp, data = Co2Gdp)
+```
+
+Dieses können wir weiterverwenden, z.B. für eine Zusammenfassung des Ergebnis über `summary()`:
+
+```{r plotmodel, exercise = TRUE}
+erglm %>%
+  summary()
+```
+
+###
+
+### Bestimmheitsmaß $R^2$
+
+Die Schätzwerte (Spalte `Estimate`) kennen wir bereits. Hier ist aber besonders interessant das *Bestimmtheitsmaß* $R^2$. Dies gibt an, wie groß der Anteil der modellierten Variation von $y$ ist. Zu finden ist dieser Wert unter `Multiple R-squared`.
+
+Hier gilt: $R^2=`r round(rsquared(erglm),2)`$
+
+```{r r2, echo=FALSE}
+question("Ist das ein hoher Wert für $R^2$?",
+  answer("Nein.", message = "Falsch: als Anteil der modellierten Variation nimmt $R^2$ Werte zwischen 0 und 1 an, und je höher desto größer ist der Anteil der modellierten Variation."),
+  answer("Ja.", correct = TRUE, message = "Richtig: wals Anteil der modellierten Variation nimmt $R^2$ Werte zwischen 0 und 1 an, und je höher desto größer ist der Anteil der modellierten Variation.")
+)
+```
+
+
+## Inferenz in der Regression
+
+In gewisser Hinsicht sind auch die Daten dieser Stichprobe *zufällig*. Wie ändern sich die Schätzwerte usw. wenn wir mit Zurücklegen aus der Stichprobe eine neue ziehen, wir resamplen (`resample()`)? Drücken Sie ruhig öfter auf `Run Code`.
+
+```{r resample, exercise = TRUE}
+lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
+```
+
+
+### `do()*`
+
+Über den Befehl `do()*` kann das resamplen öfter wiederholt werden -- und wir erhalten auch gleich eine interessante Übersicht wichtiger Ergebnisse der linearen Modellierung.
+
+Ohne Resamplen:
+```{r do1, exercise = TRUE}
+do(1)* lm(log.co2 ~ log.gdp, data = Co2Gdp)
+```
+
+3-maliges Resamplen:
+
+```{r do3, exercise = TRUE}
+do(3)* lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
+```
+
+```{r do, echo=FALSE}
+question("Sind die Schätzwerte für Achsenabschnitt und Steigung immer gleich?",
+  answer("Ja.", message = "Falsch: die geschätzten Koeffizienten des Modells sind eine Funktion der zufälligen Stichprobe. Sie variieren von Resample zu Resample."),
+  answer("Nein.", correct = TRUE, message = "Richtig: die geschätzten Koeffizienten des Modells sind eine Funktion der zufälligen Stichprobe. Sie variieren von Resample zu Resample.")
+)
+```
+
+### Bootstrap
+
+Beim Bootstrapping wird die Stichprobenverteilung durch wiederholtes Resampling simuliert.
+
+Zunächst wird zur Reproduzierbarkeit der Zufallszahlengenerator gesetzt.
+
+```{r setseed}
+set.seed(1896)
+```
+
+Und dann z.B. 1000-mal resampled:
+
+```{r boot, eval=FALSE}
+Bootvtlg <- do(1000)* lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
+```
+
+### Bootstrap-Verteilung
+
+Die Bootstrap-Verteilung, z.B. von $\hat{\beta}^*_1$, d.h. die Steigung in Richtung `log.gdp`, können wir jetzt betrachten:
+
+```{r boothist, exercise = TRUE}
+gf_histogram( ~ log.gdp, data = Bootvtlg)
+```
+
+```{r null, echo=FALSE}
+question("Angenommen es gebe keinen linearen Zusammenhang zwischen Wohlstand und CO~2~-Emissionen. Was würde dann gelten?",
+  answer("$\\beta_0=0$", message = "Falsch: wenn die Steigung in Richtung `log.gdp` 0 wäre, würde sich im Modell `log.co2` nicht ändern."),
+  answer("$\\beta_1=0$", correct = TRUE, message = "Richtig: wenn die Steigung in Richtung `log.gdp` 0 wäre, würde sich im Modell `log.co2` nicht ändern.")
+)
+```
+
+
+### `gf_vline()`
+
+Über `gf_vline(xintercept = x)` können Sie eine vertikale Linie hinzufügen. Ergänzen Sie den Wert, der gelten würde, wenn es keinen Zusammenhang gäbe.
+
+```{r boot0, exercise = TRUE, eval = FALSE}
+gf_histogram( ~ log.gdp, data = Bootvtlg) %>%
+  gf_vline(xintercept = ___)
+```
+
+```{r boot0-solution}
+gf_histogram( ~ log.gdp, data = Bootvtlg) %>%
+  gf_vline(xintercept = 0)
+```
+
+
+### Konfidenzintervall
+
+Ein Konfidenzintervall auf Basis der Bootstrappings erhalten Sie über den Befehl `confint()':
+
+```{r confi, exercise = TRUE}
+confint(Bootvtlg)
+```
+
+### 
+
+```{r conf0, echo=FALSE}
+question("Ist die Annahme, dass es keinen linearen Zusammenhang zwischen Wohlstand und CO~2~-Emissionen gibt, kompatibel mit den Daten?",
+  answer("Ja.", message = "Falsch: der Wert $\\beta_1=0$ wird nicht vom Konfidenzintervall überdeckt, er liegt außerhalb der üblichen Werte der Bootstrap-Verteilung."),
+  answer("Nein.", correct = TRUE, message = "Richtig: der Wert $\\beta_1=0$ wird nicht vom Konfidenzintervall überdeckt, er liegt außerhalb der üblichen Werte der Bootstrap-Verteilung.")
+)
+```
+
+
+## Modellannahmen
+
+Die Grundannahme einer linearen Regression ist zunächst, dass es, wenn, dann einen linearen Zusammenhang gibt. Dazu sollte, wenn möglich, zunächst das Streudiagramm $y$, $x$ betrachtet werden (siehe oben):
+
+```{r s2, exercise = TRUE}
+gf_point(log.co2 ~ log.gdp, data = Co2Gdp)
+```
+
+###
+
+Der Zusammenhang sieht linear aus, es sind keine extremen Ausreißer zu erkennen.
+
+### Residuen vs. Angepasste Werte
+
+Sieht ok aus. Aber auch im Streudiagramm der Residuen (`resid()`, $y-\hat{y}$) und der angepassten Werte (`fitted()`, $\hat{y}$) sollte kein Muster erkennbar sein. 
+
+```{r residfit, exercise = TRUE}
+# Datenvektoren erzeugen
+residuen <- resid(erglm)
+angepasst <- fitted(erglm)
+
+# Streudiagramm
+gf_point(residuen ~ angepasst)
+```
+
+###
+
+Es ist kein Muster erkennbar.
+
+
+### Erweiterungen
+
+Weitere Aspekte die ggf. beachtet werden sollten:
+
+- Keine einflussreichen Ausreißer 
+- Keine Autokorrelation
+- Keine Heteroskedastizität
+- Evt. Normalverteilung der Residuen
+
+
+
+## Detailierte Analyse
+
+Auch wenn es keine Kausalanalyse ist, so zeigen die vorherigen Analysen doch, dass es auf Länderebene einen recht starken (positiven) Zusammenhang zwischen Wohlstand (`log.gdp`) und CO~2~-Emissionen (`log.co2`) zu geben scheint.
+
+Gilt diese *globale* Beobachtung auch auf Ebene der Kontinente?
+
+###
+
+### 
+
+Über die Option `analyse(y ~ x | z)` kann eine gruppierte, bzw. bedingte Analyse je `z` durchgeführt werden. Der Gesamtdatensatz wird anhand der Variable `z` aufgeteilt und es wird jeweils eine getrennte Abbildung erzeugt. Die Variable für die Kontinente heißt `continent`.
+
+```{r scatterfac, exercise = TRUE, eval=FALSE}
+gf_point(log.co2 ~ log.gdp | ___, data = Co2Gdp)
+```
+
+```{r scatterfac-solution}
+gf_point(log.co2 ~ log.gdp | continent, data = Co2Gdp)
+```
+
+### 
+
+### 
+
+```{r facet, echo=FALSE}
+question("Gemäß der Abbildung: im welchen Kontinent scheint der Zusammenhang am schwächsten zu sein?",
+  answer("Africa"),
+  answer("Asia"),
+  answer("Europe", correct = TRUE),
+  answer("North America"),
+  answer("Oceania"),
+  answer("South America")
+)
+```
+
+### Referenzklasse
+
+Für die Mittelwerte der Länder je Kontinent gilt:
+
+```{r mean, exercise = TRUE}
+mean(log.co2 ~ continent, data = Co2Gdp)
+```
+
+Diese Werte erhält man auch, wenn man ein (verallgemeinertes) lineares Modell anpasst:
+
+```{r lmcont, exercise = TRUE}
+lm(log.co2 ~ continent, data = Co2Gdp)
+```
+
+###
+
+Der Achsenabschnitt (`(Intercept)`) bezieht sich auf die *Referenzklasse*, i.d.R. die alphanumerisch erste Ausprägung, hier `Africa`. Die geschätzten Koeffizienten zeigen die Veränderung im Vergleich zur Referenz. Z.B.
+
+$$\bar{y}_{\text{Asia}}=\hat{\beta}_0+\hat{\beta}_{\text{Asia}}=`r round(coef(erglm.cont)[1],4)`+`r round(coef(erglm.cont)[2],4)`=`r round(mean(log.co2 ~ continent, data = Co2Gdp)[2],4)`$$
+
+###
+
+```{r contrast, echo=FALSE}
+question("Welcher Kontinent hat im Mittelwert der Länder die niedrigsten CO~2~ Emissionen je Einwohner?",
+  answer("Africa", correct = TRUE, message = "Richtig: die geschätzten Koeffizienten für die anderen Kontinente sind positiv."),
+  answer("Asia", message = "Falsch: der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
+  answer("Europe", message = "Falsch: der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
+  answer("North America", message = "Falsch: der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
+  answer("Oceania", message = "Falsch: der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
+  answer("South America", message = "Falsch: der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz.")
+)
+```
+
+### `gf_lm()`
+
+Über den Befehl `gf_lm()` können die Abbildungen um die Regressionsgerade ergänzt werden:
+
+```{r scatterfaclm, exercise = TRUE}
+gf_point(log.co2 ~ log.gdp | continent, data = Co2Gdp) %>%
+  gf_lm()
+```
+
+### Modellierung mit Moderator
+
+Visuell unterscheidet sich der Zusammenhang zwischen den Kontinenten -- der Kontinent *moderiert* den Zusammenhang. Dies kann auch in der Modellierung berücksichtigt werden. Über `+` werden Variablen hinzugefügt, über `:` eine Wechselwirkung, Interaktion.
+
+```{r wechsel, exercise = TRUE}
+lm(log.co2 ~ log.gdp + continent + log.gdp:continent, data = Co2Gdp) %>%
+  summary()
+```
+
+###
+
+Die Kennzahlen bestätigen den visuellen Eindruck: der Achsenabschnitt des Logarithmus der CO~2~-Emissionen ist in Europa am höchsten (siehe `Estimate` für `continentEurope`), aber der beobachtete Zusammenhang zwischen dem Logarithmus des BIP und der Emissionen ist am geringsten ((siehe `Estimate` für `log.gdp:continentEurope`)).
+
+## Ausblick
+
+In einem weiteren Tutorial werden Sie einen ersten Einblick in Grundideen der Kausale Modellierung erhalten.
+
+
+
+
+
+
+
+
