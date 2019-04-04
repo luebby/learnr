@@ -481,7 +481,7 @@ t.test(roa ~ report, data = resample(CsrCfp)) %>%
 
 
 ```{r pwertvariation, echo=FALSE}
-question("Beim Resampling des p-Wertes welche Stelle ändert sich hier?",
+question("Beim Resampling des p-Wertes: welche Stelle ändert sich hier?",
   answer("Erst die 3. Nachkommastelle.", message = "Falsch: wenn die Nullhypothese stimmt, sind die p-Werte gleichverteilt im Intervall (0,1). Wenn die Alternativhypothese stimmt, dann ist die Verteilung des p-Wertes rechtsschief."),
     answer("Die 2. Nachkommastelle.", message = "Falsch: wenn die Nullhypothese stimmt, sind die p-Werte gleichverteilt im Intervall (0,1). Wenn die Alternativhypothese stimmt, dann ist die Verteilung des p-Wertes rechtsschief."),
   answer("Schon die erste Nachkommastelle.", correct = TRUE, message = "Richtig: wenn die Nullhypothese stimmt, sind die p-Werte gleichverteilt im Intervall (0,1). Wenn die Alternativhypothese stimmt, dann ist die Verteilung des p-Wertes rechtsschief.")
