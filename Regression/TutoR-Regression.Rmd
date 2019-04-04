@@ -116,7 +116,7 @@ gf_point(log.co2 ~ log.gdp, data = Co2Gdp)
 question("Was können Sie anhand der Abbildung über den Zusammenhang von Wohlstand und CO~2~-Emissionen aussagen?",
   answer("Es scheint keinen Zusammenhang zu geben.", message = "Falsch: das Streudiagramm lässt einen positiven Zusammenhang vermuten."),
     answer("Es scheint einen negativen Zusammenhang zu geben.", message = "Falsch: das Streudiagramm lässt einen positiven Zusammenhang vermuten."),
-    answer("Es scheint einen positiven Zusammenhang zu geben.", message = "Richtig: das Streudiagramm lässt einen positiven Zusammenhang vermuten.")
+    answer("Es scheint einen positiven Zusammenhang zu geben.",  correct=TRUE, message = "Richtig: das Streudiagramm lässt einen positiven Zusammenhang vermuten.")
 )
 ```
 
