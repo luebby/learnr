@@ -479,6 +479,16 @@ t.test(roa ~ report, data = resample(CsrCfp)) %>%
   pval()
 ```
 
+
+```{r pwertvariation, echo=FALSE}
+question("Beim Resampling des p-Wertes welche Stelle ändert sich hier?",
+  answer("Erst die 3. Nachkommastelle.", message = "Falsch: wenn die Nullhypothese stimmt, sind die p-Werte gleichverteilt im Intervall (0,1). Wenn die Alternativhypothese stimmt, dann ist die Verteilung des p-Wertes rechtsschief."),
+    answer("Die 2. Nachkommastelle.", message = "Falsch: wenn die Nullhypothese stimmt, sind die p-Werte gleichverteilt im Intervall (0,1). Wenn die Alternativhypothese stimmt, dann ist die Verteilung des p-Wertes rechtsschief."),
+  answer("Schon die erste Nachkommastelle.", correct = TRUE, message = "Richtig: wenn die Nullhypothese stimmt, sind die p-Werte gleichverteilt im Intervall (0,1). Wenn die Alternativhypothese stimmt, dann ist die Verteilung des p-Wertes rechtsschief.")
+)
+```
+
+
 ## Ergänzung: Estimation Plots
 
 Das Paket [dabestr](https://cran.r-project.org/package=dabestr) bietet eine komfortable Möglichkeit die Daten samt Konfidenzintervall zu visualisieren. Siehe auch Ho et al. (2018): [https://doi.org/10.1101/377978](https://doi.org/10.1101/377978).
