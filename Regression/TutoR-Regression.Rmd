@@ -221,9 +221,9 @@ Die Schätzwerte (Spalte `Estimate`) kennen wir bereits. Hier ist aber besonders
 Hier gilt: $R^2=`r round(rsquared(erglm),2)`$
 
 ```{r r2, echo=FALSE}
-question("Ist das ein hoher Wert für $R^2$?",
-  answer("Nein.", message = "Falsch: als Anteil der modellierten Variation nimmt $R^2$ Werte zwischen 0 und 1 an, und je höher desto größer ist der Anteil der modellierten Variation."),
-  answer("Ja.", correct = TRUE, message = "Richtig: wals Anteil der modellierten Variation nimmt $R^2$ Werte zwischen 0 und 1 an, und je höher desto größer ist der Anteil der modellierten Variation.")
+question("Ist das ein eher hoher Wert für $R^2$?",
+  answer("Nein.", message = "Falsch: als Anteil der modellierten Variation nimmt $R^2$ Werte zwischen 0 und 1 an, und je höher desto größer ist der Anteil der modellierten Variation. Ab *wann* $R^2$ *groß* ist hängt von der Anwendung ab."),
+  answer("Ja.", correct = TRUE, message = "Richtig: als Anteil der modellierten Variation nimmt $R^2$ Werte zwischen 0 und 1 an, und je höher desto größer ist der Anteil der modellierten Variation. Ab *wann* $R^2$ *groß* ist hängt von der Anwendung ab.")
 )
 ```
 
@@ -253,7 +253,7 @@ do(3)* lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
 ```
 
 ```{r do, echo=FALSE}
-question("Sind die Schätzwerte für Achsenabschnitt und Steigung immer gleich?",
+question("Ist es ein Zeichen für problematische Datenqualität, wenn die Schätzwerte für Achsenabschnitt und -steigung variieren?",
   answer("Ja.", message = "Falsch: die geschätzten Koeffizienten des Modells sind eine Funktion der zufälligen Stichprobe. Sie variieren von Resample zu Resample."),
   answer("Nein.", correct = TRUE, message = "Richtig: die geschätzten Koeffizienten des Modells sind eine Funktion der zufälligen Stichprobe. Sie variieren von Resample zu Resample.")
 )
@@ -391,12 +391,12 @@ gf_point(log.co2 ~ log.gdp | continent, data = Co2Gdp)
 
 ```{r facet, echo=FALSE}
 question("Gemäß der Abbildung: im welchen Kontinent scheint der Zusammenhang am schwächsten zu sein?",
-  answer("Africa"),
-  answer("Asia"),
-  answer("Europe", correct = TRUE),
-  answer("North America"),
-  answer("Oceania"),
-  answer("South America")
+  answer("Africa", message = "Für eine genaue Untersuchung wird dann jeweils die *kontinentspezifische* Steigung betrachtet."),
+  answer("Asia", message = "Für eine genaue Untersuchung wird dann jeweils die *kontinentspezifische* Steigung betrachtet."),
+  answer("Europe", correct = TRUE, message = "Für eine genaue Untersuchung wird dann jeweils ddie *kontinentspezifische* Steigung betrachtet."),
+  answer("North America", message = "Für eine genaue Untersuchung wird dann jeweils die *kontinentspezifische* Steigung betrachtet."),
+  answer("Oceania", message = "Für eine genaue Untersuchung wird dann jeweils die *kontinentspezifische* Steigung betrachtet. Achtung: Hier nur wenige Beobachtungen."),
+  answer("South America", message = "Für eine genaue Untersuchung wird dann jeweils die *kontinentspezifische* Steigung betrachtet.")
 )
 ```
 
@@ -444,7 +444,7 @@ gf_point(log.co2 ~ log.gdp | continent, data = Co2Gdp) %>%
 
 ### Modellierung mit Moderator
 
-Visuell unterscheidet sich der Zusammenhang zwischen den Kontinenten -- der Kontinent *moderiert* den Zusammenhang. Dies kann auch in der Modellierung berücksichtigt werden. Über `+` werden Variablen hinzugefügt, über `:` eine Wechselwirkung, Interaktion.
+Visuell unterscheidet sich der der Zusammenhang $\beta_1$ zwischen den Kontinenten -- der Kontinent *moderiert* den Zusammenhang. Dies kann auch in der Modellierung berücksichtigt werden. Über `+` werden Variablen hinzugefügt, über `:` eine Wechselwirkung, Interaktion.
 
 ```{r wechsel, exercise = TRUE}
 lm(log.co2 ~ log.gdp + continent + log.gdp:continent, data = Co2Gdp) %>%
@@ -453,7 +453,7 @@ lm(log.co2 ~ log.gdp + continent + log.gdp:continent, data = Co2Gdp) %>%
 
 ###
 
-Die Kennzahlen bestätigen den visuellen Eindruck: der Achsenabschnitt des Logarithmus der CO~2~-Emissionen ist in Europa am höchsten (siehe `Estimate` für `continentEurope`), aber der beobachtete Zusammenhang zwischen dem Logarithmus des BIP und der Emissionen ist am geringsten ((siehe `Estimate` für `log.gdp:continentEurope`)).
+Die Kennzahlen bestätigen den visuellen Eindruck: der Achsenabschnitt des Logarithmus der CO~2~-Emissionen ist in Europa am höchsten (siehe `Estimate` für `continentEurope`), aber der beobachtete Zusammenhang $\hat{\beta_1}$ zwischen dem Logarithmus des BIP und der Emissionen ist am geringsten ((siehe `Estimate` für `log.gdp:continentEurope`)).
 
 ## Ausblick
 
