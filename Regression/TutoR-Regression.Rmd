@@ -31,7 +31,7 @@ Bootvtlg <- do(1000)* lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
 
 ## Willkommen
 
-**Modellierung** hat viele Ziele. U.a. den, zu *erklären*, aber auch den *vorherzusagen*. Dabei gibt es häufig mindestens zwei Variablen, eine abhängige Variable ($y$), eine unabhängige Variable ($x$). Bei einer mathematischen Modellierung wird eine Funktion gebildet:
+**Modellierung** hat viele Ziele. U.a. das, zu *erklären*, aber auch *vorherzusagen*. Dabei gibt es häufig mindestens zwei Variablen, eine abhängige Variable ($y$) und eine unabhängige Variable ($x$). Bei einer mathematischen Modellierung wird eine Funktion gebildet:
 
 $$y=f(x)$$
 
@@ -40,7 +40,7 @@ Eine der einfachsten Formen des Zusammenhangs ist ein linearer Zusammenhang, ein
 $$y=\beta_0 + \beta_1 \cdot x$$
 Mit dem Achsenabschnitt $\beta_0$ und der Steigung $\beta_1$. 
 
-In der Realität gibt es aber häufig (zufällige?) Abweichungen von einer solchen Gerade, dem Modell. 
+In der Realität gibt es aber häufig (zufällige?) Abweichungen von einer solchen Geraden, dem Modell. 
 
 Daten = Modell + Rest
 
@@ -50,8 +50,8 @@ $$y=\beta_0 + \beta_1 \cdot x + \epsilon$$
 
 ```{r anpassung, echo=FALSE}
 question("Wann ist eine Modellanpassung *gut*?",
-  answer("Wenn die Residuen groß sind.", message = "Falsch: der nicht modellierte Rest sollte klein sein."),
-  answer("Wenn die Residuen klein sind.", correct = TRUE, message = "Richtig: der nicht modellierte Rest sollte klein sein.")
+  answer("Wenn die Residuen groß sind.", message = "Falsch: Der nicht modellierte Rest sollte klein sein."),
+  answer("Wenn die Residuen klein sind.", correct = TRUE, message = "Richtig: Der nicht modellierte Rest sollte klein sein.")
 )
 ```
 
@@ -74,9 +74,9 @@ question("Zeigt eine solche Analyse, dass $x$ *kausal* (ursächlich) für $y$ is
 Ökonomie und Ökologie. Klimaschutz und wirtschaftlicher Erfolg. Wie sieht der Zusammenhang aus?
 
 
-U.a. die Internetseite [Our World in Data](https://ourworldindata.org/) stellt dafür Daten und Analysen zur Verfügung. Die hier verwendeten Daten stammen aus dem Beispiel [CO~2~ emissions and prosperity](https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions#co2-emissions-and-prosperity).
+Unter anderem stellt die Internetseite [Our World in Data](https://ourworldindata.org/) dafür Daten und Analysen zur Verfügung. Die hier verwendeten Daten stammen aus dem Beispiel [CO~2~ emissions and prosperity](https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions#co2-emissions-and-prosperity).
 
-Zur Vorbereitung der Analyse das vorab installiertes Paket `mosaic` laden:
+Zur Vorbereitung der Analyse das vorab installierte Paket `mosaic` laden:
 
 ```{r mosaic}
 library(mosaic)
@@ -99,10 +99,10 @@ Für eine detaillierte Beschreibung siehe [Our World in Data](https://ourworldin
 
 ```{r skalennvieau, echo=FALSE}
 question("Welches Skalenniveau hat die Variable `log.gdp`?",
-  answer("Kategorial - nominal", message = "Falsch: die Werte können nicht nur unterschieden werden. Es gibt auch eine Reihenfolge, Abstände und einen natürlichen Nullpunkt."),
-  answer("Kategorial - ordinal", message = "Falsch: die Werte können nicht nur unterschieden und in eine Reihenfolge gebracht werden. Es gibt auch natürliche Abstände und einen natürlichen Nullpunkt."), 
-    answer("Numerisch - intervall", message = "Falsch: die Werte können nicht nur unterschieden und in eine Reihenfolge mit natürlichen Abständen. Es gibt auch einen natürlichen Nullpunkt."), 
-    answer("Numerisch - verhältnis", correct=TRUE, message = "Richtig: die Werte können unterschieden werden, es gibt aber eine natürliche Ordnung. Auch können die Abstände verglichen werden und es gibt einen absoluten Nullpunkt.")
+  answer("Kategorial - nominal", message = "Falsch: Die Werte können nicht nur unterschieden werden, es gibt auch eine Reihenfolge, Abstände und einen natürlichen Nullpunkt."),
+  answer("Kategorial - ordinal", message = "Falsch: Die Werte können nicht nur unterschieden und in eine Reihenfolge gebracht werden. Es gibt auch natürliche Abstände und einen natürlichen Nullpunkt."), 
+    answer("Numerisch - intervall", message = "Falsch: Die Werte können nicht nur unterschieden und in eine Reihenfolge mit natürlichen Abständen gebracht werden. Es gibt auch einen natürlichen Nullpunkt."), 
+    answer("Numerisch - verhältnis", correct=TRUE, message = "Richtig: Die Werte können unterschieden werden, es gibt aber eine natürliche Ordnung. Auch können die Abstände verglichen werden und es gibt einen absoluten Nullpunkt.")
 )
 ```
 
@@ -113,18 +113,18 @@ gf_point(log.co2 ~ log.gdp, data = Co2Gdp)
 
 
 ```{r zshg, echo=FALSE}
-question("Was können Sie anhand der Abbildung über den Zusammenhang von Wohlstand und CO~2~-Emissionen aussagen?",
-  answer("Es scheint keinen Zusammenhang zu geben.", message = "Falsch: das Streudiagramm lässt einen positiven Zusammenhang vermuten."),
-    answer("Es scheint einen negativen Zusammenhang zu geben.", message = "Falsch: das Streudiagramm lässt einen positiven Zusammenhang vermuten."),
-    answer("Es scheint einen positiven Zusammenhang zu geben.",  correct=TRUE, message = "Richtig: das Streudiagramm lässt einen positiven Zusammenhang vermuten.")
+question("Was können Sie anhand der Abbildung über den Zusammenhang von Wohlstand und CO~2~ -Emissionen aussagen?",
+  answer("Es scheint keinen Zusammenhang zu geben.", message = "Falsch: Das Streudiagramm lässt einen positiven Zusammenhang vermuten."),
+    answer("Es scheint einen negativen Zusammenhang zu geben.", message = "Falsch: Das Streudiagramm lässt einen positiven Zusammenhang vermuten."),
+    answer("Es scheint einen positiven Zusammenhang zu geben.",  correct=TRUE, message = "Richtig: Das Streudiagramm lässt einen positiven Zusammenhang vermuten.")
 )
 ```
 
 
 ```{r kausal, echo=FALSE}
-question("Kann aus der Datenanalyse unmittelbar eine Kausalaussage folgen (Wohlstand führt zu CO~2~-Emissionen)?",
-  answer("Ja", message = "Falsch: da eine Beobachtungsstudie vorliegt sind keine unmittelbaren Kausalaussagen möglich."),
-  answer("Nein", correct = TRUE, message = "Richtig: da eine Beobachtungsstudie vorliegt sind keine unmittelbaren Kausalaussagen möglich.")
+question("Kann aus der Datenanalyse unmittelbar eine Kausalaussage folgen (Wohlstand führt zu CO~2~ -Emissionen)?",
+  answer("Ja", message = "Falsch: Da eine Beobachtungsstudie vorliegt sind keine unmittelbaren Kausalaussagen möglich."),
+  answer("Nein", correct = TRUE, message = "Richtig: Da eine Beobachtungsstudie vorliegt sind keine unmittelbaren Kausalaussagen möglich.")
 )
 ```
 
@@ -146,7 +146,7 @@ Da gilt $-1 \leq r \leq +1$ liegt hier mit $r=`r round(cor(log.co2 ~ log.gdp, da
 
 Aber wir wollen ein Modell mit $$\text{log.co2}=\beta_0 + \beta_1 \cdot \text{log.gdp} + \epsilon$$ anpassen.
 
-Dazu muss nur der Befehl `cor()` durch `lm()` ersetzt werden.
+Dazu muss nur der Befehl `cor()` durch `lm()` -- 'lm' steht für linear model -- ersetzt werden.
 
 ```{r lm, exercise = TRUE}
 cor(log.co2 ~ log.gdp, data = Co2Gdp)
@@ -160,9 +160,9 @@ lm(log.co2 ~ log.gdp, data = Co2Gdp)
 
 ### Ergebnis Regression
 
-Die geschätzten Koeffizienten des Modell sind also:
+Die geschätzten Koeffizienten des Modells sind also:
 
-- $\hat{\beta}_0=`r round(coef(erglm)[1],4)`$ (`(Intercept)`)
+- $\hat{\beta}_0=`r round(coef(erglm)[1],4)`$ (`Intercept`)
 - $\hat{\beta}_1=`r round(coef(erglm)[2],4)`$ (`log.gdp`)
 
 Und damit haben wir als Modell:
@@ -187,7 +187,7 @@ Setzen Sie diese Werte ein um die im Modell prognostizierten CO~2~-Emissionen zu
 -10.195+1.186*10.69017
 ```
 
-Vergleichen Sie dies mit den beobachteten Wert ((${y}_{\text{Germany}}$):
+Vergleichen Sie dies mit den beobachteten Wert (${y}_{\text{Germany}}$):
 
 ```{r brdco2, exercise = TRUE}
 Co2Gdp %>%
@@ -230,7 +230,7 @@ question("Ist das ein eher hoher Wert für $R^2$?",
 
 ## Inferenz in der Regression
 
-In gewisser Hinsicht sind auch die Daten dieser Stichprobe *zufällig*. Wie ändern sich die Schätzwerte usw. wenn wir mit Zurücklegen aus der Stichprobe eine neue ziehen, wir resamplen (`resample()`)? Drücken Sie ruhig öfter auf `Run Code`.
+In gewisser Hinsicht sind auch die Daten dieser Stichprobe *zufällig*. Wie ändern sich die Schätzwerte usw. wenn wir mit Zurücklegen aus der Stichprobe eine neue ziehen, wir also resampeln (`resample()`)? Drücken Sie ruhig öfter auf `Run Code`.
 
 ```{r resample, exercise = TRUE}
 lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
@@ -239,7 +239,7 @@ lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
 
 ### `do()*`
 
-Über den Befehl `do()*` kann das resamplen öfter wiederholt werden -- und wir erhalten auch gleich eine interessante Übersicht wichtiger Ergebnisse der linearen Modellierung.
+Über den Befehl `do()*` kann das resampeln öfter wiederholt werden -- und wir erhalten auch gleich eine interessante Übersicht wichtiger Ergebnisse der linearen Modellierung.
 
 Ohne Resamplen:
 ```{r do1, exercise = TRUE}
@@ -284,9 +284,9 @@ gf_histogram( ~ log.gdp, data = Bootvtlg)
 ```
 
 ```{r null, echo=FALSE}
-question("Angenommen es gebe keinen linearen Zusammenhang zwischen Wohlstand und CO~2~-Emissionen. Was würde dann gelten?",
-  answer("$\\beta_0=0$", message = "Falsch: wenn die Steigung in Richtung `log.gdp` 0 wäre, würde sich im Modell `log.co2` nicht ändern."),
-  answer("$\\beta_1=0$", correct = TRUE, message = "Richtig: wenn die Steigung in Richtung `log.gdp` 0 wäre, würde sich im Modell `log.co2` nicht ändern.")
+question("Angenommen es gäbe keinen linearen Zusammenhang zwischen Wohlstand und CO~2~ -Emissionen. Was würde dann gelten?",
+  answer("$\\beta_0=0$", message = "Falsch: Wenn die Steigung in Richtung `log.gdp` 0 wäre, würde sich im Modell `log.co2` nicht ändern."),
+  answer("$\\beta_1=0$", correct = TRUE, message = "Richtig: Wenn die Steigung in Richtung `log.gdp` 0 wäre, würde sich im Modell `log.co2` nicht ändern.")
 )
 ```
 
@@ -308,7 +308,7 @@ gf_histogram( ~ log.gdp, data = Bootvtlg) %>%
 
 ### Konfidenzintervall
 
-Ein Konfidenzintervall auf Basis der Bootstrappings erhalten Sie über den Befehl `confint()':
+Ein Konfidenzintervall auf Basis des Bootstrappings erhalten Sie über den Befehl `confint()':
 
 ```{r confi, exercise = TRUE}
 confint(Bootvtlg)
@@ -317,16 +317,16 @@ confint(Bootvtlg)
 ### 
 
 ```{r conf0, echo=FALSE}
-question("Ist die Annahme, dass es keinen linearen Zusammenhang zwischen Wohlstand und CO~2~-Emissionen gibt, kompatibel mit den Daten?",
-  answer("Ja.", message = "Falsch: der Wert $\\beta_1=0$ wird nicht vom Konfidenzintervall überdeckt, er liegt außerhalb der üblichen Werte der Bootstrap-Verteilung."),
-  answer("Nein.", correct = TRUE, message = "Richtig: der Wert $\\beta_1=0$ wird nicht vom Konfidenzintervall überdeckt, er liegt außerhalb der üblichen Werte der Bootstrap-Verteilung.")
+question("Ist die Annahme, dass es keinen linearen Zusammenhang zwischen Wohlstand und CO~2~ -Emissionen gibt kompatibel mit den Daten?",
+  answer("Ja.", message = "Falsch: Der Wert $\\beta_1=0$ wird nicht vom Konfidenzintervall überdeckt, er liegt außerhalb der üblichen Werte der Bootstrap-Verteilung."),
+  answer("Nein.", correct = TRUE, message = "Richtig: Der Wert $\\beta_1=0$ wird nicht vom Konfidenzintervall überdeckt, er liegt außerhalb der üblichen Werte der Bootstrap-Verteilung.")
 )
 ```
 
 
 ## Modellannahmen
 
-Die Grundannahme einer linearen Regression ist zunächst, dass es, wenn, dann einen linearen Zusammenhang gibt. Dazu sollte, wenn möglich, zunächst das Streudiagramm $y$, $x$ betrachtet werden (siehe oben):
+Die Grundannahme einer linearen Regression ist zunächst, dass es, wenn, dann einen linearen Zusammenhang gibt. Dazu sollte, wenn möglich, zunächst das Streudiagramm $y$, $x$ betrachtet werden (wie schon zu Beginn gesehen):
 
 ```{r s2, exercise = TRUE}
 gf_point(log.co2 ~ log.gdp, data = Co2Gdp)
@@ -361,11 +361,11 @@ Weitere Aspekte die ggf. beachtet werden sollten:
 - Keine einflussreichen Ausreißer 
 - Keine Autokorrelation
 - Keine Heteroskedastizität
-- Evt. Normalverteilung der Residuen
+- Evtl. Normalverteilung der Residuen
 
 
 
-## Detailierte Analyse
+## Detaillierte Analyse
 
 Auch wenn es keine Kausalanalyse ist, so zeigen die vorherigen Analysen doch, dass es auf Länderebene einen recht starken (positiven) Zusammenhang zwischen Wohlstand (`log.gdp`) und CO~2~-Emissionen (`log.co2`) zu geben scheint.
 
@@ -375,7 +375,7 @@ Gilt diese *globale* Beobachtung auch auf Ebene der Kontinente?
 
 ### 
 
-Über die Option `analyse(y ~ x | z)` kann eine gruppierte, bzw. bedingte Analyse je `z` durchgeführt werden. Der Gesamtdatensatz wird anhand der Variable `z` aufgeteilt und es wird jeweils eine getrennte Abbildung erzeugt. Die Variable für die Kontinente heißt `continent`.
+Über die Option `analyse(y ~ x | z)` kann eine gruppierte bzw. bedingte Analyse je `z` durchgeführt werden. Der Gesamtdatensatz wird anhand der Variable `z` aufgeteilt und es wird jeweils eine getrennte Abbildung erzeugt. Die Variable für die Kontinente heißt `continent`.
 
 ```{r scatterfac, exercise = TRUE, eval=FALSE}
 gf_point(log.co2 ~ log.gdp | ___, data = Co2Gdp)
@@ -390,10 +390,10 @@ gf_point(log.co2 ~ log.gdp | continent, data = Co2Gdp)
 ### 
 
 ```{r facet, echo=FALSE}
-question("Gemäß der Abbildung: im welchen Kontinent scheint der Zusammenhang am schwächsten zu sein?",
+question("Gemäß der Abbildung: In welchem Kontinent scheint der Zusammenhang am schwächsten zu sein?",
   answer("Africa", message = "Für eine genaue Untersuchung wird dann jeweils die *kontinentspezifische* Steigung betrachtet."),
   answer("Asia", message = "Für eine genaue Untersuchung wird dann jeweils die *kontinentspezifische* Steigung betrachtet."),
-  answer("Europe", correct = TRUE, message = "Für eine genaue Untersuchung wird dann jeweils ddie *kontinentspezifische* Steigung betrachtet."),
+  answer("Europe", correct = TRUE, message = "Für eine genaue Untersuchung wird dann jeweils die *kontinentspezifische* Steigung betrachtet."),
   answer("North America", message = "Für eine genaue Untersuchung wird dann jeweils die *kontinentspezifische* Steigung betrachtet."),
   answer("Oceania", message = "Für eine genaue Untersuchung wird dann jeweils die *kontinentspezifische* Steigung betrachtet. Achtung: Hier nur wenige Beobachtungen."),
   answer("South America", message = "Für eine genaue Untersuchung wird dann jeweils die *kontinentspezifische* Steigung betrachtet.")
@@ -416,20 +416,20 @@ lm(log.co2 ~ continent, data = Co2Gdp)
 
 ###
 
-Der Achsenabschnitt (`(Intercept)`) bezieht sich auf die *Referenzklasse*, i.d.R. die alphanumerisch erste Ausprägung, hier `Africa`. Die geschätzten Koeffizienten zeigen die Veränderung im Vergleich zur Referenz. Z.B.
+Der Achsenabschnitt (`Intercept`) bezieht sich auf die *Referenzklasse*, i.d.R. die alphanumerisch erste Ausprägung, hier `Africa`. Die geschätzten Koeffizienten zeigen die Veränderung im Vergleich zur Referenz. Z.B.
 
 $$\bar{y}_{\text{Asia}}=\hat{\beta}_0+\hat{\beta}_{\text{Asia}}=`r round(coef(erglm.cont)[1],4)`+`r round(coef(erglm.cont)[2],4)`=`r round(mean(log.co2 ~ continent, data = Co2Gdp)[2],4)`$$
 
 ###
 
 ```{r contrast, echo=FALSE}
-question("Welcher Kontinent hat im Mittelwert der Länder die niedrigsten CO~2~ Emissionen je Einwohner?",
-  answer("Africa", correct = TRUE, message = "Richtig: die geschätzten Koeffizienten für die anderen Kontinente sind positiv."),
-  answer("Asia", message = "Falsch: der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
-  answer("Europe", message = "Falsch: der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
-  answer("North America", message = "Falsch: der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
-  answer("Oceania", message = "Falsch: der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
-  answer("South America", message = "Falsch: der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz.")
+question("Welcher Kontinent hat im Mittelwert der Länder die niedrigsten CO~2~ -Emissionen je Einwohner?",
+  answer("Africa", correct = TRUE, message = "Richtig: Die geschätzten Koeffizienten für die anderen Kontinente sind positiv."),
+  answer("Asia", message = "Falsch: Der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
+  answer("Europe", message = "Falsch: Der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
+  answer("North America", message = "Falsch: Der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
+  answer("Oceania", message = "Falsch: Der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
+  answer("South America", message = "Falsch: Der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz.")
 )
 ```
 
@@ -444,7 +444,7 @@ gf_point(log.co2 ~ log.gdp | continent, data = Co2Gdp) %>%
 
 ### Modellierung mit Moderator
 
-Visuell unterscheidet sich der der Zusammenhang $\beta_1$ zwischen den Kontinenten -- der Kontinent *moderiert* den Zusammenhang. Dies kann auch in der Modellierung berücksichtigt werden. Über `+` werden Variablen hinzugefügt, über `:` eine Wechselwirkung, Interaktion.
+Visuell unterscheidet sich der Zusammenhang $\beta_1$ zwischen den Kontinenten -- der Kontinent *moderiert* den Zusammenhang. Dies kann auch in der Modellierung berücksichtigt werden. Über `+` werden Variablen hinzugefügt, über `:` eine Wechselwirkung, Interaktion.
 
 ```{r wechsel, exercise = TRUE}
 lm(log.co2 ~ log.gdp + continent + log.gdp:continent, data = Co2Gdp) %>%
@@ -453,11 +453,11 @@ lm(log.co2 ~ log.gdp + continent + log.gdp:continent, data = Co2Gdp) %>%
 
 ###
 
-Die Kennzahlen bestätigen den visuellen Eindruck: der Achsenabschnitt des Logarithmus der CO~2~-Emissionen ist in Europa am höchsten (siehe `Estimate` für `continentEurope`), aber der beobachtete Zusammenhang $\hat{\beta_1}$ zwischen dem Logarithmus des BIP und der Emissionen ist am geringsten ((siehe `Estimate` für `log.gdp:continentEurope`)).
+Die Kennzahlen bestätigen den visuellen Eindruck: Der Achsenabschnitt des Logarithmus der CO~2~-Emissionen ist in Europa am höchsten (siehe `Estimate` für `continentEurope`), aber der beobachtete Zusammenhang $\hat{\beta_1}$ zwischen dem Logarithmus des BIP und der Emissionen ist am geringsten (siehe `Estimate` für `log.gdp:continentEurope`).
 
 ## Ausblick
 
-In einem weiteren Tutorial werden Sie einen ersten Einblick in Grundideen der Kausale Modellierung erhalten.
+In einem weiteren Tutorial werden Sie einen ersten Einblick in Grundideen der Kausalen Modellierung erhalten.
 
 
 
