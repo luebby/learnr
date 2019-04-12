@@ -131,10 +131,10 @@ question("Kann aus der Datenanalyse unmittelbar eine Kausalaussage folgen (CSR f
 
 ### Kausalität
 
-Bei *Beobachtungsstudien* (wie hier) kann man sich zunächst *nicht* sicher sein, ob es nicht z. B. Kovariablen gibt, die den Zusammenhang beeinflussen. Wie bei der Korrelation zwischen Störchen und Geburten.
+Bei *Beobachtungsstudien* (wie hier) kann man sich zunächst *nicht* sicher sein, ob es nicht z. B. Kovariablen gibt, die den Zusammenhang beeinflussen. Wie bei der Korrelation zwischen Störchen und Geburten [https://doi.org/10.1111/1467-9639.00013](https://doi.org/10.1111/1467-9639.00013).
 
 Bei der Frage von CSR und CFP ist z. B. vorstellbar, dass besonders gut dastehende Unternehmen sich einen Nachhaltigkeitsbericht "leisten können". Mögliche Kovariablen könnten z. B. Geschäftsfeld, Unternehmensgröße etc. sein.  
-Um solchen Fehlinterpretationen möglichst vorzubeugen wird, in der Hoffnung, dass sich die Daten gleichmäßig verteilen, in *randomisierten Experimenten* den Beobachtungen *zufällig* eine sogenannte "Behandlung" zugewiesen. 
+Um solchen Fehlinterpretationen möglichst vorzubeugen wird, in der Hoffnung, dass sich die Daten gleichmäßig verteilen, in *randomisierten Experimenten* den Beobachtungen *zufällig* eine sogenannte "Behandlung" zugewiesen.  Dies ist in Beobachtungsstudien so nicht möglich, es kann soweit möglich lediglich darauf geachtet werden, dass die Vergleichsgruppen möglichst ähnliche Grundvoraussetzungen erfüllen bzw. Einflussfaktoren aufweisen.
 
 ## Explorative Datenanalyse
 
@@ -281,9 +281,9 @@ diffmean(roa ~ report, data = CsrCfp)
 ```
 
 ```{r beweis, echo=FALSE}
-question("Beweist die Analyse, dass $\\mu_{Nein}-\\mu_{Ja} <0 \\Leftrightarrow \\mu_{Nein}<\\mu_{Ja}$ gilt?",
-  answer("Ja", message = "Falsch: In der Stichprobe ist der Mittelwert ohne Nachhaltigkeitsbericht kleiner -- dies kann aber auch zufällig passieren, wenn es in der Population keinen Unterschied gibt."),
-  answer("Nein", correct = TRUE, message = "Richtig: In der Stichprobe ist der Mittelwert ohne Nachhaltigkeitsbericht kleiner -- dies kann aber auch zufällig passieren, wenn es in der Population keinen Unterschied gibt.")
+question("Beweist die Analyse, dass $\\mu_{Nein}<\\mu_{Ja}$ gilt?",
+  answer("Ja", message = "Falsch: **In der Stichprobe** ist der Mittelwert ohne Nachhaltigkeitsbericht kleiner -- dies kann aber auch zufällig passieren, wenn es in der Population keinen Unterschied gibt."),
+  answer("Nein", correct = TRUE, message = "Richtig: **In der Stichprobe** ist der Mittelwert ohne Nachhaltigkeitsbericht kleiner -- dies kann aber auch zufällig passieren, wenn es in der Population keinen Unterschied gibt.")
 )
 ```
 
@@ -409,6 +409,15 @@ question("Stimmt die Aussage: Die Wahrscheinlichkeit, dass $H_0$ stimmt, liegt b
 
 ## (Allgemeine) lineare Modellierung
 
+Die meisten statistischen Modelle sind Spezialfälle eines linearen Modells $y=a\cdot x+b$ oder einer sehr nahen Approximation eines solchen. 
+In der Darstellung als lineares Modell ist das Rezept für eine Variable y eine Steigung $\beta_1$ für die Richtung und Stärke des Zusammenhangs, mal x, plus ein y-Achsenabschnitt $\beta_0$, also:
+$y=β_0+β_1x$. Als Hypothese formuliert lautet das Modell wie folgt: $H_0: y=β_0+β_1x \quad vs. \quad H_1: β_1=0$.
+Dies wird auch als Regressionsmodell bezeichnet.
+ 
+Wie sieht es für unseren Datensatz aus, wenn wir `roa` als (allgemeines) lineares Modell von `report` darstellen? Also
+
+$$\text{roa}=\beta_0 + \beta_1 \cdot \text{report} + \epsilon $$
+ 
 Diese Werte kennen wir schon:
 
 ```{r einleitung lm}
@@ -418,16 +427,12 @@ mean(roa ~ report, data = CsrCfp)
 diffmean(roa ~ report, data = CsrCfp)
 ```
 
-Was, wenn wir `roa` als (allgemeines) lineares Modell von `report` darstellen? Also
-
-$$\text{roa}=\beta_0 + \beta_1 \cdot \text{report} + \epsilon $$
+Dann lautet hier das lineare Modell:
 
 ```{r lm, exercise = TRUE}
 lm(roa ~ report, data = CsrCfp)
 ```
-
-###
-
+ 
 ### Ergebnis
 
 Und wieder dasselbe Ergebnis:
@@ -437,7 +442,8 @@ $\hat{\beta}_0=\bar{x}_{Ja}$, $\hat{\beta}_1=\bar{x}_{Nein}-\bar{x}_{Ja}$.
 Und damit insgesamt:
 
 $$\widehat{roa}_i=`r coef(erglm)[1]`  `r coef(erglm)[2]` \cdot  \begin{cases}1, \,\text{i hat keinen Report veröffentlicht} \\ 0, \,\text{i hat einen Report veröffentlicht}\end{cases}  $$
-
+ 
+Näheres zur Regression folgt in einem anderen Tutorial.
 
 
 
@@ -509,7 +515,7 @@ CsrCfp %>%
 
 Wenn Sie mehr als zwei Gruppen vergleichen wollen, gehen einfache Differenzen (`diffmean()` bzw. `diffprop()`) nicht mehr. Hier helfen dann z. B. die $\chi^2$-Statistik (kategorial, `xchisq.test()`) oder $F$-Statistik (numerisch, `aov()`) weiter.
 
-Kausale Inferenz jenseits eines hier nicht möglichen randomisierten Experiments, kann über *Directed Acyclic Graphs* oder auch über das *Potential Outcome*-Konzept analysiert werden.
+Kausale Inferenz jenseits einer Beobachtungsstudie, sprich eines hier nicht möglichen randomisierten Experiments, kann über *Directed Acyclic Graphs* oder auch über das *Potential Outcome*-Konzept analysiert werden.
 
 In einem nächsten Tutorial analysieren wir über eine *Lineare Regression* einen Zusammenhang zwischen zwei numerischen Variablen.
 
