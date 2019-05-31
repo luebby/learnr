@@ -27,7 +27,7 @@ Daten umfassen in aller Regel viele Informationen. Die enthaltenen *Weisheiten* 
 
 Grafiken und Kennzahlen sind hierbei ein hilfreiches Mittel, um vorliegende Daten zu analysieren. Die Information, die in Daten steckt, soll *dargestellt* werden. 
 
-In diesem Tutorium geht es darum, dass Sie lernen wie Sie mit [mosaic](https://projectmosaic.github.io/mosaic/) und [ggformula](https://projectmosaic.github.io/ggformula/){target="_blank"} schnell und einfach Informationen aus Daten entdecken können.
+In diesem Tutorium geht es darum, dass Sie lernen wie Sie mit [mosaic](https://projectmosaic.github.io/mosaic/){target="_blank"} und [ggformula](https://projectmosaic.github.io/ggformula/){target="_blank"} schnell und einfach Informationen aus Daten entdecken können.
 
 
 ### Interesse?
