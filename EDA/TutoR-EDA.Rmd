@@ -27,7 +27,7 @@ Daten umfassen in aller Regel viele Informationen. Die enthaltenen *Weisheiten* 
 
 Grafiken und Kennzahlen sind hierbei ein hilfreiches Mittel, um vorliegende Daten zu analysieren. Die Information, die in Daten steckt, soll *dargestellt* werden. 
 
-In diesem Tutorium geht es darum, dass Sie lernen wie Sie mit [mosaic](https://projectmosaic.github.io/mosaic/) und [ggformula](https://projectmosaic.github.io/ggformula/) schnell und einfach Informationen aus Daten entdecken können.
+In diesem Tutorium geht es darum, dass Sie lernen wie Sie mit [mosaic](https://projectmosaic.github.io/mosaic/) und [ggformula](https://projectmosaic.github.io/ggformula/){target="_blank"} schnell und einfach Informationen aus Daten entdecken können.
 
 
 ### Interesse?
@@ -44,9 +44,9 @@ Aber wie kommen wir zu obigem Schluss?
 ### Aufwand, Interesse und Geschlecht
 
 Folgend eine Grafik zum Zusammenhang zwischen vermutetem Lernaufwand und Interesse an Statistik auf Basis einer Umfrage - angelehnt an den 
-[SATS-36](https://irp-cdn.multiscreensite.com/281322c3/files/uploaded/Final36scoring.pdf)
+[SATS-36](https://irp-cdn.multiscreensite.com/281322c3/files/uploaded/Final36scoring.pdf){target="_blank"}
 von
-[Candance Schau](https://www.evaluationandstatistics.com/background) 
+[Candance Schau](https://www.evaluationandstatistics.com/background){target="_blank"} 
 (siehe auch Kapitel "Survey of Attitudes Toward Statistics") - die in einigen Semestern auch an der FOM Hochschule durchgeführt wurde.
 
 ```{r intro, echo=FALSE}
@@ -225,7 +225,7 @@ Finden Sie auf Ihrer Tastatur die *Tilde*: `~`. Tippen Sie sie innerhalb der Anf
 "Die Tilde (~) werden wir jetzt öfter brauchen."
 ```
 
-Einen Schummelzettel für `mosaic` Befehle gibt es auf der Homepage des [ifes](https://www.fom.de/forschung/institute/ifes.html){target="_blank"} oder direkt  [hier](https://www.fom.de/fileadmin/fom/forschung/ifes/Cheatsheet-DA-R.pdf).
+Einen Schummelzettel für `mosaic` Befehle gibt es auf der Homepage des [ifes](https://www.fom.de/forschung/institute/ifes.html){target="_blank"} oder direkt  [hier](https://www.fom.de/fileadmin/fom/forschung/ifes/Cheatsheet-DA-R.pdf){target="_blank"}.
 
 ### Hinweise zu `R`
 
@@ -239,14 +239,14 @@ Einen Schummelzettel für `mosaic` Befehle gibt es auf der Homepage des [ifes](h
 
 ## Survey of Attitudes Toward Statistics
 
-[Candance Schau](https://www.evaluationandstatistics.com/background) hat mit dem [SATS-36](https://irp-cdn.multiscreensite.com/281322c3/files/uploaded/Final36scoring.pdf) ein Fragenset entwickelt um diverse Aspekte der Einstellung von Studierenden gegenüber dem Fach Statistik zu erheben.
+[Candance Schau](https://www.evaluationandstatistics.com/background){target="_blank"} hat mit dem [SATS-36](https://irp-cdn.multiscreensite.com/281322c3/files/uploaded/Final36scoring.pdf){target="_blank"} ein Fragenset entwickelt um diverse Aspekte der Einstellung von Studierenden gegenüber dem Fach Statistik zu erheben.
 
 Für uns besonders interessant:
 
 - Interesse (Interest): Individuelles Interesse an Statistik: `B_SATS_Interesse`
 - Aufwand (Effort): Geplanter Aufwand zum Lernen des Fachs Statistik `B_SATS_Aufwand`
 
-*Tipp:* Generell empfiehlt es sich **immer** genau hinzuschauen wie erhoben wurde und wie die Fragen genau gestellt wurden. Hinweise gibt es in der oben genannten [Quelle](https://irp-cdn.multiscreensite.com/281322c3/files/uploaded/Final36scoring.pdf).
+*Tipp:* Generell empfiehlt es sich **immer** genau hinzuschauen wie erhoben wurde und wie die Fragen genau gestellt wurden. Hinweise gibt es in der oben genannten [Quelle](https://irp-cdn.multiscreensite.com/281322c3/files/uploaded/Final36scoring.pdf){target="_blank"}.
 
 ```{r Likert, echo=FALSE}
 question("Wie viele Antwortalternativen gibt es pro Frage?",
@@ -544,7 +544,7 @@ In einem nächsten Tutorium werden Sie kennen lernen wie Erkenntnisse aus Daten 
 
 ## Hinweis
 
-Dieses Tutorium orientiert sich teiweise an einem Tutorial des [StatPREP](http://statprep.org/) Projektes.
-Siehe auch [https://github.com/StatPREP/Lessons/tree/master/US_Births](https://github.com/StatPREP/Lessons/tree/master/US_Births).
+Dieses Tutorium orientiert sich teiweise an einem Tutorial des [StatPREP](http://statprep.org/){target="_blank"} Projektes.
+Siehe auch [https://github.com/StatPREP/Lessons/tree/master/US_Births](https://github.com/StatPREP/Lessons/tree/master/US_Births){target="_blank"}.
 
 
