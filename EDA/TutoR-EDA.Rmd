@@ -50,7 +50,7 @@ von
 (siehe auch Kapitel "Survey of Attitudes Toward Statistics") - die in einigen Semestern auch an der FOM Hochschule durchgeführt wurde.
 
 ```{r intro, echo=FALSE}
-gf_point(B_SATS_Aufwand ~ B_SATS_Interesse, color = ~ G01_Geschlecht,  data = Sats) %>%
+gf_point(B_SATS_Aufwand ~ B_SATS_Interesse, data = Sats) %>%
   gf_jitter()
 ```
 
@@ -77,63 +77,48 @@ Um die vorliegende Grafik zu erzeugen sind die Antworten wie folgt:
 
 #### 1. Was soll der Computer für Sie tun?
 
-**A.** Erstelle ein Streudiagramm (z. B. eine **Grafik** bestehend aus **Punkten**)
+**A.** Erstelle eine **Grafik** (z. B. ein Streudiagramm bestehend aus **Punkten**)
   
 #### 2. Was muss der Computer dafür wissen?
 
 **A.** Die zugehörigen Daten, aus denen die Grafik erzeugt wird:
 
-  * Die Variable, die auf der $y$-Achse abgetragen werden soll.
-  * Die Variable, die auf der $x$-Achse abgetragen werden soll.
-  * Die Variable, die die Farbe der Punkte bestimmen soll.
-  * Der Datensatz, welcher die Variablen $x$ und $y$ enthält.
+  * Die Variable, die auf der $y$-Achse abgetragen werden soll (`B_SATS_Aufwand`).
+  * Die Variable, die auf der $x$-Achse abgetragen werden soll (`B_SATS_Interesse`).
+  * Der Datensatz, welcher die Variablen $x$ und $y$ enthält (`Sats`).
       
 Wir müssen nur lernen wie wir `R` diese Informationen mitteilen.
 
 
 ### Das *Formula* Template
 
-Wir werden die Antworten auf unsere zwei Fragen durch das entsprechende Benennen der Platzhalter dieses wichtigen Templates liefern:
+Dies geschieht über eine Formel-Syntax wie folgt:
 
 <center>
-<h2><strong><span class="invboxed">analyse</span> ( <span class="invboxed">y</span> ~ <span class="invboxed">x</span> , data = <span class="invboxed">Daten</span> )</strong> 
+<h2><strong><span class="invboxed">erstelle.streudiagramm</span> (<span class="invboxed">y</span> ~ <span class="invboxed">x</span> , data = <span class="invboxed">datensatz</span> )</strong> 
 </h2></center>
 
 &nbsp;
 
-Hierzu müssen wir lediglich identifizieren, welche Teile unserer Antworten an welche Position gehören.
+Diese Form können wir als Template nutzen und verallgemeinern, indem wir die Komponenten als Platzhalter hernehmen und ihnen zur leichteren Zuordnung Namen geben:
 
 ### "Die Namen des Spiels"
 
-Es ist hilfreich den Boxen Namen zu geben:
-
 <center>
-<h2><strong><span class="boxed">meine.analyse</span> ( <span class="boxed">&nbsp;mein.y&nbsp;</span> ~ <span class="boxed">&nbsp;mein.x&nbsp;</span> , data = <span class="boxed">Meine.Daten</span> , ...)</strong> 
+<h2><strong><span class="boxed">meine.funktion</span> (<span class="boxed">&nbsp;mein.y&nbsp;</span> ~ <span class="boxed">&nbsp;mein.x&nbsp;</span>, data = <span class="boxed">meine.daten</span> , ...)</strong> 
 </h2></center>
 &nbsp;
 
 Diese Namen können uns als Gedächtnisstütze dienen, welche Dinge wohin gehören.
+
 (Die `...` deuten an, dass weitere Argumente existieren, von denen wir später noch ein paar ergänzen werden.)
 
-
-
-### Die zwei Fragen und das Formel-Template
-
-
-&nbsp;
-<center>
-<h2><strong><span class="boxed">meine.analyse</span> ( <span class="boxed">&nbsp;mein.y&nbsp;</span> ~ <span class="boxed">&nbsp;mein.x&nbsp;</span> , data = <span class="boxed">Meine.Daten</span> , ...)</strong> 
-</h2></center>
- 
-&nbsp;
 
 
 #### F. Was soll `R` für Sie tun?  A. Ziel
 
  * Dies bestimmt die Funktionen, die gebraucht werden.
- 
  * Für eine Grafik beschreibt die Funktion welche Art von Zeichen genutzt werden (in unserem Beispiel: Punkte).
- 
  * Andere Möglichkeiten umfassen Linien, Boxplots, etc.
 
 #### F. Was muss `R` dafür wissen?  A. Argumente 
@@ -147,7 +132,7 @@ Diese Namen können uns als Gedächtnisstütze dienen, welche Dinge wohin gehör
 
 &nbsp;
 <center>
-<h2><strong><span class="boxed">meine.analyse</span> ( <span class="boxed">&nbsp;mein.y&nbsp;</span> ~ <span class="boxed">&nbsp;mein.x&nbsp;</span> , data = <span class="boxed">Meine.Daten</span> , ...)</strong> 
+<h2><strong><span class="boxed">meine.funktion</span> (<span class="boxed">&nbsp;mein.y&nbsp;</span> ~ <span class="boxed">&nbsp;mein.x&nbsp;</span>, data = <span class="boxed">meine.daten</span> , ...)</strong> 
 </h2></center>
  
 &nbsp;
@@ -161,57 +146,59 @@ Diese Namen können uns als Gedächtnisstütze dienen, welche Dinge wohin gehör
   <th> Zweck </th>
 </tr>
 <tr>
-  <td> `meine.analyse` </td>
+  <td> `meine.funktion` </td>
   <td> `gf_point` </td>
   <td> Plotte einige Punkte </td>
 </tr>
 <tr>
   <td> `mein.y` </td>
-  <td> `Aufwand` </td>
+  <td> `B_SATS_Aufwand` </td>
   <td> y-Achsen Variable</td>
 </tr>
 <tr>
   <td> `mein.x` </td>
-  <td> `Interesse` </td>
+  <td> `B_SATS_Interesse` </td>
   <td> x-Achsen Variable </td>
 </tr>
 <tr>
-  <td> `Meine.Daten` </td>
+  <td> `meine.daten` </td>
   <td> `Sats`</td>
   <td> Name des Datensatzes </td>
 </tr>
 <tr>
-  <td> `...` </td>
-  <td> `col = Geschlecht` </td>
-  <td> Farbe der Punkte </td>
+  <td> `... (z.B. color)` </td>
+  <td> `G01_Geschlecht` </td>
+  <td> Punkte nach Gruppen einfärben </td>
 </tr>
 </table>
 
 
-## mosaic
+## Mosaic
 
 ### Formel-Interface 
 
-Wie oben schon hergeleitet: `mosaic` (und `ggformula`) verwenden ein einheitliches Formel-Interface (`formula`) für grafische Darstellungen, Kennzahlen, aber auch für Modellierung und Inferenz:
+Wie oben schon hergeleitet verwendet `mosaic` (und `ggformula`) ein einheitliches Formel-Interface (`formula`) für grafische Darstellungen und Kennzahlen, aber auch für Modellierung und Inferenz:
 
 In seiner einfachsten Form sieht der `R` Code so aus:
 
 ```{r mosaicTemplate, eval=FALSE}
-meine.analyse(mein.y ~ mein.x, data = Meine.Daten)
+meine.analyse(mein.y ~ mein.x, data = meine.daten)
 ```
 
 - Was soll `R` tun: Meine Analyse (`meine.analyse`)
-- Was muss `R` dafür wissen: Für welche Variable(n) (z. B. `mein.x`) aus welchem Datensatz (`Meine.Daten`)
+- Was muss `R` dafür wissen: Für welche Variable(n) (z. B. `mein.x`) aus welchem Datensatz (`meine.daten`)
 
 Dabei kann bei Analysen nur einer Variable sogar `mein.y` fehlen.
 
 `y ~ x` heißt soviel wie: `y` wird in Abhängigkeit von `x` analysiert. Fast wie in der Mathematik:
 
 $$y=f(x)$$
-
-Finden Sie auf Ihrer Tastatur die *Tilde*: `~`. Tippen Sie sie innerhalb der Anführungsstriche ein und klicken dann auf `Submit Answer`. 
+Hierbei darf in der Syntax der betrachteten R-Pakete die Tilde `~` nicht fehlen!
 
 *Hinweis:* Beim Apple ist `~` die Tastenkombination `alt`+`n`, ansonsten `Alt Gr`+`+`.
+
+
+Finden Sie auf Ihrer Tastatur die *Tilde*: `~`. Tippen Sie sie innerhalb der Anführungsstriche ein und klicken dann auf `Submit Answer`. 
 
 ```{r tilde, exercise = TRUE, eval=FALSE}
 "_"
@@ -268,7 +255,7 @@ question("Bei welchem Wert (Score) ist das Interesse am Fach Statistik besonders
 
 ### Uns vorliegende Daten
 
-Im Rahmen einer freiwilligen Online-Befragung zu Beginn eines Semesters an der FOM wurden Daten, u. a. zu den oben genannten Fragestellungen, erhoben.
+Im Rahmen einer freiwilligen Online-Befragung zu Beginn eines Semesters an der FOM wurden Daten -- u. a. zu den oben genannten Fragestellungen -- erhoben. 
 
 ```{r Stripro, echo=FALSE}
 question("Welche Form der Datenerhebung liegt vor?",
@@ -287,15 +274,18 @@ Installiertes Paket `mosaic` laden:
 library(mosaic)
 ```
 
+Unsere Daten einlesen: 
 
-Unsere Daten einlesen (wenn sie im aktuellen Arbeitsverzeichnis liegen): Datenformat `csv` mit Semikolon als Datentrennzeichen und Komma als Dezimaltrennzeichen. Variablennamen in der ersten Zeile. Damit folgt:
+Datenformat `csv` mit Semikolon als Datentrennzeichen und Komma als Dezimaltrennzeichen. Variablennamen in der ersten Zeile. Damit folgt (wenn die Daten im aktuellen Arbeitsverzeichnis liegen):
 
 
 ```{r Einlesen, eval=FALSE}
 Sats <- read.csv2("SATS-36.csv")
 ```
 
-*Hinweis*: Wenn Sie später selber Daten einlesen müssen Sie ggf. Pfade etc. anpassen
+*Hinweis*: Wenn Sie später selber Daten einlesen, müssen Sie ggf. Pfade etc. anpassen
+
+Wir betrachten im folgenden die Variablen Interesse (`B_SATS_Interesse`), Aufwand (`B_SATS_Aufwand`) und das Geschlecht (`G01_Geschlecht`).
 
 ```{r datatable, echo=FALSE}
 datatable(Sats)
@@ -326,8 +316,8 @@ question("Wie viele Beobachtungen liegen vor?",
 
 Zur Analyse nur einer Variable sind u. a. folgende passend:
 
-- `gf_histogram()`: Histogramm - geeignet für numerische Variablen, insbesondere mit vielen Ausprägungen (z. B. (quasi-) stetige Variablen).
-- `gf_bar()`: Balkendiagramm - geeignet für kategoriale Variablen oder auch für diskrete numerische Variablen.
+- `gf_histogram()`: Histogramm -- geeignet für numerische Variablen, insbesondere mit vielen Ausprägungen (z. B. (quasi-) stetige Variablen).
+- `gf_bar()`: Balkendiagramm -- geeignet für kategoriale Variablen oder auch für diskrete numerische Variablen.
 
 Erzeugen Sie eine Abbildung Ihrer Wahl für die Variable `B_SATS_Interesse`.
 
@@ -357,11 +347,11 @@ gf_histogram( ~ B_SATS_Aufwand, data = Sats)
 "Es muss nur der Name der Variable geändert werden, die untersucht werden soll."
 ```
 
-Nun können Sie also auch die Verteilungsform für die Variable Aufwand bestimmen.
+Damit können Sie nun also auch die Verteilungsform für die Variable Aufwand bestimmen.
 
 ### Kennzahlen 
 
-Der Befehl `favstats()` berechnet die üblichen statistischen Kennzahlen für numerische Variablen. Neben der Frage was `R` tun soll (hier: Kennzahlen berechnen) ist zu klären was `R` dafür wissen muss - z. B. für welche Variable `B_SATS_Interesse` und in welchem Datensatz (`data = `) diese vorliegt.
+Der Befehl `favstats()` berechnet die üblichen statistischen Kennzahlen für numerische Variablen. Neben der Frage was `R` tun soll (hier: Kennzahlen berechnen) ist zu klären was `R` dafür wissen muss - z. B. für welche Variable (`B_SATS_Interesse`) und in welchem Datensatz (`data = `) diese vorliegt.
 
 
 ```{r favstats1, exercise = TRUE, eval=FALSE}
@@ -403,7 +393,7 @@ tally(~ G01_Geschlecht, data = Sats, format = "proportion")
 ### Abbildungen
 
 Für einen ersten Eindruck des Zusammenhangs zweier Variablen kann ein Streudiagramm, wie wir es bereits zu Beginn gesehen haben, verwendet werden. 
-Ein Streudiagramm (`gf_point()`), welches die beiden numerischen Merkmale `B_SATS_Aufwand` und `B_SATS_Interesse` darstellt, sieht wie folgt aus: Über `%>%` wird das Ergebnis weitergeleitet und `gf_jitter()` *verwackelt* die Punkte ein wenig, um mögliche Überlagerungen identifizierbar zu machen.
+Ein Streudiagramm `gf_point()`, welches die beiden numerischen Merkmale `B_SATS_Aufwand` und `B_SATS_Interesse` darstellt, sieht wie folgt aus: Über `%>%` wird das Ergebnis weitergeleitet und `gf_jitter()` *verwackelt* die Punkte ein wenig, um mögliche Überlagerungen identifizierbar zu machen.
 
 ```{r point,  exercise = TRUE}
 gf_point(B_SATS_Aufwand ~ B_SATS_Interesse, data = Sats) %>%
@@ -440,13 +430,13 @@ gf_boxplot(B_SATS_Aufwand ~ G01_Geschlecht, data = Sats)
 
 ### Kennzahlen
 
-Kennzahlen gehen analog:
+Die Berechnung der Kennzahlen geht analog:
 
 ```{r favstats2}
 favstats(B_SATS_Aufwand ~ G01_Geschlecht, data = Sats)
 ```
 
-Aber auch einzelne Kennzahlen, wie arithmetischer Mittelwert (`mean()`), Median (`median()`) und Standardabweichung `sd()` usw.
+Aber auch einzelne Kennzahlen, wie arithmetischer Mittelwert `mean()`, Median `median()` und Standardabweichung `sd()` usw.
 
 Probieren Sie aus.
 
@@ -456,7 +446,7 @@ ___(B_SATS_Aufwand ~ G01_Geschlecht, data = Sats)
 
 ### Korrelation
 
-Eine Kennzahl für den *linearen* Zusammenhang zweier numerischer Variablen ist der Korrelationskoeffizient, `cor()`.
+Eine Kennzahl für den *linearen* Zusammenhang zweier numerischer Variablen ist der Korrelationskoeffizient `cor()`:
 
 ```{r cor}
 cor(B_SATS_Aufwand ~ B_SATS_Interesse, data = Sats)
