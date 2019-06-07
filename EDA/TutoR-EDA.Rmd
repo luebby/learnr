@@ -177,7 +177,7 @@ Diese Namen können uns als Gedächtnisstütze dienen, welche Dinge wohin gehör
 
 ### Formel-Interface 
 
-Wie oben schon hergeleitet verwendet `mosaic` (und `ggformula`) ein einheitliches Formel-Interface (`formula`) für grafische Darstellungen und Kennzahlen, aber auch für Modellierung und Inferenz:
+Wie oben schon eingeleitet verwendet `mosaic` (und `ggformula`) ein einheitliches Formel-Interface (`formula`) für grafische Darstellungen und Kennzahlen, aber auch für Modellierung und Inferenz:
 
 In seiner einfachsten Form sieht der `R` Code so aus:
 
