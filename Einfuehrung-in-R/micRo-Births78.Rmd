@@ -1,0 +1,84 @@
+---
+title: "Analyse Geburten"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+
+data(Births78)
+```
+
+## Willkommen
+
+In dieser kleinen App können Sie ein wenig erste Erfahrungen mit [`R`](https://www.r-project.org/) und dem Zusatzpaket [`mosaic`](https://projectmosaic.github.io/mosaic/) sammeln.
+
+## Vorbereitungen
+
+### mosaic
+
+Um ein Zusatzpaket wie `mosaic` in R nutzen zu können muss dies *einmalig* über `install.packages()` installiert werden:
+
+```{r install, eval=FALSE}
+install.packages("mosaic")
+```
+
+
+Um es nutzen zu können wird es über den Befehl `library()` zu Beginn der Arbeit mit R geladen:
+
+```{r mosaic}
+library(mosaic)
+```
+
+*Hinweis*: Die angezeigten Meldungen sind *keine* Fehlermeldungen, nur Hinweise!
+
+## `Births78`
+
+In diesem Datensatz aus dem Paket `mosaic` sind die Geburten je Tag in den USA aus dem Jahre 1978 aufgeführt. 
+
+### Daten in R Sitzung einlesen
+
+Zur Ausführung der Befehle bitte auf `Run Code` drücken.
+
+```{r Births78, exercise = TRUE}
+data(Births78)
+```
+
+*Hinweis*: Es erfolgt keine Meldung o.ä.. In RStudio erscheint der Datensatz rechts oben im Panel `Environment`.
+
+
+### Hilfe zum Datensatz
+
+Das `?` gefolgt von einem R Aufruf `foo` ruft die Hilfe zum R Aufruf `foo` auf -- wobei `foo` hier ein Datensatz ist. Dies funktioniert natürlich nur bei R internen Datensätzen.
+
+```{r Help, exercise = TRUE}
+?Births78
+```
+
+*Hinweis*: In RStudio erscheint die Hilfeseite im Panel rechts unten (`Help`).
+
+### Datensatz betrachten
+
+Wenn Sie den Namen des Datensatzes eingeben, wird dieser angezeigt. 
+
+```{r View, exercise = TRUE}
+Births78
+```
+ 
+*Hinweis*: Dies gilt allgemein für R Objekte, also auch z.B. Funktionen.
+ 
+
+## Analyse
+
+Im folgenden Fenster können Sie jetzt diesen Datensatz selbstständig mit R mosaic analysieren. 
+
+```{r selber, exercise = TRUE, eval=FALSE, exercise.lines=15}
+gf_point(births ~ date, data = Births78)
+```
+
+
+
+
