@@ -1,0 +1,148 @@
+---
+title: "Korrelation Wirtschaftsleistung und Lebenszufriedenheit"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+Zufriedenheit <- read.csv2("gdp-vs-happiness-clean.csv")
+Zufriedenheit.neu <- Zufriedenheit %>%
+  mutate(log.gdp = log10(gdp))
+Model.Zufriedenheit <- lm(ls ~ log.gdp, data = Zufriedenheit.neu) 
+```
+
+## Macht Geld glücklich?
+
+1. Sind Sie reich? 
+2. Sind Sie glücklich?
+
+Sicherlich eine schwierige Frage. Und Korrelation ist nicht Kausalität. Und dann noch das mögliche *Priming*: ändern sich die Antworten vielleicht, wenn ich andersherum gefragt hätte, d.h.,
+
+1. Sind Sie glücklich? 
+2. Sind Sie reich?
+
+Viele kennen die Phrase: *Geld macht nicht glücklich*, manche auch *kein Geld macht auch nicht glücklich*. 
+
+Gucken wir uns dazu Daten an.
+
+
+## Datenbasis
+
+Analysiert wird der Datensatz `gdp-vs-happiness-clean.csv`. Dieser wurde von dem Internetportal [Our World in Data](https://ourworldindata.org/) von der Seite [https://ourworldindata.org/happiness-and-life-satisfaction#income](https://ourworldindata.org/happiness-and-life-satisfaction#income) heruntergeladen und steht unter der [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.de) Lizenz. Der Datensatz wurde für diese Übung bereinigt.
+
+Zur Variablenbeschreibung:
+
+> gpd: GDP per capita, PPP (constant 2011 international $): GDP per capita based on purchasing power parity (PPP). PPP GDP is gross domestic product converted to international dollars using purchasing power parity rates. An international dollar has the same purchasing power over GDP as the U.S. dollar has in the United States. GDP at purchaser's prices is the sum of gross value added by all resident producers in the economy plus any product taxes and minus any subsidies not included in the value of the products. It is calculated without making deductions for depreciation of fabricated assets or for depletion and degradation of natural resources. Data are in constant 2011 international dollars.
+
+> ls: Life satisfaction in Cantril Ladder (World Happiness Report 2018): Average of survey responses to the 'Cantril Ladder' question in the Gallup World Poll. The survey question asks respondents to think of a ladder, with the best possible life for them being a 10, and the worst possible life being a 0. 
+
+
+Damit wir `mosaic` nutzen können, müssen wir es zunächst laden
+
+```{r mosaic}
+library(mosaic)
+```
+
+und die Daten einlesen:
+
+```{r daten}
+Zufriedenheit <- read.csv2("gdp-vs-happiness-clean.csv")
+```
+
+Erste Betrachtung:
+
+```{r RL}
+Zufriedenheit
+```
+
+Übersicht:
+
+```{r}
+inspect(Zufriedenheit)
+```
+
+```{r Generalisierung, echo=FALSE}
+question("Wer oder was sind hier die Beobachtungen?",
+         answer("Personen", message = "Die Daten wurden auf Länderebene aggregiert, der Zusammenhang wird also nicht auf Ebene der einzelnen Personen analysiert sondern auf Durchschnittsebene des Landes."),
+         answer("Länder", correct = TRUE, message = "Die Daten wurden auf Länderebene aggregiert, der Zusammenhang wird also nicht auf Ebene der einzelnen Personen analysiert sondern auf Durchschnittsebene des Landes."))
+```
+
+## Grafische Analyse
+
+`gf_point(mein.y ~ mein.x, data = Meine.Daten)` zeichnet ein Streudiagramm. Welche Form der Darstellung bietet sich an, d.h. welche Variable sollte auf welche Achse?
+
+```{r gf_point, exercise = TRUE, eval=FALSE}
+gf_point(___ ~ ___, data = Zufriedenheit)
+```
+
+```{r gf_point-solution}
+gf_point(ls ~ gdp, data = Zufriedenheit)
+```
+
+## Transformation
+
+Man kann zwar einen positiven Zusammenhang erkennen, dieser sieht aber nicht linear aus:
+
+```{r nichtlinear}
+gf_point(ls ~ gdp, data = Zufriedenheit) %>%
+  gf_smooth()
+```
+
+Dies liegt daran, das Veränderungen des `gdp` häufig *relativ* sind, d.h. $+2\%$ statt $+2000\,€$. Die resultierende rechtsschiefe der Verteilung (viele Werte im unteren Bereich, weniger im oberen) kann durch Logarithmierung korrigiert werden (hier zur Basis 10, nur für $x>0$):
+
+```{r transformation}
+Zufriedenheit.neu <- Zufriedenheit %>%
+  mutate(log.gdp = log10(gdp))
+```
+
+Hier das Ergebnis -- `gf_rug()` zeichnet eine kurze Linie für die Werte auf der jeweiligen Achse:
+
+```{r rugged}
+gf_point(log.gdp ~ gdp, data = Zufriedenheit.neu) %>%
+  gf_rug()
+```
+
+
+Ändern Sie den Code entsprechend, so dass Sie statt `gdp` die transformierte Variable `log.gdp` als modellierende Variable für `ls` verwenden können.
+
+```{r gf_point2, exercise = TRUE, eval=FALSE}
+gf_point(ls ~ gdp, data = Zufriedenheit) %>%
+  gf_smooth()
+```
+
+```{r gf_point2-solution}
+gf_point(ls ~ log.gdp, data = Zufriedenheit.neu) %>%
+  gf_smooth()
+```
+
+## Regressionsanalyse
+
+Der Befehl für eine lineare Regession lautet `lm(mein.y ~ mein.x, data = Meine.Daten)`, `summary()` liefert eine Ergebniszusammenfassung. 
+
+Passen Sie entsprechend an:
+
+```{r lm, exercise = TRUE, eval=FALSE}
+___(ls ~ log.gdp, data = ___) %>%
+  summary()
+```
+
+```{r lm-solution}
+lm(ls ~ log.gdp, data = Zufriedenheit.neu) %>%
+  summary()
+```
+
+## Interpretation
+
+Die geschätzte Modellgleichung der Stichprobe lautet demnach:
+
+$$\widehat{\text{ls}}_i=`r round(coef(Model.Zufriedenheit)[1],2)` + `r round(coef(Model.Zufriedenheit)[2],2)`\cdot \log_{10}(\text{gdp}_i)$$
+
+```{r Schluss, echo=FALSE}
+question("Ist die Kausalaussage: *Eine höhere wirtschaftliche Leistungsfähigkeit führt zu einer höheren Lebenszufriedenheit* aufgrund dieser Analyse gerechtfertigt?",
+         answer("Nein", correct = TRUE, message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z.B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe ist der Zusammenhang aber positiv."),
+         answer("Ja", message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z.B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe ist der Zusammenhang aber positiv."))
+```
