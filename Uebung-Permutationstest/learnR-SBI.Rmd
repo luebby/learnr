@@ -182,7 +182,7 @@ question("Welche Aussage stimmt?",
 
 ## p-Wert
 
-Der p-Wert ist die Wahrscheinlichkeit unter den Annahmen der Nullhypothese, eine mindestens so große Differenz wie die der Stichprobe zu beobachten. Da zunächst keine *Richtung* (z.B. Bier besser als Wasser) vorliegt und die Verteilung symmetrisch ist, wird hier der Absolutetrag `abs()` verwendet:
+Der p-Wert ist die Wahrscheinlichkeit unter den Annahmen der Nullhypothese eine mindestens so große Differenz wie die der Stichprobe zu beobachten. Da zunächst keine *Richtung* (z.B. Bier besser als Wasser) vermutet wird und die Verteilung symmetrisch ist, wird hier der Absolutetrag `abs()` verwendet:
 
 ```{r p-value}
 prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)
@@ -191,5 +191,5 @@ prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)
 - `abs(diffmean)` ist der Betrag der simulierten Differenzen der Verteilung unter $H_0$ (`Nullvtlg`).
 - `abs(diff.stipro)` ist der Betrag der beobachteten Differenz der Stichprobe.
 
-**Fazit:** In `r prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)` der `r nrow(Nullvtlg)` Simulationen war die $H_0$ vorhergesagte Differenz größer als tatsächlich beobachtete. Die beobachteten Daten können *nicht* plausibel durch das Modell *kein Unterschied in der Verteilung in der Population* erklärt werden. 
+**Fazit:** In `r prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)` der `r nrow(Nullvtlg)` Simulationen war die im Modell $H_0$ vorhergesagte Differenz größer als die tatsächlich beobachtete. Die beobachteten Daten können *nicht* plausibel durch das Modell *kein Unterschied in der Verteilung in der Population* erklärt werden. 
 
