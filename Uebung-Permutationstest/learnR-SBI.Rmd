@@ -63,7 +63,7 @@ question("Wie lautet die Nullhypothese?",
 
 ## Erste Analyse
 
-`gf_jitter(mein.y ~ mein.x, data = Meine.Daten)` zeichnet ein *verwackeltes* Streudiagramm. Dies bietet sich hier an, da beide Variablen diskret sind. Welche Form der Darstellung bietet sich an, d.h. welche Variable (`mosquitoes`, `drink`) sollte auf welche Achse?
+`gf_jitter(mein.y ~ mein.x, data = Meine.Daten)` zeichnet ein *verwackeltes* Streudiagramm. Dies bietet sich hier an, da beide Variablen diskret sind. Welche Variable (`mosquitoes`, `drink`) sollte inhaltlich auf welche Achse?
 
 ```{r gf_point, exercise = TRUE, eval=FALSE}
 gf_jitter(___ ~ ___, width = 0.1, height = 0.1, data = Muecken)
@@ -73,7 +73,7 @@ gf_jitter(___ ~ ___, width = 0.1, height = 0.1, data = Muecken)
 gf_jitter(mosquitoes ~ drink, width = 0.1, height=0.1, data = Muecken)
 ```
 
-(Mit `width=0.1` und `height=0.1` wird die Stärke des Verwackelns vertikal bzw. horizontal festgelegt.
+(Mit `width=0.1` und `height=0.1` wird die Stärke des Verwackelns vertikal bzw. horizontal festgelegt.)
 
 ##
 
