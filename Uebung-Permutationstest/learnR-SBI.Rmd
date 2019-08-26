@@ -21,11 +21,15 @@ Nullvtlg <- do(100)* diffmean(mosquitoes ~ shuffle(drink), data = Muecken)
 
 Bier oder Wasser? 
 
-Was ist attraktiver? Für Mücken?
+Was ist attraktiver? 
+
+##
+
+**Für Mücken?**
 
 ## Datenbasis
 
-Gibt es einen Zusammenhang zwischen dem konsumierten Getränk (Bier oder Wasser) und der Aktivität von Mücken? Dieser Frage wird im Paper Lefèvre, T. et al. (2010). Beer consumption increases human attractiveness to malaria mosquitoes. PloS one, 5(3), e9546.[https://doi.org/10.1371/journal.pone.0009546](https://doi.org/10.1371/journal.pone.0009546) im Rahmen eines Experiments nachgegangen.
+Gibt es einen Zusammenhang zwischen dem konsumierten Getränk (Bier oder Wasser) und der Aktivität von Mücken? Dieser Frage wird im Paper [Lefèvre, T. et al. (2010). Beer consumption increases human attractiveness to malaria mosquitoes. PloS one, 5(3), e9546.](https://doi.org/10.1371/journal.pone.0009546) im Rahmen eines Experiments nachgegangen.
 
 
 ```{r mosaic}
@@ -49,26 +53,31 @@ inspect(Muecken)
 
 Was aktiviert wohl mehr Mücken? 
 
-Sei $F_{\text{Bier}}(x)$ die Verteilung der Anzahl Mücken beim Biertringen und $F_{\text{Wasser}}(x)$ die Anzahl Mücken beim Wassertrinken.
+Sei $F_{\text{Bier}}(y)$ die Verteilung der Anzahl Mücken beim Biertringen und $F_{\text{Wasser}}(y)$ die Anzahl Mücken beim Wassertrinken.
 
 ```{r Generalisierung, echo=FALSE}
 question("Wie lautet die Nullhypothese?",
-         answer("$F _ {\\text{Bier}}(x)=F _ {\\text{Wasser}}(x)$", correct = TRUE, message = "Die Nullhypothese lautet *kein* Unterschied in der Verteilung."),
-         answer("$F _ {\\text{Bier}}(x) \\neq F _ {\\text{Wasser}}(x)$", message = "Die Nullhypothese lautet *kein* Unterschied in der Verteilung."))
+         answer("$F _ {\\text{Bier}}(y)=F _ {\\text{Wasser}}(y)$", correct = TRUE, message = "Die Nullhypothese lautet *kein* Unterschied in der Verteilung."),
+         answer("$F _ {\\text{Bier}}(y) \\neq F _ {\\text{Wasser}}(y)$", message = "Die Nullhypothese lautet *kein* Unterschied in der Verteilung."))
 ```
 
 ## Erste Analyse
 
-`gf_point(mein.y ~ mein.x, data = Meine.Daten)` zeichnet ein Streudiagramm. Welche Form der Darstellung bietet sich an, d.h. welche Variable (`mosquitoes`, `drink`) sollte auf welche Achse?
+`gf_jitter(mein.y ~ mein.x, data = Meine.Daten)` zeichnet ein *verwackeltes* Streudiagramm. Dies bietet sich hier an, da beide Variablen diskret sind. Welche Form der Darstellung bietet sich an, d.h. welche Variable (`mosquitoes`, `drink`) sollte auf welche Achse?
 
 ```{r gf_point, exercise = TRUE, eval=FALSE}
-gf_point(___ ~ ___, data = Muecken)
+gf_jitter(___ ~ ___, width = 0.1, height = 0.1, data = Muecken)
 ```
 
 ```{r gf_point-solution}
-gf_point(mosquitoes ~ drink, data = Muecken)
+gf_jitter(mosquitoes ~ drink, width = 0.1, height=0.1, data = Muecken)
 ```
 
+(Mit `width=0.1` und `height=0.1` wird die Stärke des Verwackelns vertikal bzw. horizontal festgelegt.
+
+##
+
+Modell: `mosquitoes ~ drink` -- Die Anzahl Mücken hängt (evtl.) ab vom Getränk. 
 
 Statt eines Streudiagramms kann auch der arithmetische Mittelwert der Anzahl Mücken über die Funktion `mean()` berechnet werden:
 
@@ -84,7 +93,7 @@ mean(mosquitoes ~ drink, data = Muecken)
 
 Es gilt in der Stichprobe des Experiments also:
 
-$$\bar{x}_\text{Beer} = `r mean(mosquitoes ~ drink, data = Muecken)[1]` > `r mean(mosquitoes ~ drink, data = Muecken)[2]` = \bar{x}_\text{Water}$$
+$$\bar{y}_\text{Beer} = `r mean(mosquitoes ~ drink, data = Muecken)[1]` > `r mean(mosquitoes ~ drink, data = Muecken)[2]` = \bar{y}_\text{Water}$$
 
 Und damit:
 
@@ -93,10 +102,10 @@ diffmean(mosquitoes ~ drink, data = Muecken)
 ```
 
 
-$$\bar{x}_\text{Water} - \bar{x}_\text{Beer} == `r diffmean(mosquitoes ~ drink, data = Muecken)`$$
+$$\bar{y}_\text{Water} - \bar{y}_\text{Beer} == `r diffmean(mosquitoes ~ drink, data = Muecken)`$$
 Wenn wir annehmen, die Nullhypothese gilt, es gibt keinen Unterschied, also auch $\mu_\text{Water} = \mu_\text{Beer} =0$, dann würde dieses Modell vorhersagen:
 
-$$\bar{x}_\text{Water} - \bar{x}_\text{Beer} \approx 0$$
+$$\bar{y}_\text{Water} - \bar{y}_\text{Beer} \approx 0$$
 Wie wahrscheinlich ist es, dass eine Stichprobe eine mindestens so große Differenz wie beobachtet aufweist, wenn die Nullhypothese stimmen würde?
 
 ## Simulation der Nullhyothese
