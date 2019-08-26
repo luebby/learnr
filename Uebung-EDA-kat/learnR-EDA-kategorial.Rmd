@@ -1,0 +1,97 @@
+---
+title: "Risk Literacy"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+RL <- read.csv2("results-survey588355.csv")
+RL <- RL %>% mutate(richtig = case_when(r1 == 25 ~ "ja",
+                                        r1 != 25 ~ "nein")) 
+```
+
+## Wie *Risk Literate* sind Sie? 
+
+In seiner kürzesten Form besteht der *Berlin Numeracy Test* (Cokely, E.T., Galesic, M., Schulz, E., Ghazal, S., & Garcia-Retamero, R. (2012). Measuring risk literacy: The Berlin Numeracy Test.  Judgment and Decision Making, 7, 25-47.) aus einer einzigen Frage:
+
+
+> Von 1.000 Leuten in einer Kleinstadt sind 500 Mitglied im Gesangsverein. Von diesen 500 Mitgliedern im Gesangsverein sind 100 Männer. Von den 500 Einwohnern, die nicht im Gesangsverein sind, sind 300 Männer.
+
+```{r interesse, echo=FALSE}
+question("Wie groß ist die Wahrscheinlichkeit, dass ein zufällig ausgewählter Mann ein Mitglied des Gesangsvereins ist?",
+  answer("10%", message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."),
+    answer("20%", message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."),
+  answer("25%", correct = TRUE,  message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."),
+    answer("30%",  message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."),
+    answer("33.333%",  message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."),
+    answer("40%",  message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."))
+```
+
+## Gewusst?
+
+Haben Sie es gewusst?
+
+Was meinen Sie, wie viele Studierende kennen die richtige Antwort?
+
+## Vorbereitungen
+
+Damit wir `mosaic` nutzen können, müssen wir es zunächst laden:
+
+```{r mosaic}
+library(mosaic)
+```
+
+Damit wir die Daten einer freiwilligen, anonymen Online-Erhebung nutzen können, müssen wir auch die Daten in R einlesen. Wie weisen die eingelesenen Daten (im `csv` Format) in R dem Datensatz `RL` zu:
+
+```{r read.csv2}
+RL <- read.csv2("results-survey588355.csv")
+```
+
+Erste Betrachtung:
+
+```{r RL}
+RL
+```
+
+## Vorverarbeitung
+
+Damit wir den Anteil der richtigen Antworten auswerten können, erzeugen wir eine neue Variable `richtig`, die den Wert `ja` annimmt, wenn die richtige Antwort, also $25\%$ gegeben wurde, und `nein` sonst. Beachte: das *logische* gleich ist in R `==`, ungleich `!=`.
+
+```{r vorverarbeitung}
+RL <- RL %>% mutate(richtig = case_when(r1 == 25 ~ "ja",
+                                        r1 != 25 ~ "nein")) 
+```
+
+```{r Skala, echo=FALSE}
+question("Welches Skalenniveau hat die Variable `richtig`?",
+         answer("numerisch", message = "Zwar ist ist die Variable `r1`numerisch, diese wird aber in eine kategoriale transformiert. Bei nur zwei Ausprägungen (ja, nein) spricht man auch von einer binären Variable."),
+         answer("kategorial", correct = TRUE, message = "Zwar ist ist die Variable `r1`numerisch, diese wird aber in eine kategoriale transformiert. Bei nur zwei Ausprägungen (ja, nein) spricht man auch von einer binären Variable."))
+```
+
+## Auswertung Risk Literacy
+
+Eine uninvariate Auswertung einer kategorialen Variable kann in `mosaic` wie folgt erfolgen:
+
+- Säulendiagramm `gf_bar( ~ mein.x, data = Meine.Daten)`
+- Tabelle `tally( ~ mein.x, data = Meine.Daten)`
+- Anteil `prop( ~ mein.x, data = Meine.Daten)`
+
+Werten Sie die Daten entsprchend aus.
+
+```{r Auswertung, exercise = TRUE, eval=FALSE}
+___( ~ richtig, data = RL)
+```
+
+```{r Auswertung-solution}
+gf_bar( ~ richtig, data = RL)
+tally( ~ richtig, data = RL)
+prop( ~ richtig, success = "ja", data = RL)
+```
+
+
+
+
