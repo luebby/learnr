@@ -184,14 +184,3 @@ prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)
 
 **Fazit:** In `r prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)` der `r nrow(Nullvtlg)` Simulationen war die $H_0$ vorhergesagte Differenz größer als tatsächlich beobachtete. Die beobachteten Daten können *nicht* plausibel durch das Modell *kein Unterschied in der Verteilung in der Population* erklärt werden. 
 
-## Alternative: t-Test
-
-Wenn wir annehmen, dass die Anzahl Mücken jeweils Normalverteilt ist, kann auch ein t-Test, `t.test()` durchgeführt werden:
-
-```{r t-test, exercise = TRUE, eval = FALSE}
-___(mosquitoes ~ drink, data = Muecken)
-```
-
-```{r t-test-solution}
-t.test(mosquitoes ~ drink, data = Muecken)
-```
