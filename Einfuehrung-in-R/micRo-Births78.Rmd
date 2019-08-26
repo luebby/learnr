@@ -8,7 +8,7 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
-
+library(mosaic)
 data(Births78)
 ```
 
@@ -29,7 +29,7 @@ install.packages("mosaic")
 
 Um es nutzen zu können wird es über den Befehl `library()` zu Beginn der Arbeit mit R geladen:
 
-```{r mosaic}
+```{r mosaic, eval=FALSE}}
 library(mosaic)
 ```
 
