@@ -47,7 +47,7 @@ Zur Ausführung der Befehle bitte auf `Run Code` drücken.
 data(Births78)
 ```
 
-*Hinweis*: Es erfolgt keine Meldung o.ä.. In RStudio erscheint der Datensatz rechts oben im Panel `Environment`.
+*Hinweis*: Es erfolgt keine Meldung o.ä. In RStudio erscheint der Datensatz rechts oben im Panel `Environment`.
 
 
 ### Hilfe zum Datensatz
