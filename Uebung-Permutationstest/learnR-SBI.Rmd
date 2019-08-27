@@ -29,7 +29,7 @@ Was ist attraktiver?
 
 ## Datenbasis
 
-Gibt es einen Zusammenhang zwischen dem konsumierten Getränk (Bier oder Wasser) und der Aktivität von Mücken? Dieser Frage wird im Paper [Lefèvre, T. et al. (2010). Beer consumption increases human attractiveness to malaria mosquitoes. PloS one, 5(3), e9546.](https://doi.org/10.1371/journal.pone.0009546) im Rahmen eines Experiments nachgegangen.
+Gibt es einen Zusammenhang zwischen dem konsumierten Getränk (Bier oder Wasser) und der Aktivität gegenüber Mücken? Dieser Frage wird im Paper [Lefèvre, T. et al. (2010). Beer consumption increases human attractiveness to malaria mosquitoes. PloS one, 5(3), e9546.](https://doi.org/10.1371/journal.pone.0009546) im Rahmen eines Experiments nachgegangen.
 
 
 ```{r mosaic}
@@ -53,12 +53,12 @@ inspect(Muecken)
 
 Was aktiviert wohl mehr Mücken? 
 
-Sei $F_{\text{Bier}}(y)$ die Verteilung der Anzahl Mücken beim Biertringen und $F_{\text{Wasser}}(y)$ die Anzahl Mücken beim Wassertrinken.
+Sei $F_{\text{Bier}}(y)$ die Verteilung der Anzahl Mücken beim Bier trinken und $F_{\text{Wasser}}(y)$ die Anzahl Mücken beim Wasser trinken.
 
 ```{r Generalisierung, echo=FALSE}
 question("Wie lautet die Nullhypothese?",
-         answer("$F _ {\\text{Bier}}(y)=F _ {\\text{Wasser}}(y)$", correct = TRUE, message = "Die Nullhypothese lautet *kein* Unterschied in der Verteilung."),
-         answer("$F _ {\\text{Bier}}(y) \\neq F _ {\\text{Wasser}}(y)$", message = "Die Nullhypothese lautet *kein* Unterschied in der Verteilung."))
+         answer("$F _ {\\text{Bier}}(y)=F _ {\\text{Wasser}}(y)$", correct = TRUE, message = "Die Nullhypothese lautet: *kein* Unterschied in der Verteilung."),
+         answer("$F _ {\\text{Bier}}(y) \\neq F _ {\\text{Wasser}}(y)$", message = "Die Nullhypothese lautet: *kein* Unterschied in der Verteilung."))
 ```
 
 ## Erste Analyse
@@ -103,28 +103,29 @@ diffmean(mosquitoes ~ drink, data = Muecken)
 
 
 $$\bar{y}_\text{Water} - \bar{y}_\text{Beer} == `r diffmean(mosquitoes ~ drink, data = Muecken)`$$
-Wenn wir annehmen, die Nullhypothese gilt, es gibt keinen Unterschied, also auch $\mu_\text{Water} = \mu_\text{Beer} =0$, dann würde dieses Modell vorhersagen:
+Wenn wir annehmen, die Nullhypothese -- es gibt keinen Unterschied, also auch $\mu_\text{Water} = \mu_\text{Beer} =0$ -- gilt, dann würde dieses Modell vorhersagen:
 
 $$\bar{y}_\text{Water} - \bar{y}_\text{Beer} \approx 0$$
 Wie wahrscheinlich ist es, dass eine Stichprobe eine mindestens so große Differenz wie beobachtet aufweist, wenn die Nullhypothese stimmen würde?
 
 ## Simulation der Nullhyothese
 
-**Wenn** es keinen Unterschied in der Verteilung der Anzahl Mücken zwischen Bier und Wasser gibt, kann ich diese permutieren (vertauschen, mischen), in R mosaic `shuffle()`:
+**Wenn** es keinen Unterschied in der Verteilung der Anzahl Mücken zwischen Bier und Wasser gibt, kann ich diese permutieren (vertauschen, mischen). In R mosaic über `shuffle()`:
 
 ```{r shuffle, exercise = TRUE}
 diffmean(mosquitoes ~ shuffle(drink), data = Muecken)
 ```
 
-Wenn Sie ein paar Mal `Run Code` gedrückt haben, konnten Sie beobachten, dass auch, wenn die Nullhypothese gilt, zufällig Differenzen im Mittelwert beobachtet werden. 
+Wenn Sie mehrfach auf `Run Code` drücken, können Sie beobachten, dass auch, wenn die Nullhypothese gilt, zufällig Differenzen im Mittelwert beobachtet werden. 
 
 ##
 
-Ein paar Simulationen von *was wäre wenn die Nullhypothese stimmen würde* reichen vieleicht nicht. Über `do()* ` können wir das z.B. $100\times$ wiederholen:
+Ein paar Simulationen von *was wäre wenn die Nullhypothese stimmen würde* reichen vielleicht nicht. Über `do()* ` können wir das z.B. $100\times$ wiederholen:
 
 ```{r Simulation, exercise = TRUE}
 set.seed(1896)
 Nullvtlg <- do(100)* diffmean(mosquitoes ~ shuffle(drink), data = Muecken)
+head(Nullvtlg)
 ```
 
 (Mit Hilfe von `set.seed()` wird der Zufall reproduzierbar.)
@@ -133,7 +134,7 @@ Nullvtlg <- do(100)* diffmean(mosquitoes ~ shuffle(drink), data = Muecken)
 
 ##
 
-Zeichnen Sie ein Histogramm der Verteilung der simulierten `diffmean` der `Nullvtlg`.
+Zeichnen Sie ein Histogramm der Verteilung der simulierten `diffmean`-Werte der `Nullvtlg`.
 
 ```{r Nullvtlg, exercise = TRUE, eval = FALSE}
 gf_histogram( ~ ___, data = ___)
@@ -153,7 +154,7 @@ gf_histogram( ~ diffmean, data = Nullvtlg, binwidth = 1)
 
 (Über `binwidth = 1` wird die Breite der Histogrammbalken auf `1` festgelegt.)
 
-Die *Praxis* unser Stichprobe ergibt folgende Differenz:
+Die *Praxis* unserer Stichprobe ergibt folgende Differenz:
 
 ```{r Stipro}
 diff.stipro <- diffmean(mosquitoes ~ drink, data = Muecken)
