@@ -31,7 +31,7 @@ Um es nutzen zu können wird es über den Befehl `library()` zu Beginn der Arbei
 
 Hinweis: Die angezeigten Meldungen sind *keine* Fehlermeldungen, nur Hinweise!
 
-```{r mosaic, eval=FALSE}}
+```{r mosaic, eval=FALSE}
 library(mosaic)
 ```
 
