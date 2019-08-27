@@ -27,7 +27,7 @@ Sicherlich eine schwierige Frage. Und Korrelation ist nicht Kausalität. Und dan
 
 Viele kennen die Phrase: *Geld macht nicht glücklich*, manche auch *kein Geld macht auch nicht glücklich*. 
 
-Gucken wir uns dazu Daten an.
+Schauen wir uns dazu ein paar Daten an.
 
 
 ## Datenbasis
@@ -92,7 +92,7 @@ gf_point(ls ~ gdp, data = Zufriedenheit) %>%
   gf_smooth()
 ```
 
-Dies liegt daran, das Veränderungen des `gdp` häufig *relativ* sind, d.h. $+2\%$ statt $+2000\,€$. Die resultierende rechtsschiefe der Verteilung (viele Werte im unteren Bereich, weniger im oberen) kann durch Logarithmierung korrigiert werden (hier zur Basis 10, nur für $x>0$):
+Dies liegt daran, dass Veränderungen des `gdp` häufig *relativ* sind, d.h. $+2\%$ statt $+2000\,€$. Die resultierende rechtsschiefe der Verteilung (viele Werte im unteren Bereich, weniger im oberen) kann durch Logarithmierung korrigiert werden (hier zur Basis 10, nur für $x>0$):
 
 ```{r transformation}
 Zufriedenheit.neu <- Zufriedenheit %>%
@@ -121,7 +121,7 @@ gf_point(ls ~ log.gdp, data = Zufriedenheit.neu) %>%
 
 ## Regressionsanalyse
 
-Der Befehl für eine lineare Regession lautet `lm(mein.y ~ mein.x, data = Meine.Daten)`, `summary()` liefert eine Ergebniszusammenfassung. 
+Der Befehl für eine lineare Regession lautet `lm(mein.y ~ mein.x, data = Meine.Daten)` und `summary()` liefert eine Ergebniszusammenfassung. 
 
 Passen Sie entsprechend an:
 
