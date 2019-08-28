@@ -17,7 +17,7 @@ Einkommen <- read_excel("Daten_SoSe2018_FOM_Wacker.xlsx")
 
 Im Rahmen einer **nicht-repräsentativen** freiwilligen, anonymen Online-Umfrage im März 2018 wurden unter der Leitung von Frau Dipl.-Psych. Eva Wacker im Rahmen eines Studierendenprojektes u.a. auch Einkommensdaten erhoben. Aus Datenschutzgründen wurden die Antworten verrauscht und gerundet.
 
-Aufgrund der Struktur der befragten Personen (Stichprobe) kann das Ergebnis **nicht** generalisiert werden, alle Auswertungen beziehen sich daher **nur** auf die Stichprobe. Auch können vielfältige Formen der **Verzerrung** vorliegen: Lügen, Nicht-Antworten usw..
+Aufgrund der Struktur der befragten Personen (Stichprobe) kann das Ergebnis **nicht** generalisiert werden, alle Auswertungen beziehen sich daher **nur** auf die Stichprobe. Auch können vielfältige Formen der **Verzerrung** vorliegen: Nicht-Antworten, Falschangaben usw.
 
 ```{r Validität, echo=FALSE}
 question("Welches Gütekriterium *echter* Forschung ist hier verletzt?",
@@ -88,8 +88,8 @@ favstats( ~ monatsnetto, data = Einkommen)
 
 ```{r Generalisierung, echo=FALSE}
 question("Stimmt die Aussage: das Durchschnittseinkommen von FOM Studierenden liegt bei ca. 1627.61 €?",
-         answer("Ja", message = "Aufgrund der nicht-zufälligen Stichprobe ist eine Verallgemeinerung des Ergebnisses **ncht** möglich. Die Aussage stimmt nur für diese Stichprobe!"),
-         answer("Nein", correct = TRUE, message = "Aufgrund der nicht-zufälligen Stichprobe ist eine Verallgemeinerung des Ergebnisses **ncht** möglich."))
+         answer("Ja", message = "Aufgrund der nicht-zufälligen Stichprobe ist eine Verallgemeinerung des Ergebnisses **nicht** möglich. Die Aussage stimmt nur für diese Stichprobe!"),
+         answer("Nein", correct = TRUE, message = "Aufgrund der nicht-zufälligen Stichprobe ist eine Verallgemeinerung des Ergebnisses **nicht** möglich."))
 ```
 
 ## Vergleiche
