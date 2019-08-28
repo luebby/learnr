@@ -102,7 +102,7 @@ xquer <- mean( ~ monatsnetto, data = Einkommen)
 ```
 
 
-Der Befehl `qdata()` bestimmt das $p-$Quantil der Daten. Berechnen und diskutieren Sie das $90\%$-Quantil der Einkommensverteilung.
+Der Befehl `qdata()` bestimmt das $p-$Quantil der Daten. Berechnen Sie das $90\%$-Quantil der Einkommensverteilung und beschreiben Sie das Ergebnis.
 
 ```{r Quantil, exercise = TRUE, eval=FALSE}
 qdata( ~ monatsnetto, p = ___, data = Einkommen)
