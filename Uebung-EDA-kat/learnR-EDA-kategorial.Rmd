@@ -45,7 +45,7 @@ Damit wir `mosaic` nutzen können, müssen wir es zunächst laden:
 library(mosaic)
 ```
 
-Damit wir die Daten einer freiwilligen, anonymen Online-Erhebung nutzen können, müssen wir auch die Daten in R einlesen. Wie weisen die eingelesenen Daten (im `csv` Format) in R dem Datensatz `RL` zu:
+Damit wir die Daten einer freiwilligen, anonymen Online-Erhebung nutzen können, müssen wir auch die Daten in R einlesen. Wir weisen die eingelesenen Daten (im `csv` Format) in R dem Datensatz `RL` zu:
 
 ```{r read.csv2}
 RL <- read.csv2("results-survey588355.csv")
@@ -68,8 +68,8 @@ RL <- RL %>% mutate(richtig = case_when(r1 == 25 ~ "ja",
 
 ```{r Skala, echo=FALSE}
 question("Welches Skalenniveau hat die Variable `richtig`?",
-         answer("numerisch", message = "Zwar ist ist die Variable `r1`numerisch, diese wird aber in eine kategoriale transformiert. Bei nur zwei Ausprägungen (ja, nein) spricht man auch von einer binären Variable."),
-         answer("kategorial", correct = TRUE, message = "Zwar ist ist die Variable `r1`numerisch, diese wird aber in eine kategoriale transformiert. Bei nur zwei Ausprägungen (ja, nein) spricht man auch von einer binären Variable."))
+         answer("numerisch", message = "Zwar ist ist die Variable `r1` numerisch, diese wird aber in eine kategoriale transformiert. Bei nur zwei Ausprägungen (ja, nein) spricht man auch von einer binären Variable."),
+         answer("kategorial", correct = TRUE, message = "Zwar ist ist die Variable `r1` numerisch, diese wird aber in eine kategoriale transformiert. Bei nur zwei Ausprägungen (ja, nein) spricht man auch von einer binären Variable."))
 ```
 
 ## Auswertung Risk Literacy
@@ -80,7 +80,7 @@ Eine uninvariate Auswertung einer kategorialen Variable kann in `mosaic` wie fol
 - Tabelle `tally( ~ mein.x, data = Meine.Daten)`
 - Anteil `prop( ~ mein.x, data = Meine.Daten)`
 
-Werten Sie die Daten entsprchend aus.
+Werten Sie die Daten entsprechend aus.
 
 ```{r Auswertung, exercise = TRUE, eval=FALSE}
 ___( ~ richtig, data = RL)
