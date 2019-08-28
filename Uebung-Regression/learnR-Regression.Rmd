@@ -18,12 +18,22 @@ Model.Zufriedenheit <- lm(ls ~ log.gdp, data = Zufriedenheit.neu)
 ## Macht Geld glücklich?
 
 1. Sind Sie reich? 
+
+##
+
 2. Sind Sie glücklich?
+
+##
 
 Sicherlich eine schwierige Frage. Und Korrelation ist nicht Kausalität. Und dann noch das mögliche *Priming*: ändern sich die Antworten vielleicht, wenn ich andersherum gefragt hätte, d.h.,
 
 1. Sind Sie glücklich? 
+
+##
+
 2. Sind Sie reich?
+
+##
 
 Viele kennen die Phrase: *Geld macht nicht glücklich*, manche auch *kein Geld macht auch nicht glücklich*. 
 
