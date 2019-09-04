@@ -1,0 +1,55 @@
+---
+title: "Analyse Helidaten"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+heli <- read.csv("heli.csv", header=TRUE)
+```
+
+## Willkommen
+
+In dieser kleinen App können Sie ein wenig erste Erfahrungen mit [`R`](https://www.r-project.org/) und dem Zusatzpaket [`mosaic`](https://projectmosaic.github.io/mosaic/) sammeln.
+
+## Vorbereitungen
+
+### Daten in R Sitzung einlesen
+
+```{r heli}
+heli <- read.csv("heli.csv", header=TRUE)
+```
+
+### mosaic
+
+Um ein Zusatzpaket wie `mosaic` in R nutzen zu können muss dies *einmalig* über `install.packages()` installiert werden:
+
+```{r install, eval=FALSE}
+install.packages("mosaic")
+```
+
+Um es nutzen zu können wird es über den Befehl `library()` zu Beginn der Arbeit mit R geladen:
+
+```{r mosaic, eval=FALSE}
+library(mosaic)
+```
+
+
+
+## Analyse
+
+Im folgenden Fenster können Sie jetzt diesen Datensatz selbstständig mit R mosaic analysieren. 
+
+Zur Ausführung der Befehle bitte auf `Run Code` drücken.
+
+```{r selber, exercise = TRUE, eval=FALSE, exercise.lines=15}
+str(heli)
+```
+
+
+
+
