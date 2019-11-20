@@ -7,6 +7,23 @@ runtime: shiny_prerendered
 ---
 
 ```{r setup, include=FALSE}
+library(ggdag)
+
+coordLV <- list(
+  x = c(Geschlecht = 0, Alter = 0, RaucherIn = 1, Groesse = 2, Lungenvolumen = 3),
+  y = c(Geschlecht = 1, Alter = 2, RaucherIn = 0, Groesse = 2, Lungenvolumen = 0))
+
+dagLV <- dagify(Groesse ~ Geschlecht + Alter + RaucherIn,
+                RaucherIn ~ Geschlecht + Alter,
+                Lungenvolumen ~ Groesse + Geschlecht + Alter + RaucherIn,
+                coords = coordLV,
+                exposure = "RaucherIn",
+                outcome = "Lungenvolumen")
+
+
+p1 <- ggdag(dagLV, text_col = "blue", node = FALSE, text_size = 5) + theme_dag_blank()
+
+
 library(learnr)
 library(mosaic)
 load("LV.Rdata")
@@ -76,9 +93,10 @@ question("Welches Skalenniveau hat die Variable `Lungenvolumen`?",
 
 Aus inhaltlichen Gründen wird dabei folgender Kausalzusammenhang angenommen:
 
-```{r p11, echo=FALSE}
+```{r, echo=FALSE}
 p1
 ```
+
 
 ## Rauchen und Lungenvolumen
 
@@ -162,6 +180,7 @@ Hier noch einmal das angenommene Modell:
 ```{r p12, echo=FALSE}
 p1
 ```
+
 
 
 Eine naive Modellierung ergibt folgendes Ergebnis:
