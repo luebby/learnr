@@ -166,7 +166,7 @@ Klar: Bei Heranwachsenden sind die Raucher\*innen älter als die Nichtraucher\*i
 
 ###
 
-Und natürlich gibt es einen Zusammenhang zwischen der Größe und dem Lungenvolumen:
+Und natürlich gibt es auch einen Zusammenhang zwischen der Größe und dem Lungenvolumen:
 
 ```{r}
 gf_point(Lungenvolumen ~ Groesse, data = LV) %>%
@@ -198,7 +198,7 @@ Warum?
 
 ###
 
-Weil die nicht-kausalen Pfade durch die *Hintertür* (engl. backdoor) offen sind:
+Weil die nicht-kausalen Pfade durch die *Hintertür* (engl. backdoor, *Fork*) offen sind:
 
 $$\text{RaucherIn} \leftarrow \text{Geschlecht} \rightarrow \text{Lungenvolumen}$$
 bzw.
@@ -209,14 +209,14 @@ Diese Pfade sollten also z.B. durch Adjustierung *blockiert* werden.
 
 ```{r chain, echo=FALSE}
 question("Sollte über die Variable `Groesse` adjustiert werden?",
-  answer("Ja.", message = "Falsch: die Variable `Groesse` liegt auf den kausalen Pfad zwischen `RaucherIn` und `Lungenvolumen` (Mediator)"),
-  answer("Nein.", correct = TRUE, message = "Richtig: die Variable `Groesse` liegt auf den kausalen Pfad zwischen `RaucherIn` und `Lungenvolumen` (Mediator).")
+  answer("Ja.", message = "Falsch: die Variable `Groesse` liegt auf den kausalen Pfad (*Chain*) zwischen `RaucherIn` und `Lungenvolumen` (Mediator)"),
+  answer("Nein.", correct = TRUE, message = "Richtig: die Variable `Groesse` liegt auf den kausalen Pfad (*Chain*) zwischen `RaucherIn` und `Lungenvolumen` (Mediator).")
 )
 ```
 
 ###
 
-Geben Sie, unter der Annahme eines linearen Modells, die Formel an, die den (totalen) kausalen Effekt des Rauchens auf das Lungenvolumen schätzt:
+Geben Sie, unter der Annahme eines linearen Modells die Formel an, die den (totalen) kausalen Effekt des Rauchens auf das Lungenvolumen schätzt:
 
 ```{r model, exercise = TRUE, eval=FALSE}
 lm(Lungenvolumen ~ RaucherIn + ___ + ___, data = LV) %>%
@@ -245,3 +245,9 @@ question("Ist der beobachtete Effekt ($\\hat{\\beta}_{\\text{RaucherInja}}=-0.15
   answer("Nein.", correct = TRUE, message = "Richtig: die Wahrscheinlichkeit in dem Modell ${\\beta}_{\\text{RaucherInja}}=0$ einen mindestens so großen Wert wie $\\hat{\\beta}_{\\text{RaucherInja}}=-0.153974$ in einer Stichprobe zu beobachten liegt bei 0.0487 (p-Wert, siehe `Pr(>|t|)`.")
 )
 ```
+
+*Hinweis*: Die Annahme eines linearen Modells ist aufgrund des nicht-linearen Zusammenhangs zwischen Alter und Größe sowie Größe und Lungenvolumen (siehe Abbildungen in *Das Alter ...*) eher nur eine Näherung.
+
+## Ausblick
+
+Die Kausale Inferenz bietet viele weitere und fortgeschrittene Möglichkeiten der Analyse. Siehe z.B. als Einstieg: Pearl, J., Glymour, M., \& Jewell, N. P. (2016). *Causal inference in statistics: A primer*. John Wiley \& Sons, [http://bayes.cs.ucla.edu/PRIMER/](http://bayes.cs.ucla.edu/PRIMER/).
