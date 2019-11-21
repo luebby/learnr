@@ -38,11 +38,11 @@ tutorial_options(exercise.timelimit = 60, exercise.checker = checker)
 
 Dieses Tutorial orientiert sich am Projekt [Causal Inference in Introductory Statistics Courses](https://github.com/kfcaby/causalLab) von [LTC Kevin Cummiskey](https://westpoint.edu/mathematical-sciences/profile/kevin_cummiskey).
 
-Datengrundlage ist der Artikel Kahn, M. (2005). *An exhalent problem for teaching statistics*. Journal of Statistics Education, 13(2), [https://doi.org/10.1080/10691898.2005.11910559](https://doi.org/10.1080/10691898.2005.11910559).
+Datengrundlage ist der Artikel von Kahn, M. (2005). *An exhalent problem for teaching statistics*. Journal of Statistics Education, 13(2), [https://doi.org/10.1080/10691898.2005.11910559](https://doi.org/10.1080/10691898.2005.11910559).
 
 ## Rauchen bei Kindern und Jugendlichen
 
-Mittlerweile sind wir ziemlich sicher, dass Rauchen der Gesundheit schadet. Aber das war nicht immer so, und eine naive Datenanalyse kann auch zu einem Gegenteiligen Ergebnis kommen.
+Mittlerweile sind wir ziemlich sicher, dass Rauchen der Gesundheit schadet. Aber das war nicht immer so, und eine naive Datenanalyse kann auch zu einem gegenteiligen Ergebnis kommen.
 
 In einer Reihe von Papern (siehe z.B. [Kahn, 2005](https://doi.org/10.1080/10691898.2005.11910559)) wurde der Frage nachgegangen inwieweit Rauchen das sogenannte *forcierte exspiratorische Volumen* -- eine Kennzahl der Lungenfunktion -- bei Heranwachsenden beeinflusst.
 
@@ -85,7 +85,7 @@ question("Welches Skalenniveau hat die Variable `Lungenvolumen`?",
   answer("Kategorial - nominal", message = "Falsch: Die Werte können nicht nur unterschieden werden, es gibt auch eine Reihenfolge, Abstände und einen natürlichen Nullpunkt."),
   answer("Kategorial - ordinal", message = "Falsch: Die Werte können nicht nur unterschieden und in eine Reihenfolge gebracht werden. Es gibt auch natürliche Abstände und einen natürlichen Nullpunkt."), 
     answer("Numerisch - intervall", message = "Falsch: Die Werte können nicht nur unterschieden und in eine Reihenfolge mit natürlichen Abständen gebracht werden. Es gibt auch einen natürlichen Nullpunkt."), 
-    answer("Numerisch - verhältnis", correct=TRUE, message = "Richtig: Die Werte können unterschieden werden, es gibt aber eine natürliche Ordnung. Auch können die Abstände verglichen werden und es gibt einen absoluten Nullpunkt.")
+    answer("Numerisch - verhältnis", correct=TRUE, message = "Richtig: Die Werte können unterschieden werden, es gibt eine natürliche Ordnung. Auch können die Abstände verglichen werden und es gibt einen absoluten Nullpunkt.")
 )
 ```
 
@@ -192,7 +192,7 @@ lm(Lungenvolumen ~ RaucherIn, data = LV) %>%
 
 ### 
 
-Rauchen *scheint* dass Lungenvolumen zu erhöhen.
+Rauchen *scheint* das Lungenvolumen zu erhöhen.
 
 Warum?
 
@@ -209,8 +209,8 @@ Diese Pfade sollten also z.B. durch Adjustierung *blockiert* werden.
 
 ```{r chain, echo=FALSE}
 question("Sollte über die Variable `Groesse` adjustiert werden?",
-  answer("Ja.", message = "Falsch: die Variable `Groesse` liegt auf den kausalen Pfad (*Chain*) zwischen `RaucherIn` und `Lungenvolumen` (Mediator)"),
-  answer("Nein.", correct = TRUE, message = "Richtig: die Variable `Groesse` liegt auf den kausalen Pfad (*Chain*) zwischen `RaucherIn` und `Lungenvolumen` (Mediator).")
+  answer("Ja.", message = "Falsch: die Variable `Groesse` liegt auf dem kausalen Pfad (*Chain*) zwischen `RaucherIn` und `Lungenvolumen` (Mediator)"),
+  answer("Nein.", correct = TRUE, message = "Richtig: die Variable `Groesse` liegt auf dem kausalen Pfad (*Chain*) zwischen `RaucherIn` und `Lungenvolumen` (Mediator).")
 )
 ```
 
@@ -240,13 +240,13 @@ question("Hat in dem Modell Rauchen einen negativen Effekt auf das Lungenvolumen
 ###
 
 ```{r pwert, echo=FALSE}
-question("Ist der beobachtete Effekt ($\\hat{\\beta}_{\\text{RaucherInja}}=-0.153974$) plausibel, wenn es gar keinen geben würde ($H_0: {\\beta}_{\\text{RaucherInja}}=0$)?",
+question("Wäre der geschätzte Effekt von ($\\hat{\\beta}_{\\text{RaucherInja}}=-0.153974$) plausibel, wenn es gar keinen geben würde ($H_0: {\\beta}_{\\text{RaucherInja}}=0$)?",
   answer("Ja.", message = "Falsch: nicht besonders: die Wahrscheinlichkeit in dem Modell ${\\beta}_{\\text{RaucherInja}}=0$ einen mindestens so großen Wert wie $\\hat{\\beta}_{\\text{RaucherInja}}=-0.153974$ in einer Stichprobe zu beobachten liegt bei 0.0487 (p-Wert, siehe `Pr(>|t|)`."),
   answer("Nein.", correct = TRUE, message = "Richtig: die Wahrscheinlichkeit in dem Modell ${\\beta}_{\\text{RaucherInja}}=0$ einen mindestens so großen Wert wie $\\hat{\\beta}_{\\text{RaucherInja}}=-0.153974$ in einer Stichprobe zu beobachten liegt bei 0.0487 (p-Wert, siehe `Pr(>|t|)`.")
 )
 ```
 
-*Hinweis*: Die Annahme eines linearen Modells ist aufgrund des nicht-linearen Zusammenhangs zwischen Alter und Größe sowie Größe und Lungenvolumen (siehe Abbildungen in *Das Alter ...*) eher nur eine Näherung.
+*Hinweis*: Die Annahme eines linearen Modells ist aufgrund des nicht-linearen Zusammenhangs zwischen Alter und Größe sowie Größe und Lungenvolumen (siehe Abbildungen im Abschnitt *Das Alter ...*) eher nur eine Näherung.
 
 ## Ausblick
 
