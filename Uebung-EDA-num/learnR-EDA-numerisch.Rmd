@@ -27,7 +27,7 @@ Damit wir `mosaic` nutzen können, müssen wir es zunächst laden:
 library(mosaic)
 ```
 
-Damit wir die Daten dieser nutzen können, müssen wir die Daten in R einlesen. Diese liegen als csv Datei (Endung `csv`) vor. 
+Damit wir die Daten nutzen können, müssen wir die Daten in R einlesen. Diese liegen als csv Datei (Endung `csv`) vor. 
 
 ```{r csv}
 Arbeitszeit <- read.csv2("Arbeitszeit.csv")
@@ -66,7 +66,7 @@ Vergleich: Für die Länder der Stichprobe gilt:
 
 $$\bar{x}=`r round(mean(~ stunden, data = Arbeitszeit),2)`$$
 
-Ergänzen Sie den Code so, dass Sie den Wert für Deutschland (`Germany`) erhalten.
+Ergänzen Sie den Code unten so, dass Sie die Daten für Deutschland (`Germany`) erhalten.
 
 - Der Befehl `select()` wählt Variablen aus.
 - Der Befehl `filter()` wählt Beobachtungen aus.
