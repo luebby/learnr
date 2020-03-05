@@ -1,5 +1,5 @@
 ---
-title: "Einkommensverteilung einer Stichprobe"
+title: "Arbeitszeit"
 output: 
   learnr::tutorial:
     progressive: true
@@ -9,39 +9,15 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(learnr)
 library(mosaic)
-library(readxl)
-Einkommen <- read_excel("Daten_SoSe2018_FOM_Wacker.xlsx")
+Arbeitszeit<- read.csv2("Arbeitszeit.csv")
 ```
 
-## Vorbemerkungen
+## Arbeitszeit
 
-Im Rahmen einer **nicht-repräsentativen** freiwilligen, anonymen Online-Umfrage im März 2018 wurden unter der Leitung von Frau Dipl.-Psych. Eva Wacker im Rahmen eines Studierendenprojektes u.a. auch Einkommensdaten erhoben. Aus Datenschutzgründen wurden die Antworten verrauscht und gerundet.
+Arbeiten wir Deutschen im Durchschnitt eher kurz oder lang?
 
-Aufgrund der Struktur der befragten Personen (Stichprobe) kann das Ergebnis **nicht** generalisiert werden, alle Auswertungen beziehen sich daher **nur** auf die Stichprobe. Auch können vielfältige Formen der **Verzerrung** vorliegen: Nicht-Antworten, Falschangaben usw.
+Dazu analysieren wir den Datensatz `Arbeitszeit.csv`. Dieser wurde von dem Internetportal [Our World in Data](https://ourworldindata.org/) von der Seite [https://ourworldindata.org/working-hours](https://ourworldindata.org/working-hours) heruntergeladen und steht unter der [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.de) Lizenz. 
 
-```{r Validität, echo=FALSE}
-question("Welches Gütekriterium *echter* Forschung ist hier verletzt?",
-         answer("interene Validität", message = "Aufgrund des Vorliegens einer Gelegenheitsstichprobe ist die Übertragbarkeit eingeschränkt."),
-         answer("externe Validität", correct = TRUE, message = "Aufgrund des Vorliegens einer Gelegenheitsstichprobe ist die Übertragbarkeit eingeschränkt."))
-```
-
-Welche Faktoren können das Einkommen beeinflussen?
-
-## Einkommen
-
-Viele Fakoren können das Einkommen beeinflussen, z.B.:
-
-- Ausbildung
-- Branche
-- Region
-- Funktion
-- Teilzeit/ Vollzeit
-- Geschlecht
-- Alter
-
-Bei einer nicht-zufälligen Stichprobe wie hier müssen alle diese Kovariablen beachtet werden.
-
-Im FOM Kontext: es ist z.B. davon auszugehen, dass es Einkommensunterschiede zwischen Bachelor und Masterstudierenden gibt, zwischen den verschiedenen Hochschulbereichen und Spezialisierungen und z.B. zwischen Dual-Studierenden in der Ausbildung und denjenigen, die Vollzeit arbeiten und die Ausbildung abgeschlossen haben. 
 
 ## Vorbereitungen
 
@@ -51,22 +27,21 @@ Damit wir `mosaic` nutzen können, müssen wir es zunächst laden:
 library(mosaic)
 ```
 
-Damit wir die Daten dieser **Gelegenheitsstichprobe** nutzen können, müssen wir die Daten in R einlesen. Diese liegen als Excel Datei (Endung `xlsx`) vor. Dazu muss das zum Einlesen nötige Paket zunächst geladen werden.
+Damit wir die Daten dieser nutzen können, müssen wir die Daten in R einlesen. Diese liegen als csv Datei (Endung `csv`) vor. 
 
-```{r xlsx}
-# Evtl. vorab über install.packages("readxl") installieren
-library(readxl)
-Einkommen <- read_excel("Daten_SoSe2018_FOM_Wacker.xlsx")
+```{r csv}
+Arbeitszeit <- read.csv2("Arbeitszeit.csv")
 ```
 
 Erste Betrachtung:
 
 ```{r Einkommen}
-Einkommen
+Arbeitszeit
 ```
 
+Die Variable `stunden` ist dabei gemäß Variablenbeschreibung der Durchschnittswert der Jahresarbeitszeit in Stunden einer beschäftigten Person. Nähers unter der Publikation Feenstra, R. C., Inklaar, R., & Timmer, M. P. (2015). The next generation of the Penn World Table. *American economic review*, 105(10), 3150-82.
 
-## Auswertung Einkommensverteilung
+## Auswertung Arbeitszeitsverteilung
 
 Eine uninvariate Auswertung einer numerischen Variable kann in `mosaic` u.a. wie folgt erfolgen:
 
@@ -76,41 +51,42 @@ Eine uninvariate Auswertung einer numerischen Variable kann in `mosaic` u.a. wie
 Werten Sie die Daten entsprechend aus.
 
 ```{r Auswertung, exercise = TRUE, eval=FALSE}
-___( ~ monatsnetto, data = Einkommen)
+___( ~ stunden, data = Arbeitszeit)
 ```
 
 ```{r Auswertung-solution}
-gf_histogram( ~ monatsnetto, data = Einkommen)
-favstats( ~ monatsnetto, data = Einkommen)
-```
-
-## Interpretation
-
-```{r Generalisierung, echo=FALSE}
-question("Stimmt die Aussage: das Durchschnittseinkommen von FOM Studierenden liegt bei ca. 1627.61 €?",
-         answer("Ja", message = "Aufgrund der nicht-zufälligen Stichprobe ist eine Verallgemeinerung des Ergebnisses **nicht** möglich. Die Aussage stimmt nur für diese Stichprobe!"),
-         answer("Nein", correct = TRUE, message = "Aufgrund der nicht-zufälligen Stichprobe ist eine Verallgemeinerung des Ergebnisses **nicht** möglich."))
-```
-
-## Vergleiche
-
-Der Anteil der Peronen die in der Stichprobe ein *überdurchschnittliches* Einkommen haben, kann über $1-F_n(\bar{x})$ bestimmt werden:
-
-```{r Verteilung, exercise = TRUE}
-xquer <- mean( ~ monatsnetto, data = Einkommen)
-1 - pdata( ~ monatsnetto, q = xquer, data = Einkommen)
+gf_histogram( ~ stunden, data = Arbeitszeit)
+favstats( ~ stunden, data = Arbeitszeit)
 ```
 
 
-Der Befehl `qdata()` bestimmt das $p-$Quantil der Daten. Berechnen Sie das $90\%$-Quantil der Einkommensverteilung und beschreiben Sie das Ergebnis.
+## Vergleich
 
-```{r Quantil, exercise = TRUE, eval=FALSE}
-qdata( ~ monatsnetto, p = ___, data = Einkommen)
+Vergleich: Für die Länder der Stichprobe gilt:
+
+$$\bar{x}=`r round(mean(~ stunden, data = Arbeitszeit),2)`$$
+
+Ergänzen Sie den Code so, dass Sie den Wert für Deutschland (`Germany`) erhalten.
+
+- Der Befehl `select()` wählt Variablen aus.
+- Der Befehl `filter()` wählt Beobachtungen aus.
+
+```{r Vergleich, exercise = TRUE, eval=FALSE}
+Arbeitszeit %>%
+  ___(land == "Germany")
 ```
 
-```{r Quantil-solution}
-qdata( ~ monatsnetto, p = 0.9, data = Einkommen)
-# Ab diesem Einkommen gehört man zu den oberen 10% der Stichprobe. 90% verdienen nicht mehr.
+```{r Vergleich-solution}
+Arbeitszeit %>%
+  filter(land == "Germany")
+```
+
+
+```{r Deutschland, echo=FALSE}
+question("Stimmt die Ausage: Die Deutschen arbeiten im Ländervergleich lange?",
+         answer("Ja", message = "Im Ländervergleich ist die durchschnittliche Jahresarbeitszeit in Deutschland geringer als der Länderdurchschnitt."),
+         answer("Nein", correct = TRUE, message = "Im Ländervergleich ist die durchschnittliche Jahresarbeitszeit in Deutschland geringer als der Länderdurchschnitt.")
+         )
 ```
 
 
