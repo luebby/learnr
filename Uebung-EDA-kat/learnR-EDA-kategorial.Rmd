@@ -1,5 +1,5 @@
 ---
-title: "Risk Literacy"
+title: "Ökonomisches Denken"
 output: 
   learnr::tutorial:
     progressive: true
@@ -9,35 +9,35 @@ runtime: shiny_prerendered
 ```{r setup, include=FALSE}
 library(learnr)
 library(mosaic)
-RL <- read.csv2("results-survey588355.csv")
-RL <- RL %>% mutate(richtig = case_when(r1 == 25 ~ "ja",
-                                        r1 != 25 ~ "nein")) 
+Tischtennis <- read.csv2("Tischtennis.csv")
 ```
 
-## Wie *Risk Literate* sind Sie? 
+## Tischtennisschläger
 
-In seiner kürzesten Form besteht der *Berlin Numeracy Test* (Cokely, E.T., Galesic, M., Schulz, E., Ghazal, S., & Garcia-Retamero, R. (2012). Measuring risk literacy: The Berlin Numeracy Test.  Judgment and Decision Making, 7, 25-47.) aus einer einzigen Frage:
+Ein Tischtennisschläger und ein Ball kosten zusammen 1,10 Euro.
+Der Schläger kostet 1 Euro mehr als der Ball.
 
-
-> Von 1.000 Leuten in einer Kleinstadt sind 500 Mitglied im Gesangsverein. Von diesen 500 Mitgliedern im Gesangsverein sind 100 Männer. Von den 500 Einwohnern, die nicht im Gesangsverein sind, sind 300 Männer.
-
-```{r interesse, echo=FALSE}
-question("Wie groß ist die Wahrscheinlichkeit, dass ein zufällig ausgewählter Mann ein Mitglied des Gesangsvereins ist?",
-  answer("10%", message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."),
-    answer("20%", message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."),
-  answer("25%", correct = TRUE,  message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."),
-    answer("30%",  message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."),
-    answer("33.333%",  message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."),
-    answer("40%",  message="Es gibt 100 Männer im Gesangsverein, 300 Männer die nicht im Gesangsverein sind. Insgesamt also 400 Männer, davon 100 im Verein, daher ist 25% richtig."))
+```{r einstieg, echo=FALSE}
+question(" Was kostet der Ball?",
+  answer("5 Cent.", correct = TRUE, message="0.05 + (0.05 + 1.00) = 1.10"),
+  answer("10 Cent.", message="0.05 + (0.05 + 1.00) = 1.10"),
+  answer("1 Euro.", message="0.05 + (0.05 + 1.00) = 1.10"),
+  answer("Kann ich anhand der gegebenen Information nicht sagen.", message="0.05 + (0.05 + 1.00) = 1.10")
+  )
 ```
 
-## Gewusst?
-
-Haben Sie es gewusst?
 
 ##
 
 Was meinen Sie, wie viele Studierende zu Beginn einer Vorlesung kennen die richtige Antwort?
+
+##
+
+In einer Studie der Universität Bonn und der Wochenzeitung DIE ZEIT ([https://www.zeit.de/wirtschaft/2018-02/oekonomie-wissen-wirtschaft-deutschen-studie](https://www.zeit.de/wirtschaft/2018-02/oekonomie-wissen-wirtschaft-deutschen-studie)) haben $11\%$ der Teilnehmenden die richtige Antwort *5 Cent* angekreuzt.
+
+##
+
+Waren die FOM Studierenden besser?
 
 ## Vorbereitungen
 
@@ -47,32 +47,18 @@ Damit wir `mosaic` nutzen können, müssen wir es zunächst laden:
 library(mosaic)
 ```
 
-Damit wir die Daten einer freiwilligen, anonymen Online-Erhebung (Gelegenheitsstichprobe) nutzen können, müssen wir auch die Daten in R einlesen. Wir weisen die eingelesenen Daten (im `csv` Format) in R dem Datensatz `RL` zu:
+Damit wir die Daten einer freiwilligen, anonymen Online-Erhebung (Gelegenheitsstichprobe) nutzen können, müssen wir auch die Daten in R einlesen. Wir weisen die eingelesenen Daten (im `csv` Format) in R dem Datensatz `Tischtennis` zu:
 
 ```{r read.csv2}
-RL <- read.csv2("results-survey588355.csv")
+Tischtennis <- read.csv2("Tischtennis.csv")
 ```
 
 Erste Betrachtung:
 
 ```{r RL}
-RL
+Tischtennis
 ```
 
-## Vorverarbeitung
-
-Damit wir den Anteil der richtigen Antworten auswerten können (Hinweis: In der ursprünglichen Erhebung war die Antwort eine Zahleneingabe), erzeugen wir eine neue Variable `richtig`, die den Wert `ja` annimmt, wenn die richtige Antwort, also $25\%$ gegeben wurde, und `nein` sonst. Beachte: das *logische* gleich ist in R `==`, ungleich `!=`.
-
-```{r vorverarbeitung}
-RL <- RL %>% mutate(richtig = case_when(r1 == 25 ~ "ja",
-                                        r1 != 25 ~ "nein")) 
-```
-
-```{r Skala, echo=FALSE}
-question("Welches Skalenniveau hat die Variable `richtig`?",
-         answer("numerisch", message = "Zwar ist ist die Variable `r1` numerisch, diese wird aber in eine kategoriale transformiert. Bei nur zwei Ausprägungen (ja, nein) spricht man auch von einer binären Variable."),
-         answer("kategorial", correct = TRUE, message = "Zwar ist ist die Variable `r1` numerisch, diese wird aber in eine kategoriale transformiert. Bei nur zwei Ausprägungen (ja, nein) spricht man auch von einer binären Variable."))
-```
 
 ## Auswertung Risk Literacy
 
@@ -80,44 +66,44 @@ Eine uninvariate Auswertung einer kategorialen Variable kann in `mosaic` wie fol
 
 - Säulendiagramm `gf_bar( ~ mein.x, data = Meine.Daten)`
 - Tabelle `tally( ~ mein.x, data = Meine.Daten)`
-- Anteil `prop( ~ mein.x, data = Meine.Daten)`
+- Anteil `prop( ~ mein.x, success="mein.richtig", data = Meine.Daten)`
 
 Werten Sie die Daten entsprechend aus.
 
 ```{r Auswertung, exercise = TRUE, eval=FALSE}
-___( ~ richtig, data = RL)
+___( ~ Preis_Ball, data = RL)
 ```
 
 ```{r Auswertung-solution}
-gf_bar( ~ richtig, data = RL)
-tally( ~ richtig, data = RL)
-prop( ~ richtig, success = "ja", data = RL)
+gf_bar( ~ Preis_Ball, data = Tischtennis)
+tally( ~ Preis_Ball, data = Tischtennis)
+prop( ~ Preis_Ball, success = "5 Cent.", data = Tischtennis)
 ```
 
+##
 
-## Interpretation
+Mit $p=`r round(prop( ~ Preis_Ball, success = "5 Cent.", data = Tischtennis),2)`$ ist der Anteil der richtigen Antworten deutlich höher als in der ZEIT Studie (ca. $11\%$).
 
-Die Frage zu Beginn lautete:
+##
 
-> Von 1.000 Leuten in einer Kleinstadt sind 500 Mitglied im Gesangsverein. Von diesen 500 Mitgliedern im Gesangsverein sind 100 Männer. Von den 500 Einwohnern, die nicht im Gesangsverein sind, sind 300 Männer.
+Bei den Antwortalternativen:
 
-Mit den Antwortmöglichkeiten:
+- 5 Cent.
+- 10 Cent.
+- 1 Euro.
+- Kann mensch anhand der gegebenen Information nicht sagen.
 
-1.  10\%
-2.  20\%
-3.  25\% (dies ist die richtige Antwort)
-4.  30\%
-5.  33.33\%
-6.  40\%
 
 ```{r raten, echo=FALSE}
-question("Wie wahrscheinlich ist die richtige Antwort, wenn alle nur raten würden?",
-  answer("0%", message="Hier gibt es 6 Antwortmöglichkeiten, davon ist 1 richtig. Rein durch Raten würde man also mit einer Wahrscheinlichkeit von 1/6=16.67% richtig liegen."),
-  answer("16.67%", correct = TRUE, message="Hier gibt es 6 Antwortmöglichkeiten, davon ist 1 richtig. Rein durch Raten würde man also mit einer Wahrscheinlichkeit von 1/6=16.67% richtig liegen."),
-  answer("25%", message="Hier gibt es 6 Antwortmöglichkeiten, davon ist 1 richtig. Rein durch Raten würde man also mit einer Wahrscheinlichkeit von 1/6=16.67% richtig liegen."),
-   answer("50%", message="Hier gibt es 6 Antwortmöglichkeiten, davon ist 1 richtig. Rein durch Raten würde man also mit einer Wahrscheinlichkeit von 1/6=16.67% richtig liegen."))
+question(" Wie hoch ist die Wahrscheinlichkeit rein durch Raten die richtige Antwort zu treffen?",
+  answer("0%", message="Vier Antwortalternativen, davon eine richtig."),
+  answer("25%", correct = TRUE, message="Vier Antwortalternativen, davon eine richtig."),
+  answer("50%", message="Vier Antwortalternativen, davon eine richtig."),
+  answer("100%", message="Vier Antwortalternativen, davon eine richtig.")
+  )
 ```
+
 
 ## Ausblick
 
-Die Inferenzstatistik beschäftigt sich mit der Frage wie wahrscheinlich es ist, dass in einer Stichprobe `r tally( ~ richtig, data = RL)[1]` von `r tally( ~ richtig, data = RL)[1]+tally( ~ richtig, data = RL)[2]` (d.h. $p=\frac{`r tally( ~ richtig, data = RL)[1]`}{`r tally( ~ richtig, data = RL)[1]+tally( ~ richtig, data = RL)[2]`}=`r round(prop( ~ richtig, success = "ja", data = RL),2)`$) richtig liegen, wenn wie annehmen, dass die Studierenden nur raten (d.h. $\pi=\frac{1}{6}=`r round(1/6,2)`$).
+Die Inferenzstatistik beschäftigt sich mit der Frage wie wahrscheinlich es ist, dass in einer Stichprobe `r tally( ~ Preis_Ball, data = Tischtennis)[3]` von `r sum(tally( ~ Preis_Ball, data = Tischtennis))` (d.h. $p=\frac{`r tally( ~ Preis_Ball, data = Tischtennis)[3]`}{`r sum(tally( ~ Preis_Ball, data = Tischtennis))`}=`r round(prop( ~ Preis_Ball, success = "5 Cent.", data = Tischtennis),2)`$) richtig liegen, wenn wie annehmen, dass die Studierenden nur raten (d.h. $\pi=\frac{1}{4}=`r round(1/4,2)`$).
