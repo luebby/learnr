@@ -60,7 +60,7 @@ Tischtennis
 ```
 
 
-## Auswertung Risk Literacy
+## Auswertung Ökonomisches Denken
 
 Eine uninvariate Auswertung einer kategorialen Variable kann in `mosaic` wie folgt erfolgen:
 
