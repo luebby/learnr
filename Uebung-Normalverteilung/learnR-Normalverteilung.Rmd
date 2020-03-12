@@ -57,7 +57,7 @@ Berechnen Sie die Wahrscheinlichkeit, dass eine beliebige Person einen IQ größ
 ```
 
 ```{r IQ130-solution}
-1-xpnorm(130, mean = 100, sd = 15)
+1 - xpnorm(130, mean = 100, sd = 15)
 ```
 
 
