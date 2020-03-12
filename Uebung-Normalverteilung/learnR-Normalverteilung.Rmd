@@ -36,7 +36,7 @@ Es gilt:
 - $P(X > a) =1-F(a)$: Wahrscheinlichkeit für einen Wert größer als $a$. 
 - $P(a< X \leq b) =F(a)-F(b)$: Wahrscheinlichkeit für einen Wert zwischen $a$ und $b$.
 
-Die Funktion `xpnorm(q, mean = 0, sd = 1)` berechnet für eine Normalverteilung mit Mittelwert `mean` und Standardabweichung `sd` den Wert der Verteilungsfunktion an der der Stelle `q`, d.h., $p=F(q)$. 
+Die Funktion `xpnorm(q, mean = 0, sd = 1)` berechnet für eine Normalverteilung mit Mittelwert `mean` ($\mu$) und Standardabweichung `sd` ($\sigma$) den Wert der Verteilungsfunktion an der der Stelle `q`, d.h., $p=F(q)$. 
 
 Berechnen Sie die Wahrscheinlichkeit, dass eine beliebige Person einen IQ kleiner gleich 110 hat:
 
@@ -75,9 +75,9 @@ question("Was für einen z-Wert hat eine Person mit einem IQ von 115?",
 
 ## Quantile
 
-Während `p <- xpnorm(q, mean = 0, sd = 1)` die Wahrscheinlichkeit `p` (bei bekannten $\mu$ und $\sigma$) für eine Beobachtung kleiner gleich `q` berechnet, ergibt `q <- xqnorm(p, mean = 0, sd = 1)` den Wert `q` zurück, der mit einer Wahrscheinlichkeit `p` nicht überschritten wird -- jeweils bei Normalverteilung:
+Während `p <- xpnorm(q, mean = 0, sd = 1)` die Wahrscheinlichkeit `p` (bei bekannten $\mu$ und $\sigma$) für eine Beobachtung kleiner gleich `q` berechnet (d.h. $P(X \leq q)$), ergibt `q <- xqnorm(p, mean = 0, sd = 1)` den Wert `q`, der mit einer Wahrscheinlichkeit `p` nicht überschritten wird -- jeweils bei Normalverteilung:
 
-$$q = F^{-1}(p)$$
+$$p=F(q) \Leftrightarrow q = F^{-1}(p)$$
 Welchen IQ benötigt mensch, um zu den $10\%$ mit dem höchsten IQ zu gehören?
 
 ```{r IQ09, exercise = TRUE, eval=FALSE}
