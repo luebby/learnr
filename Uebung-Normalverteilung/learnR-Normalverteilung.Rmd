@@ -14,7 +14,7 @@ library(mosaic)
 
 ## Intelligenzquotient
 
-Nach Konstruktion wird der Intelligenzquotient (IQ) so gemessen, dass er *normalverteilt* bei einem Mittelwert (Erwartungswert) von $$\mu=100$$ und einer Standardabweichung von $$\sigma=15$$ ist.
+Nach Konstruktion wird der Intelligenzquotient (IQ) so gemessen, dass er *normalverteilt* bei einem Mittelwert (Erwartungswert) von $\mu=100$ und einer Standardabweichung von $\sigma=15$ ist.
 
 Schreibweise:
 
