@@ -107,7 +107,7 @@ question("Welches Skalenniveau hat die Variable `log.gdp`?",
 ```
 
 
-```{r scatterplot , exercise = TRUE}
+```{r scatterplot, exercise = TRUE}
 gf_point(log.co2 ~ log.gdp, data = Co2Gdp)
 ```
 
