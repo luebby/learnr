@@ -308,7 +308,7 @@ gf_histogram( ~ log.gdp, data = Bootvtlg) %>%
 
 ### Konfidenzintervall
 
-Ein Konfidenzintervall auf Basis des Bootstrappings erhalten Sie über den Befehl `confint()':
+Ein Konfidenzintervall auf Basis des Bootstrappings erhalten Sie über den Befehl `confint()`:
 
 ```{r confi, exercise = TRUE}
 confint(Bootvtlg)
