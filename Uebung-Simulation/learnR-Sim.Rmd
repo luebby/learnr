@@ -75,8 +75,8 @@ gf_histogram( ~ heads, data = Nullvtlg, center = 350, binwidth = 5) %>%
 
 ```{r kompatibel, echo=FALSE}
 question("Welche Aussage stimmt?",
-         answer("61 Frauen bei 701 Personen ist kompatibel mit den angenommenen Modell $\\pi_0=0.5$ ", message = "Das Modell sagt ungefähr zwischen 325 und 375 Frauen voraus. Die Wahrscheinlichkeit für 61 Frauen (oder weniger) ist in dem Modell sehr klein."),
-                  answer("61 Frauen bei 701 Personen ist nicht kompatibel mit den angenommenen Modell $\\pi_0=0.5$ ", correct = TRUE, message = "Das Modell sagt ungefähr zwischen 325 und 375 Frauen voraus. Die Wahrscheinlichkeit für 61 Frauen (oder weniger) ist in dem Modell sehr klein."))
+         answer("61 Frauen bei 701 Personen ist kompatibel mit den angenommenen Modell $\\pi_0=0.5$ ", message = "Das Modell sagt ungefähr zwischen 325 und 375 Frauen voraus. Die Wahrscheinlichkeit für 61 Frauen (oder weniger) ist in dem Modell sehr klein. Die Annahme einer Gleichberechtigung kann hier begründet in Frage gestellt werden."),
+                  answer("61 Frauen bei 701 Personen ist nicht kompatibel mit den angenommenen Modell $\\pi_0=0.5$ ", correct = TRUE, message = "Das Modell sagt ungefähr zwischen 325 und 375 Frauen voraus. Die Wahrscheinlichkeit für 61 Frauen (oder weniger) ist in dem Modell sehr klein. Die Annahme einer Gleichberechtigung kann hier begründet in Frage gestellt werden."))
 ```
 
 
