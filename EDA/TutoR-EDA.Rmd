@@ -3,6 +3,7 @@ title: "Explorative Datenanalyse"
 output: 
   learnr::tutorial:
     progressive: true
+    allow_skip: true
 runtime: shiny_prerendered
 ---
 
@@ -10,10 +11,8 @@ runtime: shiny_prerendered
 library(learnr)
 library(mosaic)
 library(DT)
-checker <- function(label, user_code, check_code, envir_result, evaluate_result, ...) {
-  list(message = check_code, correct = TRUE, location = "append")
-}
-tutorial_options(exercise.timelimit = 60, exercise.checker = checker)
+
+tutorial_options(exercise.timelimit = 60)
 
 Sats <- read.csv2("SATS-36.csv")
 
@@ -208,9 +207,6 @@ Finden Sie auf Ihrer Tastatur die *Tilde*: `~`. Tippen Sie sie innerhalb der Anf
 "~"
 ```
 
-```{r tilde-check}
-"Die Tilde (~) werden wir jetzt öfter brauchen."
-```
 
 Einen Schummelzettel für `mosaic` Befehle gibt es auf der Homepage des [ifes](https://www.fom.de/forschung/institute/ifes.html){target="_blank"} oder direkt  [hier](https://www.fom.de/fileadmin/fom/forschung/ifes/Cheatsheet-DA-R.pdf){target="_blank"}.
 
