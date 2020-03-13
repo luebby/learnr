@@ -71,7 +71,7 @@ Eine uninvariate Auswertung einer kategorialen Variable kann in `mosaic` wie fol
 Werten Sie die Daten entsprechend aus.
 
 ```{r Auswertung, exercise = TRUE, eval=FALSE}
-___( ~ Preis_Ball, data = RL)
+___( ~ Preis_Ball, data = Tischtennis)
 ```
 
 ```{r Auswertung-solution}
