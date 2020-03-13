@@ -132,7 +132,7 @@ question("Kann aus der Datenanalyse unmittelbar eine Kausalaussage folgen (Wohls
 
 Eine Kennzahl für den linearen Zusammenhang ist der Korrelationskoeffizient $r_{xy}$. Dieser kann in R durch den Befehl `cor()` berechnet werden:
 
-```{r cor , exercise = TRUE}
+```{r cor, exercise = TRUE}
 cor(log.co2 ~ log.gdp, data = Co2Gdp)
 ```
 
