@@ -88,4 +88,6 @@ question("Stimmt die Ausage: Die Deutschen arbeiten im Ländervergleich lange?",
          )
 ```
 
+## Ausblick
 
+Häufig ist man daran interessiert Kennzahlen verschiedener Stichproben zu vergleichen, die Variation zu modellieren und Hypothesen über die Verteilung zu prüfen.
