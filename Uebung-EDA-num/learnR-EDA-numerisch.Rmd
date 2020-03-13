@@ -20,14 +20,13 @@ Dazu analysieren wir den Datensatz `Arbeitszeit.csv`. Dieser wurde von dem Inter
 
 
 ## Vorbereitungen
-
 Damit wir `mosaic` nutzen können, müssen wir es zunächst laden:
 
 ```{r mosaic}
 library(mosaic)
 ```
 
-Damit wir die Daten nutzen können, müssen wir die Daten in R einlesen. Diese liegen als csv Datei (Endung `csv`) vor. 
+Damit wir die Daten nutzen können, müssen wir die Daten in R einlesen. Diese liegen als csv-Datei (Endung `csv`) vor. 
 
 ```{r csv}
 Arbeitszeit <- read.csv2("Arbeitszeit.csv")
@@ -43,7 +42,7 @@ Die Variable `stunden` ist dabei gemäß Variablenbeschreibung der Durchschnitts
 
 ## Auswertung Arbeitszeitsverteilung
 
-Eine uninvariate Auswertung einer numerischen Variable kann in `mosaic` u.a. wie folgt erfolgen:
+Eine uninvariate Auswertung einer numerischen Variable kann in `mosaic` u. a. wie folgt erfolgen:
 
 - Histogramm `gf_histogram( ~ mein.x, data = Meine.Daten)`
 - Kennzahlen `favstats( ~ mein.x, data = Meine.Daten)`

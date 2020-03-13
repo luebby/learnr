@@ -19,10 +19,10 @@ Der Schläger kostet 1 Euro mehr als der Ball.
 
 ```{r einstieg, echo=FALSE}
 question(" Was kostet der Ball?",
-  answer("5 Cent.", correct = TRUE, message="0.05 + (0.05 + 1.00) = 1.10"),
-  answer("10 Cent.", message="0.05 + (0.05 + 1.00) = 1.10"),
-  answer("1 Euro.", message="0.05 + (0.05 + 1.00) = 1.10"),
-  answer("Kann ich anhand der gegebenen Information nicht sagen.", message="0.05 + (0.05 + 1.00) = 1.10")
+  answer("5 Cent.", correct = TRUE, message = "0.05 + (0.05 + 1.00) = 1.10"),
+  answer("10 Cent.", message = "0.05 + (0.05 + 1.00) = 1.10"),
+  answer("1 Euro.", message = "0.05 + (0.05 + 1.00) = 1.10"),
+  answer("Kann ich anhand der gegebenen Information nicht sagen.", message = "0.05 + (0.05 + 1.00) = 1.10")
   )
 ```
 
@@ -47,7 +47,7 @@ Damit wir `mosaic` nutzen können, müssen wir es zunächst laden:
 library(mosaic)
 ```
 
-Damit wir die Daten einer freiwilligen, anonymen Online-Erhebung (Gelegenheitsstichprobe) nutzen können, müssen wir auch die Daten in R einlesen. Wir weisen die eingelesenen Daten (im `csv` Format) in R dem Datensatz `Tischtennis` zu:
+Damit wir die Daten einer freiwilligen, anonymen Online-Erhebung (Gelegenheitsstichprobe) nutzen können, müssen wir auch die Daten in R einlesen. Wir weisen die eingelesenen Daten (im `csv`-Format) in R dem Datensatz `Tischtennis` zu:
 
 ```{r read.csv2}
 Tischtennis <- read.csv2("Tischtennis.csv")
@@ -66,7 +66,7 @@ Eine uninvariate Auswertung einer kategorialen Variable kann in `mosaic` wie fol
 
 - Säulendiagramm `gf_bar( ~ mein.x, data = Meine.Daten)`
 - Tabelle `tally( ~ mein.x, data = Meine.Daten)`
-- Anteil `prop( ~ mein.x, success="mein.richtig", data = Meine.Daten)`
+- Anteil `prop( ~ mein.x, success = "mein.richtig", data = Meine.Daten)`
 
 Werten Sie die Daten entsprechend aus.
 
@@ -96,14 +96,14 @@ Bei den Antwortalternativen:
 
 ```{r raten, echo=FALSE}
 question(" Wie hoch ist die Wahrscheinlichkeit rein durch Raten die richtige Antwort zu treffen?",
-  answer("0%", message="Vier Antwortalternativen, davon eine richtig."),
-  answer("25%", correct = TRUE, message="Vier Antwortalternativen, davon eine richtig."),
-  answer("50%", message="Vier Antwortalternativen, davon eine richtig."),
-  answer("100%", message="Vier Antwortalternativen, davon eine richtig.")
+  answer("0%", message = "Vier Antwortalternativen, davon eine richtig."),
+  answer("25%", correct = TRUE, message = "Vier Antwortalternativen, davon eine richtig."),
+  answer("50%", message = "Vier Antwortalternativen, davon eine richtig."),
+  answer("100%", message = "Vier Antwortalternativen, davon eine richtig.")
   )
 ```
 
 
 ## Ausblick
 
-Die Inferenzstatistik beschäftigt sich mit der Frage wie wahrscheinlich es ist, dass in einer Stichprobe `r tally( ~ Preis_Ball, data = Tischtennis)[3]` von `r sum(tally( ~ Preis_Ball, data = Tischtennis))` (d.h. $p=\frac{`r tally( ~ Preis_Ball, data = Tischtennis)[3]`}{`r sum(tally( ~ Preis_Ball, data = Tischtennis))`}=`r round(prop( ~ Preis_Ball, success = "5 Cent.", data = Tischtennis),2)`$) richtig liegen, wenn wie annehmen, dass die Studierenden nur raten (d.h. $\pi=\frac{1}{4}=`r round(1/4,2)`$).
+Die Inferenzstatistik beschäftigt sich mit der Frage wie wahrscheinlich es ist, dass in einer Stichprobe `r tally( ~ Preis_Ball, data = Tischtennis)[3]` von `r sum(tally( ~ Preis_Ball, data = Tischtennis))` (d. h. $p=\frac{`r tally( ~ Preis_Ball, data = Tischtennis)[3]`}{`r sum(tally( ~ Preis_Ball, data = Tischtennis))`}=`r round(prop( ~ Preis_Ball, success = "5 Cent.", data = Tischtennis),2)`$) richtig liegen, wenn wir annehmen, dass die Studierenden nur raten (d. h. $\pi=\frac{1}{4}=`r round(1/4,2)`$).

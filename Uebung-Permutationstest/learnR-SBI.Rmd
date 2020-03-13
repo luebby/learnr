@@ -120,7 +120,7 @@ Wenn Sie mehrfach auf `Run Code` drücken, können Sie beobachten, dass auch, we
 
 ##
 
-Ein paar Simulationen von *was wäre wenn die Nullhypothese stimmen würde* reichen vielleicht nicht. Über `do()* ` können wir das z.B. $100\times$ wiederholen:
+Ein paar Simulationen von *was wäre wenn die Nullhypothese stimmen würde* reichen vielleicht nicht. Über `do()* ` können wir das z. B. $100\times$ wiederholen:
 
 ```{r Simulation, exercise = TRUE}
 set.seed(1896)
@@ -130,7 +130,7 @@ head(Nullvtlg)
 
 (Mit Hilfe von `set.seed()` wird der Zufall reproduzierbar.)
 
-*Hinweis*: In der Praxis werden i.d.R. mehr als `100` Wiederholungen durchgeführt.
+*Hinweis*: In der Praxis werden i. d. R. mehr als `100` Wiederholungen durchgeführt.
 
 ##
 
@@ -177,13 +177,13 @@ gf_histogram( ~ diffmean, data = Nullvtlg, binwidth = 1) %>%
 
 ```{r p-Wert-Visu, echo=FALSE}
 question("Welche Aussage stimmt?",
-         answer("Die beobachtete Differenz kommt häufig vor, wenn die Nullhypothese stimmt.", message = "Wenn die Nullhypothese stimmt, würde man Differenzen von $\\approx \\pm 2.7$ erwarten, und nicht 4.377778."),
-         answer("Die beobachtete Differenz kommt selten vor, wenn die Nullhypothese stimmt.", correct = TRUE,  message = "Wenn die Nullhypothese stimmt, würde man Differenzen von $\\approx \\pm 2.7$ erwarten, und nicht 4.377778."))
+         answer("Die beobachtete Differenz kommt häufig vor, wenn die Nullhypothese stimmt.", message = "Wenn die Nullhypothese stimmt, würde man Differenzen von $\\approx \\pm 2.7$ erwarten, und nicht von 4.377778."),
+         answer("Die beobachtete Differenz kommt selten vor, wenn die Nullhypothese stimmt.", correct = TRUE,  message = "Wenn die Nullhypothese stimmt, würde man Differenzen von $\\approx \\pm 2.7$ erwarten, und nicht von 4.377778."))
 ```
 
 ## p-Wert
 
-Der p-Wert ist die Wahrscheinlichkeit unter den Annahmen der Nullhypothese eine mindestens so große Differenz wie die der Stichprobe zu beobachten. Da zunächst keine *Richtung* (z.B. Bier besser als Wasser) vermutet wird und die Verteilung symmetrisch ist, wird hier der Absolutetrag `abs()` verwendet:
+Der p-Wert ist die Wahrscheinlichkeit unter den Annahmen der Nullhypothese eine mindestens so große Differenz wie die der Stichprobe zu beobachten. Da zunächst keine *Richtung* (z. B. Bier besser als Wasser) vermutet wird und die Verteilung symmetrisch ist, wird hier der Absolutetrag `abs()` verwendet:
 
 ```{r p-value}
 prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)

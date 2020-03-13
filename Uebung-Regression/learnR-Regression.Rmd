@@ -25,7 +25,8 @@ Model.Zufriedenheit <- lm(ls ~ log.gdp, data = Zufriedenheit.neu)
 
 ##
 
-Sicherlich eine schwierige Frage. Und Korrelation ist nicht Kausalität. Und dann noch das mögliche *Priming*: ändern sich die Antworten vielleicht, wenn ich andersherum gefragt hätte, d.h.,
+Sicherlich eine schwierige Frage. Und Korrelation ist nicht gleich Kausalität. 
+Und dann noch das mögliche *Priming*: ändern sich die Antworten vielleicht, wenn ich andersherum gefragt hätte, d. h.,
 
 1. Sind Sie glücklich? 
 
@@ -35,9 +36,9 @@ Sicherlich eine schwierige Frage. Und Korrelation ist nicht Kausalität. Und dan
 
 ##
 
-Viele kennen die Phrase: *Geld macht nicht glücklich*, manche auch *kein Geld macht auch nicht glücklich*. 
+Viele kennen die Phrase: *Geld macht nicht glücklich*, manche auch: *kein Geld macht auch nicht glücklich*. 
 
-Schauen wir uns dazu ein paar Daten an.
+Schauen wir uns dazu ein paar Daten an:
 
 
 ## Datenbasis
@@ -51,7 +52,7 @@ Zur Variablenbeschreibung:
 > ls: Life satisfaction in Cantril Ladder (World Happiness Report 2018): Average of survey responses to the 'Cantril Ladder' question in the Gallup World Poll. The survey question asks respondents to think of a ladder, with the best possible life for them being a 10, and the worst possible life being a 0. 
 
 
-Damit wir `mosaic` nutzen können, müssen wir es zunächst laden
+Damit wir `mosaic` nutzen können, müssen wir es zunächst laden:
 
 ```{r mosaic}
 library(mosaic)
@@ -83,7 +84,7 @@ question("Wer oder was sind hier die Beobachtungen?",
 
 ## Grafische Analyse
 
-`gf_point(mein.y ~ mein.x, data = Meine.Daten)` zeichnet ein Streudiagramm. Welche Form der Darstellung bietet sich an, d.h. welche Variable sollte auf welche Achse?
+`gf_point(mein.y ~ mein.x, data = Meine.Daten)` zeichnet ein Streudiagramm. Welche Form der Darstellung bietet sich an, d. h. welche Variable sollte auf welche Achse?
 
 ```{r gf_point, exercise = TRUE, eval=FALSE}
 gf_point(___ ~ ___, data = Zufriedenheit)
@@ -102,7 +103,7 @@ gf_point(ls ~ gdp, data = Zufriedenheit) %>%
   gf_smooth()
 ```
 
-Dies liegt daran, dass Veränderungen des `gdp` häufig *relativ* sind, d.h. $+2\%$ statt $+2000\,€$. Die resultierende rechtsschiefe der Verteilung (viele Werte im unteren Bereich, weniger im oberen) kann durch Logarithmierung korrigiert werden (hier zur Basis 10, nur für $x>0$):
+Dies liegt daran, dass Veränderungen des `gdp` häufig *relativ* sind, d. h. $+2\%$ statt $+2000\,€$. Die resultierende rechtsschiefe der Verteilung (viele Werte im unteren Bereich, weniger im oberen) kann durch Logarithmierung korrigiert werden (hier zur Basis 10; nur für $x>0$):
 
 ```{r transformation}
 Zufriedenheit.neu <- Zufriedenheit %>%
@@ -153,6 +154,6 @@ $$\widehat{\text{ls}}_i=`r round(coef(Model.Zufriedenheit)[1],2)` + `r round(coe
 
 ```{r Schluss, echo=FALSE}
 question("Ist die Kausalaussage: *Eine höhere wirtschaftliche Leistungsfähigkeit führt zu einer höheren Lebenszufriedenheit* aufgrund dieser Analyse gerechtfertigt?",
-         answer("Nein", correct = TRUE, message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z.B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe ist der Zusammenhang aber positiv."),
-         answer("Ja", message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z.B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe ist der Zusammenhang aber positiv."))
+         answer("Nein", correct = TRUE, message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z. B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe ist der Zusammenhang aber positiv."),
+         answer("Ja", message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z. B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe ist der Zusammenhang aber positiv."))
 ```
