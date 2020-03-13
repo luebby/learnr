@@ -15,7 +15,7 @@ set.seed(1896)
 
 ## Gleichberechtigung
 
-Laut dem Artikel [Wo Frauen im Topmanagement gefragt sind - und wo nicht](https://www.manager-magazin.de/unternehmen/artikel/dax-konzerne-61-frauen-und-640-maenner-als-vorstaende-a-1279965.html), erscheinen am 01.08.2019 im manager magazin:
+Laut dem Artikel [Wo Frauen im Topmanagement gefragt sind - und wo nicht](https://www.manager-magazin.de/unternehmen/artikel/dax-konzerne-61-frauen-und-640-maenner-als-vorstaende-a-1279965.html), erschienen am 01.08.2019 im manager magazin, heißt es:
 
 > Im ersten Halbjahr [2019] gab es 61 Topmanagerinnen in den 160 Unternehmen der drei Börsenindizes Dax , MDax und SDax. Ihnen saßen 640 Männer gegenüber.
 
@@ -33,7 +33,7 @@ Bei gleicher Wahrscheinlichkeit für Männer und Frauen (ohne drittes Geschlecht
 
 $$H_0: \pi=\frac{1}{2}$$
 
-gelten würde, dann wäre das Geschlecht einer Person im Topmanamgent ähnlich verteilt wie ein Münzwurf (`rflip()`): ungefähr die Hälfte der Personen wäre weiblich. 
+gelten würde, dann wäre das Geschlecht einer Person im Topmanagement ähnlich verteilt wie ein Münzwurf (`rflip()`): ungefähr die Hälfte der Personen wäre weiblich. 
 
 Es gilt aber hier:
 
@@ -43,7 +43,7 @@ Aber, selbst wenn das hypothetisch angenommene Modell $\pi_0=50\,\%$ stimmen wü
 
 Die Frage ist: sind $61$ Frauen bei insgesamt $701$ Personen im Topmanagement noch kompatibel zum Modell $\pi_0=50\,\%$?
 
-Das hypothetische Modell $\pi_0=50\,\%$ können wir simulieren. Wir werfen `1000`$\times$ jeweils `n = 701` eine faire (virtuelle) Münze und vergleichen die Vorhersagen des Modell mit der beobachteten Realität von $61$.
+Das hypothetische Modell $\pi_0=50\,\%$ können wir simulieren. Wir werfen `1000`$\times$, jeweils `n = 701`, eine faire (virtuelle) Münze und vergleichen die Vorhersagen des Modells mit der beobachteten Realität von $61$.
 
 Ergänzen Sie den Code an der Stelle `___` entsprechend:
 
@@ -75,8 +75,8 @@ gf_histogram( ~ heads, data = Nullvtlg, center = 350, binwidth = 5) %>%
 
 ```{r kompatibel, echo=FALSE}
 question("Welche Aussage stimmt?",
-         answer("61 Frauen bei 701 Personen ist kompatibel mit den angenommenen Modell $\\pi_0=0.5$ ", message = "Das Modell sagt ungefähr zwischen 325 und 375 Frauen voraus. Die Wahrscheinlichkeit für 61 Frauen (oder weniger) ist in dem Modell sehr klein. Die Annahme einer Gleichberechtigung kann hier begründet in Frage gestellt werden."),
-                  answer("61 Frauen bei 701 Personen ist nicht kompatibel mit den angenommenen Modell $\\pi_0=0.5$ ", correct = TRUE, message = "Das Modell sagt ungefähr zwischen 325 und 375 Frauen voraus. Die Wahrscheinlichkeit für 61 Frauen (oder weniger) ist in dem Modell sehr klein. Die Annahme einer Gleichberechtigung kann hier begründet in Frage gestellt werden."))
+         answer("61 Frauen bei 701 Personen ist kompatibel mit dem angenommenen Modell $\\pi_0=0.5$ ", message = "Das Modell sagt ungefähr zwischen 325 und 375 Frauen voraus. Die Wahrscheinlichkeit für 61 Frauen (oder weniger) ist in dem Modell sehr klein. Die Annahme einer Gleichberechtigung kann hier begründet in Frage gestellt werden."),
+                  answer("61 Frauen bei 701 Personen ist nicht kompatibel mit dem angenommenen Modell $\\pi_0=0.5$ ", correct = TRUE, message = "Das Modell sagt ungefähr zwischen 325 und 375 Frauen voraus. Die Wahrscheinlichkeit für 61 Frauen (oder weniger) ist in dem Modell sehr klein. Die Annahme einer Gleichberechtigung kann hier begründet in Frage gestellt werden."))
 ```
 
 
