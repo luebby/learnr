@@ -36,7 +36,7 @@ tutorial_options(exercise.timelimit = 60, exercise.checker = checker)
 
 ## Vorbemerkung
 
-Dieses Tutorial orientiert sich am Projekt [Causal Inference in Introductory Statistics Courses](https://github.com/kfcaby/causalLab) von [LTC Kevin Cummiskey](https://westpoint.edu/mathematical-sciences/profile/kevin_cummiskey).
+Dieses Tutorial orientiert sich am Projekt [Causal Inference in Introductory Statistics Courses](https://github.com/kfcaby/causalLab) von [LTC Kevin Cummiskey](https://westpoint.edu/mathematical-sciences/profile/kevin_cummiskey). Siehe auch Cummiskey, K., Adams, B,. Pleuss, J.,  Turner, D., Clark, N. \& Watts, K. (2020). *Causal Inference in Introductory Statistics Courses*, Journal of Statistics Education, [https://doi.org/10.1080/10691898.2020.1713936](https://doi.org/10.1080/10691898.2020.1713936).
 
 Datengrundlage ist der Artikel von Kahn, M. (2005). *An exhalent problem for teaching statistics*. Journal of Statistics Education, 13(2), [https://doi.org/10.1080/10691898.2005.11910559](https://doi.org/10.1080/10691898.2005.11910559).
 
