@@ -31,7 +31,7 @@ Bootvtlg <- do(1000)* lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
 
 ## Willkommen
 
-**Modellierung** hat viele Ziele. U.a. das, zu *erklären*, aber auch *vorherzusagen*. Dabei gibt es häufig mindestens zwei Variablen, eine abhängige Variable ($y$) und eine unabhängige Variable ($x$). Bei einer mathematischen Modellierung wird eine Funktion gebildet:
+**Modellierung** hat viele Ziele. U. a. das, zu *erklären*, aber auch *vorherzusagen*. Dabei gibt es häufig mindestens zwei Variablen, eine abhängige Variable ($y$) und eine unabhängige Variable ($x$). Bei einer mathematischen Modellierung wird eine Funktion gebildet:
 
 $$y=f(x)$$
 
@@ -40,7 +40,7 @@ Eine der einfachsten Formen des Zusammenhangs ist ein linearer Zusammenhang, ein
 $$y=\beta_0 + \beta_1 \cdot x$$
 Mit dem Achsenabschnitt $\beta_0$ und der Steigung $\beta_1$. 
 
-In der Realität gibt es aber häufig (zufällige?) Abweichungen von einer solchen Geraden, dem Modell. 
+In der Realität gibt es aber häufig (zufällige?) Abweichungen von einer solchen Geraden/ dem Modell. 
 
 Daten = Modell + Rest
 
@@ -64,8 +64,8 @@ Genau dies versucht anhand einer Stichprobe die *Kleinste-Quadrate-Schätzung*: 
 
 ```{r residuum, echo=FALSE}
 question("Zeigt eine solche Analyse, dass $x$ *kausal* (ursächlich) für $y$ ist?",
-  answer("Ja.", message = "Falsch: welche Variablen wofür verwendet werden ist zunächst eine Entscheidung der Wissenschaftlerin."),
-  answer("Nein.", correct = TRUE, message = "Richtig: welche Variablen wofür verwendet werden ist zunächst eine Entscheidung der Wissenschaftlerin.")
+  answer("Ja.", message = "Falsch: welche Variablen wofür verwendet werden ist zunächst eine Entscheidung der Wissenschaftler/in."),
+  answer("Nein.", correct = TRUE, message = "Richtig: welche Variablen wofür verwendet werden ist zunächst eine Entscheidung der Wissenschaftler/in.")
 )
 ```
 
@@ -140,7 +140,7 @@ cor(log.co2 ~ log.gdp, data = Co2Gdp)
 
 ### Einordnung Korrelation
 
-Da gilt $-1 \leq r \leq +1$ liegt hier mit $r=`r round(cor(log.co2 ~ log.gdp, data = Co2Gdp),2)`$ eine hohe positive Korrelation vor. 
+Da gilt $-1 \leq r \leq +1$, liegt hier mit $r=`r round(cor(log.co2 ~ log.gdp, data = Co2Gdp),2)`$ eine hohe positive Korrelation vor. 
 
 ### Lineare Regression
 
@@ -156,7 +156,6 @@ cor(log.co2 ~ log.gdp, data = Co2Gdp)
 lm(log.co2 ~ log.gdp, data = Co2Gdp)
 ```
 
-###
 
 ### Ergebnis Regression
 
@@ -195,24 +194,22 @@ Co2Gdp %>%
   select(log.co2)
 ```
 
-###
 
 ### Mehr zur linearen Regression
 
-Mehr erfahren wir, wenn wir das Ergebnis der linearen Modellierung einem R Objekt, z.B. `erglm` zuweisen, d.h.:
+Mehr erfahren wir, wenn wir das Ergebnis der linearen Modellierung einem R-Objekt, z. B. `erglm` zuweisen, d. h.:
 
 ```{r erglm}
 erglm <- lm(log.co2 ~ log.gdp, data = Co2Gdp)
 ```
 
-Dieses können wir weiterverwenden, z.B. für eine Zusammenfassung des Ergebnis über `summary()`:
+Dieses können wir weiterverwenden, z. B. für eine Zusammenfassung des Ergebnis über `summary()`:
 
 ```{r plotmodel, exercise = TRUE}
 erglm %>%
   summary()
 ```
 
-###
 
 ### Bestimmheitsmaß $R^2$
 
@@ -269,7 +266,7 @@ Zunächst wird zur Reproduzierbarkeit der Zufallszahlengenerator gesetzt.
 set.seed(1896)
 ```
 
-Und dann z.B. 1000-mal resampled:
+Und dann z. B. 1000-mal resampled:
 
 ```{r boot, eval=FALSE}
 Bootvtlg <- do(1000)* lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
@@ -277,7 +274,7 @@ Bootvtlg <- do(1000)* lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
 
 ### Bootstrap-Verteilung
 
-Die Bootstrap-Verteilung, z.B. von $\hat{\beta}^*_1$, d.h. die Steigung in Richtung `log.gdp`, können wir jetzt betrachten:
+Die Bootstrap-Verteilung, z. B. von $\hat{\beta}^*_1$, d. h. die Steigung in Richtung `log.gdp`, können wir jetzt betrachten:
 
 ```{r boothist, exercise = TRUE}
 gf_histogram( ~ log.gdp, data = Bootvtlg)
@@ -285,8 +282,8 @@ gf_histogram( ~ log.gdp, data = Bootvtlg)
 
 ```{r null, echo=FALSE}
 question("Angenommen es gäbe keinen linearen Zusammenhang zwischen Wohlstand und CO~2~ -Emissionen. Was würde dann gelten?",
-  answer("$\\beta_0=0$", message = "Falsch: Wenn die Steigung in Richtung `log.gdp` 0 wäre, würde sich im Modell `log.co2` nicht ändern."),
-  answer("$\\beta_1=0$", correct = TRUE, message = "Richtig: Wenn die Steigung in Richtung `log.gdp` 0 wäre, würde sich im Modell `log.co2` nicht ändern.")
+  answer("$\\beta_0=0$", message = "Falsch: Wenn die Steigung in Richtung `log.gdp` 0 wäre, würde sich im Modell `log.co2` nichts ändern."),
+  answer("$\\beta_1=0$", correct = TRUE, message = "Richtig: Wenn die Steigung in Richtung `log.gdp` 0 wäre, würde sich im Modell `log.co2` nichts ändern.")
 )
 ```
 
@@ -372,8 +369,7 @@ Auch wenn es keine Kausalanalyse ist, so zeigen die vorherigen Analysen doch, da
 Gilt diese *globale* Beobachtung auch auf Ebene der Kontinente?
 
 ###
-
-### 
+ 
 
 Über die Option `analyse(y ~ x | z)` kann eine gruppierte bzw. bedingte Analyse je `z` durchgeführt werden. Der Gesamtdatensatz wird anhand der Variable `z` aufgeteilt und es wird jeweils eine getrennte Abbildung erzeugt. Die Variable für die Kontinente heißt `continent`.
 
@@ -386,8 +382,7 @@ gf_point(log.co2 ~ log.gdp | continent, data = Co2Gdp)
 ```
 
 ### 
-
-### 
+ 
 
 ```{r facet, echo=FALSE}
 question("Gemäß der Abbildung: In welchem Kontinent scheint der Zusammenhang am schwächsten zu sein?",
@@ -416,7 +411,7 @@ lm(log.co2 ~ continent, data = Co2Gdp)
 
 ###
 
-Der Achsenabschnitt (`Intercept`) bezieht sich auf die *Referenzklasse*, i.d.R. die alphanumerisch erste Ausprägung, hier `Africa`. Die geschätzten Koeffizienten zeigen die Veränderung im Vergleich zur Referenz. Z.B.
+Der Achsenabschnitt (`Intercept`) bezieht sich auf die *Referenzklasse*, i. d. R. die alphanumerisch erste Ausprägung, hier `Africa`. Die geschätzten Koeffizienten zeigen die Veränderung im Vergleich zur Referenz. Z.B.
 
 $$\bar{y}_{\text{Asia}}=\hat{\beta}_0+\hat{\beta}_{\text{Asia}}=`r round(coef(erglm.cont)[1],4)`+`r round(coef(erglm.cont)[2],4)`=`r round(mean(log.co2 ~ continent, data = Co2Gdp)[2],4)`$$
 
@@ -425,11 +420,11 @@ $$\bar{y}_{\text{Asia}}=\hat{\beta}_0+\hat{\beta}_{\text{Asia}}=`r round(coef(er
 ```{r contrast, echo=FALSE}
 question("Welcher Kontinent hat im Mittelwert der Länder die niedrigsten CO~2~ -Emissionen je Einwohner?",
   answer("Africa", correct = TRUE, message = "Richtig: Die geschätzten Koeffizienten für die anderen Kontinente sind positiv."),
-  answer("Asia", message = "Falsch: Der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
-  answer("Europe", message = "Falsch: Der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
-  answer("North America", message = "Falsch: Der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
-  answer("Oceania", message = "Falsch: Der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz."),
-  answer("South America", message = "Falsch: Der geschätzte Koeffizient ist positiv, d.h. der Wert ist größer als der Wert der Referenz.")
+  answer("Asia", message = "Falsch: Der geschätzte Koeffizient ist positiv, d. h. der Wert ist größer als der Wert der Referenz."),
+  answer("Europe", message = "Falsch: Der geschätzte Koeffizient ist positiv, d. h. der Wert ist größer als der Wert der Referenz."),
+  answer("North America", message = "Falsch: Der geschätzte Koeffizient ist positiv, d. h. der Wert ist größer als der Wert der Referenz."),
+  answer("Oceania", message = "Falsch: Der geschätzte Koeffizient ist positiv, d. h. der Wert ist größer als der Wert der Referenz."),
+  answer("South America", message = "Falsch: Der geschätzte Koeffizient ist positiv, d. h. der Wert ist größer als der Wert der Referenz.")
 )
 ```
 
@@ -444,7 +439,7 @@ gf_point(log.co2 ~ log.gdp | continent, data = Co2Gdp) %>%
 
 ### Modellierung mit Moderator
 
-Visuell unterscheidet sich der Zusammenhang $\beta_1$ zwischen den Kontinenten -- der Kontinent *moderiert* den Zusammenhang. Dies kann auch in der Modellierung berücksichtigt werden. Über `+` werden Variablen hinzugefügt, über `:` eine Wechselwirkung, Interaktion.
+Visuell unterscheidet sich der Zusammenhang $\beta_1$ zwischen den Kontinenten -- der Kontinent *moderiert* den Zusammenhang. Dies kann auch in der Modellierung berücksichtigt werden. Über `+` werden Variablen hinzugefügt, über `:` eine Wechselwirkung/ Interaktion.
 
 ```{r wechsel, exercise = TRUE}
 lm(log.co2 ~ log.gdp + continent + log.gdp:continent, data = Co2Gdp) %>%
