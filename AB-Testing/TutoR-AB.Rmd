@@ -20,6 +20,12 @@ CsrCfp <- read.csv2("CsrCfp.csv")
 
 abw.stipro <- diffmean(roa ~ report, data = CsrCfp)
 
+# Reproduzierbarkeit
+set.seed(1896)
+
+# 1000-faches Resampling 
+Bootvtlg.mean <- do(1000) * mean(~ roa, data = resample(CsrCfp))
+
 
 # Bootstrap
 set.seed(1896)
