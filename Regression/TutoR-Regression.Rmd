@@ -57,7 +57,7 @@ question("Wann ist eine Modellanpassung *gut*?",
 
 ###
 
-### Kleinste Quadrate Schätzung
+### Kleinste-Quadrate-Schätzung
 
 Genau dies versucht anhand einer Stichprobe die *Kleinste-Quadrate-Schätzung*: Schätze Achsenabschnitt und Steigung so, dass $\sum \epsilon^2$ minimal ist. Die *Schätzwerte* für die eigentlich unbekannten Modellparameter $\beta_0$, $\beta_1$ werden mit $\hat{\beta}_0$ und $\hat{\beta}_1$ gekennzeichnet.
 
@@ -146,7 +146,7 @@ Da gilt $-1 \leq r \leq +1$, liegt hier mit $r=`r round(cor(log.co2 ~ log.gdp, d
 
 Aber wir wollen ein Modell mit $$\text{log.co2}=\beta_0 + \beta_1 \cdot \text{log.gdp} + \epsilon$$ anpassen.
 
-Dazu muss nur der Befehl `cor()` durch `lm()` -- 'lm' steht für linear model -- ersetzt werden.
+Dazu muss nur der Befehl `cor()` durch `lm()` -- 'lm' steht für *linear model* -- ersetzt werden.
 
 ```{r lm, exercise = TRUE}
 cor(log.co2 ~ log.gdp, data = Co2Gdp)
@@ -260,7 +260,7 @@ question("Ist es ein Zeichen für problematische Datenqualität, wenn die Schät
 
 Beim Bootstrapping wird die Stichprobenverteilung durch wiederholtes Resampling simuliert.
 
-Zunächst wird zur Reproduzierbarkeit der Zufallszahlengenerator gesetzt.
+Zunächst wird zur Reproduzierbarkeit der Zufallszahlengenerator gesetzt:
 
 ```{r setseed}
 set.seed(1896)
@@ -274,7 +274,7 @@ Bootvtlg <- do(1000)* lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
 
 ### Bootstrap-Verteilung
 
-Die Bootstrap-Verteilung, z. B. von $\hat{\beta}^*_1$, d. h. die Steigung in Richtung `log.gdp`, können wir jetzt betrachten:
+Jetzt können wir die Bootstrap-Verteilung von z. B. $\hat{\beta}^*_1$, d. h. die Steigung in Richtung `log.gdp`, betrachten:
 
 ```{r boothist, exercise = TRUE}
 gf_histogram( ~ log.gdp, data = Bootvtlg)
@@ -290,7 +290,7 @@ question("Angenommen es gäbe keinen linearen Zusammenhang zwischen Wohlstand un
 
 ### `gf_vline()`
 
-Über `gf_vline(xintercept = x)` können Sie eine vertikale Linie hinzufügen. Ergänzen Sie den Wert, der gelten würde, wenn es keinen Zusammenhang gäbe.
+Über `gf_vline(xintercept = x)` können Sie eine vertikale Linie hinzufügen. Ergänzen Sie den Wert, der gelten würde, wenn es keinen Zusammenhang gäbe:
 
 ```{r boot0, exercise = TRUE, eval = FALSE}
 gf_histogram( ~ log.gdp, data = Bootvtlg) %>%
@@ -335,7 +335,7 @@ Der Zusammenhang sieht linear aus, es sind keine extremen Ausreißer zu erkennen
 
 ### Residuen vs. Angepasste Werte
 
-Sieht ok aus. Aber auch im Streudiagramm der Residuen (`resid()`, $y-\hat{y}$) und der angepassten Werte (`fitted()`, $\hat{y}$) sollte kein Muster erkennbar sein. 
+Das Streudiagramm sieht soweit ok aus. Aber auch im Streudiagramm der Residuen (`resid()`, $y-\hat{y}$) und der angepassten Werte (`fitted()`, $\hat{y}$) sollte kein Muster erkennbar sein. 
 
 ```{r residfit, exercise = TRUE}
 # Datenvektoren erzeugen
