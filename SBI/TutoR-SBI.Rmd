@@ -46,7 +46,7 @@ question("Welche davon ist wahrscheinlicher?",
 
 ### Trugschluss
 
-Und, richtig gelegen? Wenn nicht: nicht schlimm: Sie sind in guter Gesellschaft. Siehe das berühmte Paper: Tversky, A., & Kahneman, D. (1983). Extensional versus intuitive reasoning: The conjunction fallacy in probability judgment. Psychological review, 90(4), 293--315. [https://psycnet.apa.org/doi/10.1037/0033-295X.90.4.293](https://psycnet.apa.org/doi/10.1037/0033-295X.90.4.293).
+Und?! Richtig gelegen? Wenn nicht: nicht schlimm! Sie sind in guter Gesellschaft: siehe das berühmte Paper: Tversky, A., & Kahneman, D. (1983). Extensional versus intuitive reasoning: The conjunction fallacy in probability judgment. Psychological review, 90(4), 293--315. [https://psycnet.apa.org/doi/10.1037/0033-295X.90.4.293](https://psycnet.apa.org/doi/10.1037/0033-295X.90.4.293).
 
 Die Wochenzeitung DIE ZEIT und das briq-Institut haben im Rahmen einer Studie [Was wissen die Deutschen über Wirtschaft?](https://news.briq-institute.org/de/2018/02/08/die-deutschen-wissen-zu-wenig-ueber-wirtschaft/) auch diese Frage gestellt. Richtig lagen gerade einmal $13\,\%$!
 
@@ -55,7 +55,7 @@ Die Wochenzeitung DIE ZEIT und das briq-Institut haben im Rahmen einer Studie [W
 
 Im Rahmen einer freiwilligen Online-Befragung zu Beginn eines Semesters an der FOM wurden Daten, u. a. zur oben genannten Frage, erhoben.
 
-#### Vorbereitung
+#### Vorbereitung zur Analyse
 
 Installiertes Paket `mosaic` laden:
 
@@ -145,7 +145,7 @@ Nehmen wir hypothetisch an, dass sich der Anteil der richtigen Antworten in der 
 
 ```{r simp, echo=FALSE}
 question("Welcher Anteil würde in diesem hypothetischen Modell für die FOM-Studierenden gelten?",
-  answer("13%", correct = TRUE, "Richtig: Wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil wie dort bei 13%."),
+  answer("13%", correct = TRUE, "Richtig: Wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil wie dort bei 13% liegen."),
   answer("36%", message = "Falsch: Wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil der richtigen Antworten bei FOM-Studierenden so hoch wie in der Allgemeinbevölkerung sein."),
   answer("50%", message = "Falsch: Wenn es keinen Unterschied zur Allgemeinbevölkerung gibt, würde der Anteil der richtigen Antworten bei FOM-Studierenden so hoch wie in der Allgemeinbevölkerung sein.")
   )
@@ -248,8 +248,8 @@ gf_histogram( ~ prop, data = Nullvtlg) %>%
 
 ```{r p0q, echo=FALSE}
 question("Wenn das Nullmodell stimmt: Ist dann der Anteil der Stichprobe ein übliches Ergebnis?",
-  answer("Ja", message = "Falsch: Wenn das Modell stimmt sind Anteile zwischen ungefähr 8% und 18% wahrscheinlich, nicht ein Anteil 36%."),
-  answer("Nein", correct = TRUE, message = "Richtig: Wenn das Modell stimmt sind Anteile zwischen ungefähr 8% und 18% wahrscheinlich, nicht ein Anteil 36%.")
+  answer("Ja", message = "Falsch: Wenn das Modell stimmt sind Anteile zwischen ungefähr 8% und 18% wahrscheinlich, nicht ein Anteil von 36%."),
+  answer("Nein", correct = TRUE, message = "Richtig: Wenn das Modell stimmt sind Anteile zwischen ungefähr 8% und 18% wahrscheinlich, nicht ein Anteil von 36%.")
   )
 ```
 
@@ -266,7 +266,7 @@ Der **p-Wert** gibt an, wie oft wir im (simulierten) Modell (der **Nullhypothese
 prop( ~ prop >= 0.36, data = Nullvtlg)
 ```
 
-Der Anteil der FOM-Studierenden, die die *Linda*-Frage richtig beantworten liegt mit $p=0.36$ daher **signifikant** über $\pi=0.13$, dem Anteil in der Allgemeinbevölkerung laut Studie von DIE ZEIT und dem briq-Institut: [Was wissen die Deutschen über Wirtschaft?](https://news.briq-institute.org/de/2018/02/08/die-deutschen-wissen-zu-wenig-ueber-wirtschaft/).
+Der Anteil der FOM-Studierenden, die die *Linda*-Frage richtig beantwortet haben, liegt mit $p=0.36$ daher **signifikant** über $\pi=0.13$, dem Anteil in der Allgemeinbevölkerung laut Studie von DIE ZEIT und dem briq-Institut: [Was wissen die Deutschen über Wirtschaft?](https://news.briq-institute.org/de/2018/02/08/die-deutschen-wissen-zu-wenig-ueber-wirtschaft/).
 
 
 ### Stichprobenumfang
@@ -375,7 +375,7 @@ question("Um welchen Wert variieren die Werte beim Resampling??",
 
 ### Konfidenzintervall
 
-Über den Befehl `gf_vline(xintercept = ___)` wird eine vertikale Linie an der Stelle `___` eingezeichnet. Ergänzen Sie den Code, um eine Linie an der Stelle des Punktschätzers $\hat{\pi}=p=`r round(prop(~linda, success ="Richtig", data=Linda),2)`$ zu einzufügen.
+Über den Befehl `gf_vline(xintercept = ___)` wird eine vertikale Linie an der Stelle `___` eingezeichnet. Ergänzen Sie den Code, um eine Linie an der Stelle des Punktschätzers $\hat{\pi}=p=`r round(prop(~linda, success ="Richtig", data=Linda),2)`$ einzufügen.
 
 ```{r bootsample, exercise = TRUE, eval=FALSE}
 gf_histogram( ~ prop_Richtig, data = Bootvtlg) %>%
@@ -387,7 +387,7 @@ gf_histogram( ~ prop_Richtig, data = Bootvtlg) %>%
   gf_vline(xintercept = 0.36)
 ```
 
-In welchem Bereich liegen z. B.$95\,\%$ der Anteile der Resamples? Diese Frage beantwortet z. B. das Bootstrap-Perzentil-**Konfidenzintervall**:
+In welchem Bereich liegen z. B. $95\,\%$ der Anteile der Resamples? Diese Frage beantwortet z. B. das Bootstrap-Perzentil-**Konfidenzintervall**:
 
 ```{r ki, exercise = TRUE}
 quantile( ~ prop_Richtig, data = Bootvtlg, probs = c(0.025, 0.975))
