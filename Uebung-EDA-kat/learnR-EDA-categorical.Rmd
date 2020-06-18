@@ -1,0 +1,110 @@
+---
+title: "Economic Thinking"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+TableTennis <- read.csv2("TableTennis.csv")
+```
+
+## Bat and ball
+
+A bat and ball cost 1,10 Euro.
+If the bat costs 1 Euro more than the ball.
+
+```{r einstieg, echo=FALSE}
+question(" What does the ball cost?",
+  answer("5 Cent.", correct = TRUE, message = "0.05 + (0.05 + 1.00) = 1.10"),
+  answer("10 Cent.", message = "0.05 + (0.05 + 1.00) = 1.10"),
+  answer("1 Euro.", message = "0.05 + (0.05 + 1.00) = 1.10"),
+  answer("Can not tell.", message = "0.05 + (0.05 + 1.00) = 1.10")
+  )
+```
+
+
+##
+
+What do you think: how many students can answer this question correctly?
+
+##
+
+Accoring to a [survey of the university of Bonn and the newspaper DIE ZEIT](https://www.zeit.de/wirtschaft/2018-02/oekonomie-wissen-wirtschaft-deutschen-studie)) $11\%$ gave the correct answer (*5 Cent*).
+
+##
+
+Were FOM students better?
+
+## Preliminaries
+
+Load package `mosaic`:
+
+```{r mosaic}
+library(mosaic)
+```
+
+Read in data of the (convinient) sample of FOM students:
+
+```{r read.csv2}
+TableTennis <- read.csv2("TableTennis.csv")
+```
+
+First view:
+
+```{r RL}
+TableTennis
+```
+
+
+## Analysis economic thinking
+
+Univariate Analysis of categorical data via `mosaic`:
+
+- Bargraph `gf_bar( ~ my.x, data = My.Data)`
+- Table `tally( ~ my.x, data = My.Data)`
+- Proportion `prop( ~ my.x, success = "my.success", data = My.Data)`
+
+Analyze accordingly:
+
+```{r Auswertung, exercise = TRUE, eval=FALSE}
+___( ~ Price_Ball, data = TableTennis)
+```
+
+```{r Auswertung-solution}
+gf_bar( ~ Price_Ball, data = TableTennis)
+tally( ~ Price_Ball, data = TableTennis)
+prop( ~ Price_Ball, success = "5 Cent.", data = TableTennis)
+```
+
+##
+
+With $p=`r round(prop( ~ Price_Ball, success = "5 Cent.", data = TableTennis),2)`$ the correct proportion is higher than in the survey of DIE ZEIT ($\approx 11\%$).
+
+##
+
+With the alternatives:
+
+- 5 Cent.
+- 10 Cent.
+- 1 Euro.
+- Can not tell.
+
+probability 
+
+```{r raten, echo=FALSE}
+question(" What is the probability of answering correctly by chance?",
+  answer("0%", message = "One out of four is correct."),
+  answer("25%", correct = TRUE, message = "One out of four is correct."),
+  answer("50%", message = "One out of four is correct."),
+  answer("100%", message = "One out of four is correct.")
+  )
+```
+
+
+## Outlook
+
+In *Inferential Statistics* we are analyzing the propability of getting `r tally( ~ Price_Ball, data = TableTennis)[3]` from `r sum(tally( ~ Price_Ball, data = TableTennis))` (i. e. $p=\frac{`r tally( ~ Price_Ball, data = TableTennis)[3]`}{`r sum(tally( ~ Price_Ball, data = TableTennis))`}=`r round(prop( ~ Price_Ball, success = "5 Cent.", data = TableTennis),2)`$) correctly, if students were guessing (i. e. $\pi=\frac{1}{4}=`r round(1/4,2)`$).
