@@ -33,11 +33,11 @@ What do you think: how many students can answer this question correctly?
 
 ##
 
-Accoring to a [survey of the university of Bonn and the newspaper DIE ZEIT](https://www.zeit.de/wirtschaft/2018-02/oekonomie-wissen-wirtschaft-deutschen-studie)) $11\%$ gave the correct answer (*5 Cent*).
+Accoring to a [survey of the university of Bonn and the newspaper DIE ZEIT](https://www.zeit.de/wirtschaft/2018-02/oekonomie-wissen-wirtschaft-deutschen-studie) $11\%$ gave the correct answer (*5 Cent*).
 
 ##
 
-Were FOM students better?
+Did FOM students perform better?
 
 ## Preliminaries
 
