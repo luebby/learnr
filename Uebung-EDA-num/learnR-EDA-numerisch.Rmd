@@ -88,6 +88,14 @@ question("Stimmt die Ausage: Die Deutschen arbeiten im Ländervergleich lange?",
          )
 ```
 
+##
+
+Während die Arbeitszeit *stetig* (engl.: continuous) ist, ist die Anzahl der Länder *diskret* (engl.: discrete).
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/continuous_discrete.png){width=80%}
+
+Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
+
 ## Ausblick
 
 Häufig ist man daran interessiert Kennzahlen verschiedener Stichproben zu vergleichen, die Variation zu modellieren und Hypothesen über die Verteilung zu prüfen.

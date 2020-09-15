@@ -194,3 +194,23 @@ prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)
 
 **Fazit:** In `r prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)` der `r nrow(Nullvtlg)` Simulationen war die im Modell $H_0$ vorhergesagte Differenz größer als die tatsächlich beobachtete. Die beobachteten Daten können *nicht* plausibel durch das Modell *kein Unterschied in der Verteilung in der Population* erklärt werden. 
 
+
+## Fehlerarten
+
+Ein Fehler 1. Art ($\alpha$-Fehler) liegt vor, wenn die Nullhypothese verworfen wird, obwohl sie gilt.
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/type_1_errors.png){width=80%}
+
+Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
+
+Ein Fehler 2. Art ($\beta$-Fehler) liegt vor, wenn die Nullhypothese nicht verworfen wird, obwohl sie nicht gilt.
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/type_2_errors.png){width=80%}
+
+Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
+
+```{r Fehler, echo=FALSE}
+question("Welche Fehler **könnte** hier vorliegen?",
+         answer("Fehler 1. Art", correct = TRUE, message = "Dieser läge vor, wenn es doch keinen Unterschied in der Verteilung in der Population gäbe. Ob ein solcher vorliegt wissen wir nicht."),
+         answer("Fehler 2. Art.",  message = "Da wir aufgrund des kleinen p-Wertes die Nullhypothese verworfen haben, kann diese Fehlerart hier nicht vorliegen."))
+```

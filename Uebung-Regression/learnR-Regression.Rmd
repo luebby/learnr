@@ -157,3 +157,27 @@ question("Ist die Kausalaussage: *Eine höhere wirtschaftliche Leistungsfähigke
          answer("Nein", correct = TRUE, message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z. B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe ist der Zusammenhang aber positiv."),
          answer("Ja", message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z. B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe ist der Zusammenhang aber positiv."))
 ```
+
+## Regressionsillustration
+
+Die Abbildungen stammen von von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
+
+Es liegen Daten von diesen Drachen vor, und die Regressiongleichung wurde geschätzt ...
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/dragons.png){width=80%}
+
+Für die kategoriale, erklärende Variable gilt:
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/dragon_regression.png){width=80%}
+
+Und für die numerische, erklärende:
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/dragons_continuous.png){width=80%}
+
+Die Vorhersagen aus dem Modell werden dann wie folgt berechnet:
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/dragon_predict_mlr.png){width=80%}
+
+Und die Residuen sind die Differenzen zwischen den beobachteten und modellierten bzw. vorhergesagten Werten:
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/dragon_residual.png){width=80%}

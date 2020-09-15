@@ -526,6 +526,11 @@ cor(B_SATS_Aufwand ~ B_SATS_Interesse, data = Sats.Frauen)
 
 ## Ausblick
 
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/r_first_then.png){width=80%}
+
+Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
+
+
 In einem nächsten Tutorial werden Sie kennen lernen wie Erkenntnisse aus Daten kritisch hinterfragt werden können.
 
 ## Hinweis
