@@ -91,4 +91,10 @@ xqnorm(0.9, mean = 100, sd = 15)
 
 ## Ausblick
 
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/not_normal.png){width=80%}
+
+Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
+
 Neben der Normalverteilung gibt es viele weitere Verteilungen, die für unterschiedliche Fragestellungen relevant sind. Aufgrund des Zentralen Grenzwertsatzes sind Mittelwerte usw. bei hohen Stichprobenumfängen aber häufig näherungsweise normalverteilt.
+
+
