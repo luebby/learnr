@@ -158,7 +158,7 @@ question("Ist die Kausalaussage: *Eine höhere wirtschaftliche Leistungsfähigke
          answer("Ja", message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z. B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe ist der Zusammenhang aber positiv."))
 ```
 
-## Regressionsillustration
+## Illustration Regression
 
 Die Abbildungen stammen von von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 
