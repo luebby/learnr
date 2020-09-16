@@ -399,11 +399,44 @@ Oder auch kurz mit dem Befehl `confint()`:
 confint(Bootvtlg)
 ```
 
+## Illustration Inferenz
+
+Der Anteil $\pi$ im datengenerierenden Prozess, der Pouplation, ist fix, wie ein Laternenpfahl.
+
+Der Anteil $p$ in den Daten, der Stichprobe, variiiert mit der Stichprobe, wie ein Hund der an einer elastischen Leine um den Laternenpfahl tanzt.
+
+
+![](http://statistix.org/FOM/Laterne_Leine_Hund.JPG){width=80%}
+
+Abbildung von Ella Hauke.
+
+
+Je mehr Beobachtungen $n$ wir haben, stärker zieht die Leine den Hund zum Laternenpfahl, die Variation von $p$ um $\pi$ wird kleiner.
+
+Da der Hund i.d.R. nicht genau beim Laternenpfahl steht, ist es auch immer wichtig zu wissen wir groß der Bewegungsradius, der Standardfehler $se$, ist.
+
+Bei großen, zufälligen Stichproben hält sich der Hund, d.h. $p$, in $95\%$ der Fälle innerhalb eines Umrkreises von $\pm 2 \cdot se$  vom Laternenpfahls $\pi$ auf.
+
+##
+
+Dummerweise sehen wir nur einen Hund $p$ (und die Leine), nicht den Laternenpfahl $\pi$.
+
+![](http://statistix.org/FOM/Leine-Hund.JPG){width=80%}
+
+Abbildung von Ella Hauke.
+
+
+Beim Hypothesenprüfen, gucken wir ob unser Hund ($p$) nah oder eher weit weg von der angenommenen Position der Laterne ($\pi_0$) ist. Genauer: Wir gucken wie wahrscheinlich ist es, dass der Hund mindestens so weit weg ist. Ist es (sehr) unwahrscheinlich haben wir berechtigten Zweifel an der vermuteten Position $\pi_0$.
+
+Bei einem Konfidenzintervall grenzen wir auf Basis des Hundes den Bereich ein, in dem wir den Laternenpfahl vermuten.
+
+Da der Hund selten (sehr) weit weg vom Pfahl ist, irrt das Verfahren selten. 
+Was für unseren Hund gilt wissen wir nicht – das Vertrauen ruht auf dem Verfahren.
+
 
 ## Ausblick
 
 In einem nächsten Tutorial werden Sie kennen lernen wie Sie zwei Gruppen vergleichen können.
-
 
 
 
