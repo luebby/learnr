@@ -44,7 +44,7 @@ erglm <- lm(roa ~ report, data = CsrCfp)
 
 Daten umfassen in aller Regel viele Informationen. Trotzdem sind *Schlüsse* aus Daten aufgrund von zufälliger Variation fast immer auch mit Unsicherheit verbunden.
 
-In diesem Tutorial sollen Sie lernen, wie Sie zwei Gruppen vergleichen können (*A/B Testing*). Unsere interessierende Variable `Y` wird modelliert durch eine Variable `X` (`Y ~ X`), wobei `X` genau zwei Werte annehmen kann.
+In diesem Tutorial sollen Sie lernen, wie Sie zwei Gruppen vergleichen können. Unsere interessierende Variable `Y` wird modelliert durch eine Variable `X` (`Y ~ X`), wobei `X` genau zwei Werte annehmen kann.
 
 Wie können Sie induktiv die Daten einer Stichprobe nutzen? 
 
