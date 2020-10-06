@@ -1,0 +1,335 @@
+---
+title: "Datenhandling"
+output: 
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(mosaic)
+options(scipen = 999)
+
+EpiEst <- read.csv2("Epi.csv") %>%
+  filter(Woche6 >= 7593.75) %>%
+  filter(Woche7 >= 7593.75) %>%
+  select(Kohorte, Woche6, Woche7)
+
+woche <- 0:5
+infizierte <- 1000 * 1.5^woche
+
+Plot_Verlauf <- gf_line(infizierte ~ woche) %>%
+  gf_point(infizierte ~ woche) %>%
+  gf_lims(y = c(0,20000), x= c(0,8)) %>%
+  gf_labs(x = "Woche", y = "Infizierte", 
+          title = "Fiktiver Infektionsverlauf", 
+          subtitle = "In den ersten 5 Wochen")
+```
+
+## Willkommen
+
+In diesem Tutorium lernen Sie ein wenig über exponentielles Denken (was uns leider sehr schwer fällt) und darüber, wie Daten einfach dargestellt und vorverarbeitet werden können.
+
+## Exponentielles Wachstum
+
+Das Jahr 2020 ist geprägt von der weltweiten Corona-Pandemie. Wie alle Infektionskrankheiten folgt die Verbreitung der Krankheit zunächst einem exponentiellen Verlauf mit der Zeit $t$:
+
+$$I(t) = I_0 \cdot b^t$$
+
+Mit einem Anfangsbestand an Infizierten $I_0$ und einem Wachstumsfaktor $b$.
+
+Im Rahmen einer freiwilligen und anonymen Umfrage zu Beginn der Vorlesung wurden drei Studierendengruppen (Variablenname `Kohorte`) folgende Abbildung gezeigt:
+
+```{r, echo=FALSE, fig.align="center", out.width="80%"}
+x <- 0:5
+y <- 1000 * 1.5^x
+gf_line(y ~ x) %>%
+  gf_point(y ~ x) %>%
+  gf_lims(y = c(0,20000), x= c(0,7)) %>%
+  gf_labs(x = "Woche", y = "Infizierte", title = "Fiktiver Infektionsverlauf", subtitle = "In den ersten 5 Wochen") + theme_linedraw()
+```
+
+Zusammen mit der Information: Sie sehen den fiktiven Verlauf des Beginns einer Epidemie. Während es zu Beginn 1000 Infizierte gibt, sind es nach 5 Wochen fast 7600.
+
+Dazu gab es zwei offene Fragen:
+
+- Was glauben Sie: Wie viele Infizierte gibt es in der 6. Woche? (Variablenname `Woche6`)
+
+- Was glauben Sie: Wie viele Infizierte gibt es in der 7. Woche? (Variablenname `Woche7`)
+
+
+Und, kennen Sie die Antworten? Sie haben sogar einen Vorteil gegenüber den Teilnehmer\*innen der Erhebung: Sie haben die Formel gesehen. Versuchen Sie es ...
+
+```{r Stichprobe, echo=FALSE}
+question("Sind die, an der Erhebung teilnehmenden Studierenden eine zufällige Stichprobe aller Studierenden?",
+         answer("Ja", message = "Die Teilnahme war freiwillig, d.h., es liegt eine Gelegenheitsstichprobe vor. Das Ergebnis kann daher nicht ohne weiteres auf die Population generalisiert werden."),
+         answer("Nein", correct = TRUE, message = "Die Teilnahme war freiwillig, d.h., es liegt eine Gelegenheitsstichprobe vor. Das Ergebnis kann daher nicht ohne weiteres auf die Population generalisiert werden.")
+         )
+```
+
+##
+
+Was die Teilnehmer\*innen nicht wussten: Hinter der Abbildung liegt ein Modell mit $b=1.5$ ($I_0=1000$ konnten Sie dem Text und der Abbildung entnehmen.) In `R` also:
+
+```{r Basis-Verlauf, fig.align="center", out.width="80%"}
+woche <- 0:5
+infizierte <- 1000 * 1.5^woche
+
+Plot_Verlauf <- gf_line(infizierte ~ woche) %>%
+  gf_point(infizierte ~ woche) %>%
+  gf_lims(y = c(0,20000), x= c(0,8)) %>%
+  gf_labs(x = "Woche", y = "Infizierte", 
+          title = "Fiktiver Infektionsverlauf", 
+          subtitle = "In den ersten 5 Wochen")
+
+Plot_Verlauf
+```
+
+Nutzen Sie `R` als Taschenrechner um gemäß des Modells die Anzahl der Infizierten in der 6. und 7. Woche zu bestimmen.
+
+```{r Verlauf, exercise = TRUE, eval=FALSE}
+
+
+```
+
+```{r Verlauf-solution}
+# 6. Woche
+1000 * 1.5^6
+# 7. Woche 
+1000 * 1.5^7
+```
+
+Ergänzen Sie in den letzten beiden Zeilen die Anzahl der Infizierten in der 6. und 7. Woche (`___`) um den wahren Verlauf gemäß des Modells darzustellen:
+
+```{r Verlauf2, exercise = TRUE, eval=FALSE}
+Plot_Verlauf %>%
+  gf_point(___ ~ 6, color = "red") %>%
+  gf_point(17085.94 ~ ___, color = "red")
+```
+
+```{r Verlauf2-solution}
+Plot_Verlauf %>%
+  gf_point(11390.62 ~ 6, color = "red") %>%
+  gf_point(17085.94 ~ 7, color = "red")
+```
+
+## Datenbasis
+
+Vorbereitungen:
+
+```{r, eval=FALSE}
+# Paket mosaic laden
+library(mosaic)
+# Daten einlesen
+EpiEst <- read.csv2("Epi.csv")
+```
+
+Nun können wir uns einen Überblick über die Struktur der Daten (`str()`):
+
+```{r}
+str(EpiEst)
+```
+
+```{r Skala, echo=FALSE}
+question("Wie viele matrische Variablen liegen vor?",
+        answer("1", message = "`Kohorte` ist kategorial, eingelesen als `character`, die Vorhersagen `Woche6` und `Woche7` sind metrisch (`numeric`)"),
+        answer("2", correct = TRUE,  message = "`Kohorte` ist kategorial, eingelesen als `character`, die Vorhersagen `Woche6` und `Woche7` sind metrisch (`numeric`)"),
+        answer("3", message = "`Kohorte` ist kategorial, eingelesen als `character`, die Vorhersagen `Woche6` und `Woche7` sind metrisch (`numeric`)"),
+        answer("132", message = "`Kohorte` ist kategorial, eingelesen als `character`, die Vorhersagen `Woche6` und `Woche7` sind metrisch (`numeric`)")
+)
+```
+
+##
+
+Über die Funktion `summarise()` können zusammenfassende Kennzahlen berechnet werden, z.B. arithmetische Mittelwerte (`mean()`):
+
+```{r summarise, exercise = TRUE}
+EpiEst %>%
+  summarise(MW_Prognose_W6 = mean(Woche6))
+```
+
+In `summarise()` können auch mehrere Kennzahlen berechnet werden: 
+
+`summarise(Kennzahl1 = Statistik(Var1), Kennzahl2 = Statistik(Var2), ...)`
+
+Erweitern Sie den Befehl so, dass Sie auch den Mittelwert der Prognose für die 7.Woche ausgeben.
+
+```{r summarise2, exercise = TRUE, eval=FALSE}
+EpiEst %>%
+  summarise(MW_Prognose_W6 = mean(Woche6), ___)
+```
+
+```{r summarise2-solution}
+EpiEst %>%
+  summarise(MW_Prognose_W6 = mean(Woche6), MW_Prognose_W7 = mean(Woche7))
+```
+
+## Vergleich Schätzung und Wahrheit
+
+Vergleichen wir die Mittelwerte der studentischen Schätzungen, $\tilde{I}(6)=`r round(mean( ~Woche6, data = EpiEst),2)`$ bzw. $\tilde{I}(7)=`r round(mean( ~Woche7, data = EpiEst),2)`$, mit den wahren Werten, $I(6)=1000 \cdot 1.5^6 = `r 1000*1.5^6`$ und $I(7)=1000 \cdot 1.5^7 = `r 1000*1.5^7`$, grafisch:
+
+```{r Vergleich, exercise = TRUE, eval=FALSE}
+Plot_Verlauf %>%
+  gf_point(11390.62 ~ 6, color = "red") %>% # Wahr Woche 6
+  gf_point(17085.94 ~ 7, color = "red") %>% # Wahr Woche 7
+  gf_point(___ ~ 6, color = "blue") %>% # Schätzung Woche 6
+  gf_point(13607.89 ~ ___, color = "blue") # Schätzung Woche 7
+```
+
+```{r Vergleich-solution}
+Plot_Verlauf %>%
+  gf_point(11390.62 ~ 6, color = "red") %>% # Wahr
+  gf_point(17085.94 ~ 7, color = "red") %>% # Wahr
+  gf_point(10110.14 ~ 6, color = "blue") %>% # Schätzung
+  gf_point(13607.89 ~ 7, color = "blue") # Schätzung
+```
+
+## Beobachtungen auswählen
+
+```{r Untersuchungseinheiten, echo=FALSE}
+question("Was sind hier die beobchteten Untersuchungseinheiten?",
+         answer("Die Wochen.", message = "Die Werte der Variablen, u.a. die Infiziertenschätzungen für die einzelnen Wochen, als auch die Zugehörigkeit zu einer der unterschiedlichen Gruppen liegt auf Ebene der einzelnen Studierenden vor."),
+         answer("Die einzelnen Studierenden.", correct = TRUE, message="Die Werte der Variablen, u.a. die Infiziertenschätzungen für die einzelnen Wochen, als auch die Zugehörigkeit zu einer der unterschiedlichen Gruppen liegt auf Ebene der einzelnen Studierenden vor."),
+         answer("Die Studierendengruppen (`Kohorte`).", message = "Die Werte der Variablen, u.a. die Infiziertenschätzungen für die einzelnen Wochen, als auch die Zugehörigkeit zu einer der unterschiedlichen Gruppen liegt auf Ebene der einzelnen Studierenden vor.")
+         )
+```
+
+Über `filter()` können Beobachtungen, d.h. Zeilen, gemäß definierten Kriterien ausgewählt werden.
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_filter.jpg){width=80%}
+
+Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
+
+**Hinweise**: Falls Sie Beobachtungen von weitern Analysen ausschließen, muss dies immer begründet und dokumentiert werden.
+
+Welche Vergleichsoperation (`==` (gleich), `!=` (ungleich), `<=` (kleiner gleich), `>=` (größer gleich)) sollte gewählt werden, damit Sie nur für die Beobachtungen des Datensatzes `EpiEst` aus der Kohorte `A` die Kennzahlen berechnen?
+
+```{r filter, exercise = TRUE, eval=FALSE}
+EpiEst %>%
+  filter(Kohorte ___ "A") %>%
+  summarise(MW_Prognose_W6 = mean(Woche6), MW_Prognose_W7 = mean(Woche7))
+```
+
+```{r filter-solution}
+EpiEst %>%
+  filter(Kohorte == "A") %>%
+  summarise(MW_Prognose_W6 = mean(Woche6), MW_Prognose_W7 = mean(Woche7))
+```
+
+
+## Variablen erzeugen
+
+Über `mutate()` können Variablen verändert oder neu erzeigt werden:
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_mutate.png){width=80%}
+
+Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
+
+ 
+Betrachten wir die prozentuale Abweichung zwischen den wahren Wert $I(t)$ und der (individuellen) Prognose $\tilde{I}(t)_i$:
+
+$$\frac{\tilde{I}(t)_i-I(t)}{I(t)} = \frac{\tilde{I}(t)_i}{I(t)} - 1$$
+```{r mutate, exercise = TRUE, eval = FALSE}
+EpiEst <- EpiEst %>%
+  mutate(Woche6Abw = Woche6/___ - 1) %>%
+  mutate(Woche7Abw = ___/17085.94 - 1)
+```
+
+```{r mutate-solution}
+EpiEst <- EpiEst %>%
+  mutate(Abw.Woche6 = Woche6/11390.62 - 1) %>%
+  mutate(Abw.Woche7 = Woche7/17085.94 - 1)
+```
+
+Damit können wir die relativen Abweichungen vergleichen:
+
+```{r VergleichAbweichung, exercise = TRUE}
+EpiEst %>%
+  summarise(Abw.Woche6 = mean(Abw.Woche6), Abw.Woche7=mean(Abw.Woche7))
+```
+
+## Auswertungen gruppieren
+
+Über `group_by()` werden Zusammenfassungen (`summarise()`) gruppiert durchgeführt.
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/group_by_ungroup.png){width=80%}
+
+Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
+
+Dies nutzen wir um den Mittelwert der Abweichung der Kohorten zu bestimmen:
+
+```{r group, exercise = TRUE, exercise.setup = "mutate-solution", message=FALSE}
+EpiEstKohorte <- EpiEst %>%
+  group_by(Kohorte) %>%
+  summarise(Abw.Woche6 = mean(Woche6Abw), Abw.Woche7=mean(Woche7Abw))
+
+EpiEstKohorte
+```
+
+*Hinweis*: Im resultierenden Datensatz (`EpiEstKohorte`) sind die Untersuchungseinheiten nicht mehr die Studierenden, sondern die Kohorten!
+
+```{r Mittelwertsvergleich, echo=FALSE}
+question("Sind die Mittelwerte der Abweichungen in den Datensätzen `EpiEst` und `EpiEstKohorte` gleich?",
+         answer("Ja", message = "Die Anzahl $n$ der Studierenden in den einzelnen Kohorten unterscheiden sich. Um aus den aggregierten Daten (`EpiEstKohorte`) wieder den Mittelwert der nicht-aggregierten Daten (`EpiEst`) zu bestimmen, müsste ein *gewichteter* Mittelwert bestimmt werden."),
+         answer("Nein", correct = TRUE, message="Die Anzahl $n$ der Studierenden in den einzelnen Kohorten unterscheiden sich. Um aus den aggregierten Daten (`EpiEstKohorte`) wieder den Mittelwert der nicht-aggregierten Daten (`EpiEst`) zu bestimmen, müsste ein *gewichteter* Mittelwert bestimmt werden.")
+         )
+```
+
+## Bedingungen
+
+Über `case_when()` können neue Variablen je nach Ausprägung, d.h. bedingt, erzeugt (`mutate()` werden):
+
+![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_case_when.png){width=80%}
+
+Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
+
+Im folgenden Code wird eine neue Variable (`Überschätzt`) erzeugt. Diese nimmt den Wert `Ja` an, wenn $\frac{\tilde{I}(6)_i}{I(6)} - 1 > 0$ ist, sonst den Wert `Nein`.
+
+```{r case-when, exercise = TRUE, message = FALSE, exercise.setup = "mutate-solution"}
+EpiEst %>%
+  mutate(Überschätzt = case_when(Abw.Woche6 > 0 ~ "Ja",
+                                 Abw.Woche6 <= 0 ~ "Nein")) %>%
+  group_by(Überschätzt) %>%
+  summarise(Anzahl = n())
+```
+
+Wenn mehrere Bedingungen kombiniert werden sollen kann dies z.B. über ein (logisches) *und* (mathematisch $\land$, in R `&`), d.h. z.B. beide Bedingungen müssen erfüllt sein, oder über ein *oder* (mathematisch $\land$, in R `|`), d.h. nur eine Bedingung muss erfüllt sein.
+
+```{r Ueberschaetzung, echo=FALSE}
+question("Wie ändert sich die Anzahl derjenigen, die den wahren Verlauf überschätzen, wenn nur diejenigen als *Überschätzer* gelten, die in beiden Wochen über den wahren Werten lagen, anstatt wie bisher nur für die 6. Woche?",
+         answer("Die Anzahl steigt.", message = "Wenn zwei Bedingungen erfüllt sein müssen, d.h. Überschätzung des Verlaufs für Woche 6 *und* für Woche *7* kann die Anzahl der Personen die beide Kriterien erfüllen nicht steigen. I.d.R. fällt sie, sie kann aber auch gleich bleiben."),
+         answer("Die Anzahl fällt.", correct = TRUE, message= "Wenn zwei Bedingungen erfüllt sein müssen, d.h. Überschätzung des Verlaufs für Woche 6 *und* für Woche *7* kann die Anzahl der Personen die beide Kriterien erfüllen nicht steigen. I.d.R. fällt sie, sie kann aber auch gleich bleiben.")
+         )
+```
+
+##
+
+Setzen Sie das passende Symbol, `&` für *und* oder `|` für *oder* ein, um die Anzahl derjenigen, die den Verlauf für beide Wochen überschätzen zu bestimmen.
+
+```{r case-when2, eval = FALSE, exercise = TRUE, message = FALSE, exercise.setup = "mutate-solution"}
+EpiEst %>%
+  mutate(Überschätzt = case_when((Abw.Woche6 > 0) ___ (Abw.Woche7 > 0) ~ "Ja",
+                                 (Abw.Woche6 <= 0) ___ (Abw.Woche7 <= 0) ~ "Nein")) %>%
+  group_by(Überschätzt) %>%
+  summarise(Anzahl = n())
+```
+
+```{r case-when2-solution, message = FALSE, exercise.setup = "mutate-solution"}
+EpiEst %>%
+  mutate(Überschätzt = case_when((Abw.Woche6 > 0) & (Abw.Woche7 > 0) ~ "Ja",
+                                 (Abw.Woche6 <= 0) | (Abw.Woche7 <= 0) ~ "Nein")) %>%
+  group_by(Überschätzt) %>%
+  summarise(Anzahl = n())
+```
+
+<br>
+
+Die Meisten unterschätzen also den Infektionsverlauf für die Wochen 6 und 7.
+
+##
+
+Da viele Verläufe exponentiell sind, d.h., die Daten ändern sich um einen konstanten Faktor (z.B. Anzahl verdoppelt sich jeden Monat), nicht um eine konstante Summe (z.B. jeden Monat kommen 1000 neue Fälle dazu), ist das Problem leider universell und weit verbreitet. Probieren Sie daher bitte daran zu denken: unsere Intuition kann exponentielles Wachstum schlecht einschätzen, wir unterschätzen es. Oder hätten Sie gedacht, dass die Antwort auf die Frage, wie oft Sie ein Papier falten müssten (sofern dies beliebig oft gefaltet werden könnte), damit die Dicke bis zum Mond reicht, 42 ist?
+
+ 
+
