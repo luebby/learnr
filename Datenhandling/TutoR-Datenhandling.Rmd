@@ -25,11 +25,19 @@ Plot_Verlauf <- gf_line(infizierte ~ woche) %>%
   gf_labs(x = "Woche", y = "Infizierte", 
           title = "Fiktiver Infektionsverlauf", 
           subtitle = "In den ersten 5 Wochen")
+
+EpiEst <- EpiEst %>%
+  mutate(Woche6Abw = Woche6/11390.62 - 1) %>%
+  mutate(Woche7Abw = Woche7/17085.94 - 1)
+
+EpiEstKohorte <- EpiEst %>%
+  group_by(Kohorte) %>%
+  summarise(Abw.Woche6 = mean(Woche6Abw), Abw.Woche7=mean(Woche7Abw))
 ```
 
 ## Willkommen
 
-In diesem Tutorium lernen Sie ein wenig über exponentielles Denken (was uns leider sehr schwer fällt) und darüber, wie Daten einfach dargestellt und vorverarbeitet werden können.
+In diesem Tutorial lernen Sie ein wenig über exponentielles Denken (was uns leider sehr schwer fällt) und darüber, wie Daten einfach dargestellt und vorverarbeitet werden können.
 
 ## Exponentielles Wachstum
 
@@ -50,7 +58,8 @@ gf_line(y ~ x) %>%
   gf_labs(x = "Woche", y = "Infizierte", title = "Fiktiver Infektionsverlauf", subtitle = "In den ersten 5 Wochen") + theme_linedraw()
 ```
 
-Zusammen mit der Information: Sie sehen den fiktiven Verlauf des Beginns einer Epidemie. Während es zu Beginn 1000 Infizierte gibt, sind es nach 5 Wochen fast 7600.
+Zusamm mit der Information: 
+Sie sehen den fiktiven Verlauf des Beginns einer Epidemie. Während es zu Beginn 1000 Infizierte gibt, sind es nach 5 Wochen fast 7600.
 
 Dazu gab es zwei offene Fragen:
 
@@ -59,12 +68,12 @@ Dazu gab es zwei offene Fragen:
 - Was glauben Sie: Wie viele Infizierte gibt es in der 7. Woche? (Variablenname `Woche7`)
 
 
-Und, kennen Sie die Antworten? Sie haben sogar einen Vorteil gegenüber den Teilnehmer\*innen der Erhebung: Sie haben die Formel gesehen. Versuchen Sie es ...
+Und? Kennen Sie die Antworten? Sie haben sogar einen Vorteil gegenüber den Teilnehmer\*innen der Erhebung: Sie haben die Formel gesehen. Versuchen Sie es ...
 
 ```{r Stichprobe, echo=FALSE}
-question("Sind die, an der Erhebung teilnehmenden Studierenden eine zufällige Stichprobe aller Studierenden?",
-         answer("Ja", message = "Die Teilnahme war freiwillig, d.h., es liegt eine Gelegenheitsstichprobe vor. Das Ergebnis kann daher nicht ohne weiteres auf die Population generalisiert werden."),
-         answer("Nein", correct = TRUE, message = "Die Teilnahme war freiwillig, d.h., es liegt eine Gelegenheitsstichprobe vor. Das Ergebnis kann daher nicht ohne weiteres auf die Population generalisiert werden.")
+question("Sind die an der Erhebung teilnehmenden Studierenden eine zufällige Stichprobe aller Studierenden?",
+         answer("Ja", message = "Die Teilnahme war freiwillig, d. h., es liegt eine Gelegenheitsstichprobe vor. Das Ergebnis kann daher nicht ohne weiteres auf die Population generalisiert werden."),
+         answer("Nein", correct = TRUE, message = "Die Teilnahme war freiwillig, d. h., es liegt eine Gelegenheitsstichprobe vor. Das Ergebnis kann daher nicht ohne weiteres auf die Population generalisiert werden.")
          )
 ```
 
@@ -114,6 +123,12 @@ Plot_Verlauf %>%
   gf_point(17085.94 ~ 7, color = "red")
 ```
 
+## 
+
+Lagen Sie mit Ihrer Schätzung richtig?
+
+Schauen wir uns mal an wie es bei der Befragung der Studierenden aussah:
+
 ## Datenbasis
 
 Vorbereitungen:
@@ -125,14 +140,14 @@ library(mosaic)
 EpiEst <- read.csv2("Epi.csv")
 ```
 
-Nun können wir uns einen Überblick über die Struktur der Daten (`str()`):
+Nun können wir uns einen Überblick über die Struktur der Daten (`str()`) verschaffen:
 
 ```{r}
 str(EpiEst)
 ```
 
 ```{r Skala, echo=FALSE}
-question("Wie viele matrische Variablen liegen vor?",
+question("Wie viele metrische Variablen liegen vor?",
         answer("1", message = "`Kohorte` ist kategorial, eingelesen als `character`, die Vorhersagen `Woche6` und `Woche7` sind metrisch (`numeric`)"),
         answer("2", correct = TRUE,  message = "`Kohorte` ist kategorial, eingelesen als `character`, die Vorhersagen `Woche6` und `Woche7` sind metrisch (`numeric`)"),
         answer("3", message = "`Kohorte` ist kategorial, eingelesen als `character`, die Vorhersagen `Woche6` und `Woche7` sind metrisch (`numeric`)"),
@@ -142,7 +157,9 @@ question("Wie viele matrische Variablen liegen vor?",
 
 ##
 
-Über die Funktion `summarise()` können zusammenfassende Kennzahlen berechnet werden, z.B. arithmetische Mittelwerte (`mean()`):
+Wie sah nun die Gesamtschätzung der Studierenden aus?
+
+Über die Funktion `summarise()` können zusammenfassende Kennzahlen berechnet werden, z. B. arithmetische Mittelwerte (`mean()`):
 
 ```{r summarise, exercise = TRUE}
 EpiEst %>%
@@ -167,7 +184,15 @@ EpiEst %>%
 
 ## Vergleich Schätzung und Wahrheit
 
-Vergleichen wir die Mittelwerte der studentischen Schätzungen, $\tilde{I}(6)=`r round(mean( ~Woche6, data = EpiEst),2)`$ bzw. $\tilde{I}(7)=`r round(mean( ~Woche7, data = EpiEst),2)`$, mit den wahren Werten, $I(6)=1000 \cdot 1.5^6 = `r 1000*1.5^6`$ und $I(7)=1000 \cdot 1.5^7 = `r 1000*1.5^7`$, grafisch:
+Vergleichen wir die Mittelwerte der studentischen Schätzungen, 
+
+$\tilde{I}(6)=`r round(mean( ~Woche6, data = EpiEst),2)`$ bzw. $\tilde{I}(7)=`r round(mean( ~Woche7, data = EpiEst),2)`$, 
+
+mit den wahren Werten, 
+
+$I(6)=1000 \cdot 1.5^6 = `r 1000*1.5^6`$ und $I(7)=1000 \cdot 1.5^7 = `r 1000*1.5^7`$, 
+
+grafisch:
 
 ```{r Vergleich, exercise = TRUE, eval=FALSE}
 Plot_Verlauf %>%
@@ -185,25 +210,39 @@ Plot_Verlauf %>%
   gf_point(13607.89 ~ 7, color = "blue") # Schätzung
 ```
 
+##
+
+```{r VergleichWDH, echo=FALSE}
+Plot_Verlauf %>%
+  gf_point(11390.62 ~ 6, color = "red") %>% # Wahr
+  gf_point(17085.94 ~ 7, color = "red") %>% # Wahr
+  gf_point(10110.14 ~ 6, color = "blue") %>% # Schätzung
+  gf_point(13607.89 ~ 7, color = "blue") # Schätzung
+```
+
+Wir sehen also, dass die Schätzungen beides Mal unter dem wahren Wert liegen.
+
 ## Beobachtungen auswählen
 
 ```{r Untersuchungseinheiten, echo=FALSE}
-question("Was sind hier die beobchteten Untersuchungseinheiten?",
-         answer("Die Wochen.", message = "Die Werte der Variablen, u.a. die Infiziertenschätzungen für die einzelnen Wochen, als auch die Zugehörigkeit zu einer der unterschiedlichen Gruppen liegt auf Ebene der einzelnen Studierenden vor."),
-         answer("Die einzelnen Studierenden.", correct = TRUE, message="Die Werte der Variablen, u.a. die Infiziertenschätzungen für die einzelnen Wochen, als auch die Zugehörigkeit zu einer der unterschiedlichen Gruppen liegt auf Ebene der einzelnen Studierenden vor."),
-         answer("Die Studierendengruppen (`Kohorte`).", message = "Die Werte der Variablen, u.a. die Infiziertenschätzungen für die einzelnen Wochen, als auch die Zugehörigkeit zu einer der unterschiedlichen Gruppen liegt auf Ebene der einzelnen Studierenden vor.")
+question("Was sind hier die beobachteten Untersuchungseinheiten?",
+         answer("Die Wochen.", message = "Die Werte der Variablen, u. a. die Infiziertenschätzungen für die einzelnen Wochen, als auch die Zugehörigkeit zu einer der unterschiedlichen Gruppen liegt auf Ebene der einzelnen Studierenden vor."),
+         answer("Die einzelnen Studierenden.", correct = TRUE, message="Die Werte der Variablen, u. a. die Infiziertenschätzungen für die einzelnen Wochen, als auch die Zugehörigkeit zu einer der unterschiedlichen Gruppen liegt auf Ebene der einzelnen Studierenden vor."),
+         answer("Die Studierendengruppen (`Kohorte`).", message = "Die Werte der Variablen, u. a. die Infiziertenschätzungen für die einzelnen Wochen, als auch die Zugehörigkeit zu einer der unterschiedlichen Gruppen liegt auf Ebene der einzelnen Studierenden vor.")
          )
 ```
 
-Über `filter()` können Beobachtungen, d.h. Zeilen, gemäß definierten Kriterien ausgewählt werden.
+Für weitere Betrachtungen muss meist noch ein wenig Vorarbeit geleistet und (Teil-) Varialben bestimmt oder angepasst werden.
+
+Über `filter()` können Beobachtungen, d. h. Zeilen, gemäß definierten Kriterien ausgewählt werden.
 
 ![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_filter.jpg){width=80%}
 
 Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 
-**Hinweise**: Falls Sie Beobachtungen von weitern Analysen ausschließen, muss dies immer begründet und dokumentiert werden.
+**Hinweise**: Falls Sie Beobachtungen von weiteren Analysen ausschließen, muss dies immer begründet und dokumentiert werden.
 
-Welche Vergleichsoperation (`==` (gleich), `!=` (ungleich), `<=` (kleiner gleich), `>=` (größer gleich)) sollte gewählt werden, damit Sie nur für die Beobachtungen des Datensatzes `EpiEst` aus der Kohorte `A` die Kennzahlen berechnen?
+Welche Vergleichsoperation (`==` (gleich), `!=` (ungleich), `<=` (kleiner gleich), `>=` (größer gleich)) sollte gewählt werden, um nur für die Beobachtungen der Kohorte `A` des Datensatzes `EpiEst` die Kennzahlen zu berechnen?
 
 ```{r filter, exercise = TRUE, eval=FALSE}
 EpiEst %>%
@@ -220,14 +259,14 @@ EpiEst %>%
 
 ## Variablen erzeugen
 
-Über `mutate()` können Variablen verändert oder neu erzeigt werden:
+Über `mutate()` können Variablen verändert oder neu erzeugt werden:
 
 ![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_mutate.png){width=80%}
 
 Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 
  
-Betrachten wir die prozentuale Abweichung zwischen den wahren Wert $I(t)$ und der (individuellen) Prognose $\tilde{I}(t)_i$:
+Betrachten wir die prozentuale Abweichung zwischen dem wahren Wert $I(t)$ und der (individuellen) Prognose $\tilde{I}(t)_i$:
 
 $$\frac{\tilde{I}(t)_i-I(t)}{I(t)} = \frac{\tilde{I}(t)_i}{I(t)} - 1$$
 ```{r mutate, exercise = TRUE, eval = FALSE}
@@ -238,15 +277,15 @@ EpiEst <- EpiEst %>%
 
 ```{r mutate-solution}
 EpiEst <- EpiEst %>%
-  mutate(Abw.Woche6 = Woche6/11390.62 - 1) %>%
-  mutate(Abw.Woche7 = Woche7/17085.94 - 1)
+  mutate(Woche6Abw = Woche6/11390.62 - 1) %>%
+  mutate(Woche7Abw = Woche7/17085.94 - 1)
 ```
 
 Damit können wir die relativen Abweichungen vergleichen:
 
 ```{r VergleichAbweichung, exercise = TRUE}
 EpiEst %>%
-  summarise(Abw.Woche6 = mean(Abw.Woche6), Abw.Woche7=mean(Abw.Woche7))
+  summarise(Abw.Woche6 = mean(Woche6Abw), Abw.Woche7=mean(Woche7Abw))
 ```
 
 ## Auswertungen gruppieren
@@ -267,7 +306,7 @@ EpiEstKohorte <- EpiEst %>%
 EpiEstKohorte
 ```
 
-*Hinweis*: Im resultierenden Datensatz (`EpiEstKohorte`) sind die Untersuchungseinheiten nicht mehr die Studierenden, sondern die Kohorten!
+***Hinweis***: Im resultierenden Datensatz (`EpiEstKohorte`) sind die Untersuchungseinheiten nicht mehr die Studierenden, sondern die Kohorten!
 
 ```{r Mittelwertsvergleich, echo=FALSE}
 question("Sind die Mittelwerte der Abweichungen in den Datensätzen `EpiEst` und `EpiEstKohorte` gleich?",
@@ -278,28 +317,28 @@ question("Sind die Mittelwerte der Abweichungen in den Datensätzen `EpiEst` und
 
 ## Bedingungen
 
-Über `case_when()` können neue Variablen je nach Ausprägung, d.h. bedingt, erzeugt (`mutate()` werden):
+Über `case_when()` können neue Variablen (`mutate()`) je nach Ausprägung, d. h. bedingt, erzeugt werden:
 
 ![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_case_when.png){width=80%}
 
 Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 
-Im folgenden Code wird eine neue Variable (`Überschätzt`) erzeugt. Diese nimmt den Wert `Ja` an, wenn $\frac{\tilde{I}(6)_i}{I(6)} - 1 > 0$ ist, sonst den Wert `Nein`.
+Im folgenden Code wird eine neue Variable (`Überschätzt`) generiert. Diese nimmt den Wert `Ja` an, wenn $\frac{\tilde{I}(6)_i}{I(6)} - 1 > 0$ ist, sonst den Wert `Nein`.
 
 ```{r case-when, exercise = TRUE, message = FALSE, exercise.setup = "mutate-solution"}
 EpiEst %>%
-  mutate(Überschätzt = case_when(Abw.Woche6 > 0 ~ "Ja",
-                                 Abw.Woche6 <= 0 ~ "Nein")) %>%
+  mutate(Überschätzt = case_when(Woche6Abw > 0 ~ "Ja",
+                                 Woche6Abw <= 0 ~ "Nein")) %>%
   group_by(Überschätzt) %>%
   summarise(Anzahl = n())
 ```
 
-Wenn mehrere Bedingungen kombiniert werden sollen kann dies z.B. über ein (logisches) *und* (mathematisch $\land$, in R `&`), d.h. z.B. beide Bedingungen müssen erfüllt sein, oder über ein *oder* (mathematisch $\land$, in R `|`), d.h. nur eine Bedingung muss erfüllt sein.
+Wenn mehrere Bedingungen kombiniert werden sollen kann dies z. B. über ein (logisches) ***und*** (mathematisch: $\land$, in R: `&`), d. h. beide Bedingungen müssen erfüllt sein, erreicht werden, oder über ein ***oder*** (mathematisch: $\land$, in R: `|`), d. h. nur eine Bedingung muss erfüllt sein.
 
 ```{r Ueberschaetzung, echo=FALSE}
 question("Wie ändert sich die Anzahl derjenigen, die den wahren Verlauf überschätzen, wenn nur diejenigen als *Überschätzer* gelten, die in beiden Wochen über den wahren Werten lagen, anstatt wie bisher nur für die 6. Woche?",
-         answer("Die Anzahl steigt.", message = "Wenn zwei Bedingungen erfüllt sein müssen, d.h. Überschätzung des Verlaufs für Woche 6 *und* für Woche *7* kann die Anzahl der Personen die beide Kriterien erfüllen nicht steigen. I.d.R. fällt sie, sie kann aber auch gleich bleiben."),
-         answer("Die Anzahl fällt.", correct = TRUE, message= "Wenn zwei Bedingungen erfüllt sein müssen, d.h. Überschätzung des Verlaufs für Woche 6 *und* für Woche *7* kann die Anzahl der Personen die beide Kriterien erfüllen nicht steigen. I.d.R. fällt sie, sie kann aber auch gleich bleiben.")
+         answer("Die Anzahl steigt.", message = "Wenn zwei Bedingungen erfüllt sein müssen, d. h. Überschätzung des Verlaufs für Woche 6 *und* für Woche *7* kann die Anzahl der Personen die beide Kriterien erfüllen nicht steigen. I. d. R. fällt sie, sie kann aber auch gleich bleiben."),
+         answer("Die Anzahl fällt.", correct = TRUE, message= "Wenn zwei Bedingungen erfüllt sein müssen, d. h. Überschätzung des Verlaufs für Woche 6 *und* für Woche *7* kann die Anzahl der Personen die beide Kriterien erfüllen nicht steigen. I. d. R. fällt sie, sie kann aber auch gleich bleiben.")
          )
 ```
 
@@ -309,27 +348,40 @@ Setzen Sie das passende Symbol, `&` für *und* oder `|` für *oder* ein, um die 
 
 ```{r case-when2, eval = FALSE, exercise = TRUE, message = FALSE, exercise.setup = "mutate-solution"}
 EpiEst %>%
-  mutate(Überschätzt = case_when((Abw.Woche6 > 0) ___ (Abw.Woche7 > 0) ~ "Ja",
-                                 (Abw.Woche6 <= 0) ___ (Abw.Woche7 <= 0) ~ "Nein")) %>%
+  mutate(Überschätzt = case_when((Woche6Abw > 0) ___ (Woche7Abw > 0) ~ "Ja",
+                                 (Woche6Abw <= 0) ___ (Woche7Abw <= 0) ~ "Nein")) %>%
   group_by(Überschätzt) %>%
   summarise(Anzahl = n())
 ```
 
 ```{r case-when2-solution, message = FALSE, exercise.setup = "mutate-solution"}
 EpiEst %>%
-  mutate(Überschätzt = case_when((Abw.Woche6 > 0) & (Abw.Woche7 > 0) ~ "Ja",
-                                 (Abw.Woche6 <= 0) | (Abw.Woche7 <= 0) ~ "Nein")) %>%
+  mutate(Überschätzt = case_when((Woche6Abw > 0) & (Woche7Abw > 0) ~ "Ja",
+                                 (Woche6Abw <= 0) | (Woche7Abw <= 0) ~ "Nein")) %>%
   group_by(Überschätzt) %>%
   summarise(Anzahl = n())
 ```
 
-<br>
+##
 
-Die Meisten unterschätzen also den Infektionsverlauf für die Wochen 6 und 7.
+Die Meisten unterschätzen also den Infektionsverlauf für die Wochen 6 und 7, was die Tendenz der Mittelwerte im Vergleich zu den wahren Werten bereits erahnen ließ.
+
+```{r VergleichWDH_2, echo=FALSE, out.width="60%"}
+Plot_Verlauf %>%
+  gf_point(11390.62 ~ 6, color = "red") %>% # Wahr
+  gf_point(17085.94 ~ 7, color = "red") %>% # Wahr
+  gf_point(10110.14 ~ 6, color = "blue") %>% # Schätzung
+  gf_point(13607.89 ~ 7, color = "blue") # Schätzung
+```
+
+Da viele Verläufe exponentiell sind, d. h., die Daten ändern sich um einen konstanten Faktor (z. B. Anzahl verdoppelt sich jeden Monat) und nicht um eine konstante Summe (z. B. jeden Monat kommen 1000 neue Fälle dazu), ist das Problem leider universell und weit verbreitet. 
+
+**Versuchen Sie daher bitte daran zu denken:** unsere Intuition kann exponentielles Wachstum schlecht einschätzen, wir unterschätzen es meist. Oder hätten Sie gedacht, dass die Antwort auf die Frage, wie oft Sie ein Papier falten müssten (sofern dies beliebig oft gefaltet werden könnte), damit die Dicke bis zum Mond reicht, 42 ist? 
 
 ##
 
-Da viele Verläufe exponentiell sind, d.h., die Daten ändern sich um einen konstanten Faktor (z.B. Anzahl verdoppelt sich jeden Monat), nicht um eine konstante Summe (z.B. jeden Monat kommen 1000 neue Fälle dazu), ist das Problem leider universell und weit verbreitet. Probieren Sie daher bitte daran zu denken: unsere Intuition kann exponentielles Wachstum schlecht einschätzen, wir unterschätzen es. Oder hätten Sie gedacht, dass die Antwort auf die Frage, wie oft Sie ein Papier falten müssten (sofern dies beliebig oft gefaltet werden könnte), damit die Dicke bis zum Mond reicht, 42 ist?
+Das können Sie nicht glauben? Dann schauen Sie doch mal hier: 
+![](https://www.youtube.com/watch?v=X0HrJfYIPI0){width=65%}
 
  
 
