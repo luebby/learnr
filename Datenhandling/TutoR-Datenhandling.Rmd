@@ -58,7 +58,7 @@ gf_line(y ~ x) %>%
   gf_labs(x = "Woche", y = "Infizierte", title = "Fiktiver Infektionsverlauf", subtitle = "In den ersten 5 Wochen") + theme_linedraw()
 ```
 
-Zusamm mit der Information: 
+Zusammen mit der Information: 
 Sie sehen den fiktiven Verlauf des Beginns einer Epidemie. Während es zu Beginn 1000 Infizierte gibt, sind es nach 5 Wochen fast 7600.
 
 Dazu gab es zwei offene Fragen:
@@ -79,7 +79,7 @@ question("Sind die an der Erhebung teilnehmenden Studierenden eine zufällige St
 
 ##
 
-Was die Teilnehmer\*innen nicht wussten: Hinter der Abbildung liegt ein Modell mit $b=1.5$ ($I_0=1000$ konnten Sie dem Text und der Abbildung entnehmen.) In `R` also:
+Was die Teilnehmer\*innen nicht wussten: Hinter der Abbildung liegt ein (exponentielles) Modell mit $b=1.5$ ($I_0=1000$ konnten Sie dem Text und der Abbildung entnehmen.) In `R` also:
 
 ```{r Basis-Verlauf, fig.align="center", out.width="80%"}
 woche <- 0:5
