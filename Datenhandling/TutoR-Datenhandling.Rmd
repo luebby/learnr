@@ -35,11 +35,17 @@ In diesem Tutorial lernen Sie ein wenig über exponentielles Denken (was uns lei
 
 ## Exponentielles Wachstum
 
-Das Jahr 2020 ist geprägt von der weltweiten Corona-Pandemie. Wie alle Infektionskrankheiten folgt die Verbreitung der Krankheit zunächst einem exponentiellen Verlauf mit der Zeit $t$:
+Das Jahr 2020 ist geprägt von der weltweiten Corona-Pandemie. Wie viele Infektionskrankheiten folgt die Verbreitung der Krankheit zunächst einem exponentiellen Verlauf mit der Zeit $t$:
 
 $$I(t) = I_0 \cdot b^t$$
 
 Mit einem Anfangsbestand an Infizierten $I_0$ und einem Wachstumsfaktor $b$.
+
+<br>
+
+**Hinweis**: Realistischere Modelle des Verlaufs einer Epidemie wie z.B. das SIR-Modell berücksichtigen auch Aspekte wie nicht mehr ansteckende Personen sowie die Anzahl der noch infizierbaren Personen. Der exponentielle Verlauf ist nur eine Näherung für den Beginn der Verbreitung.
+
+<br>
 
 Im Rahmen einer freiwilligen und anonymen Umfrage zu Beginn der Vorlesung wurden drei Studierendengruppen (Variablenname `Kohorte`) folgende Abbildung gezeigt:
 
