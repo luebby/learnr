@@ -26,13 +26,7 @@ Plot_Verlauf <- gf_line(infizierte ~ woche) %>%
           title = "Fiktiver Infektionsverlauf", 
           subtitle = "In den ersten 5 Wochen")
 
-EpiEst <- EpiEst %>%
-  mutate(Woche6Abw = Woche6/11390.62 - 1) %>%
-  mutate(Woche7Abw = Woche7/17085.94 - 1)
 
-EpiEstKohorte <- EpiEst %>%
-  group_by(Kohorte) %>%
-  summarise(Abw.Woche6 = mean(Woche6Abw), Abw.Woche7=mean(Woche7Abw))
 ```
 
 ## Willkommen
@@ -283,7 +277,7 @@ EpiEst <- EpiEst %>%
 
 Damit können wir die relativen Abweichungen vergleichen:
 
-```{r VergleichAbweichung, exercise = TRUE}
+```{r VergleichAbweichung, exercise = TRUE, exercise.setup = "mutate-solution"}
 EpiEst %>%
   summarise(Abw.Woche6 = mean(Woche6Abw), Abw.Woche7=mean(Woche7Abw))
 ```
