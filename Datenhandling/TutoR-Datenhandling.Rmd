@@ -336,7 +336,7 @@ EpiEst %>%
 Wenn mehrere Bedingungen kombiniert werden sollen kann dies z. B. über ein (logisches) ***und*** (mathematisch: $\land$, in R: `&`), d. h. beide Bedingungen müssen erfüllt sein, erreicht werden, oder über ein ***oder*** (mathematisch: $\land$, in R: `|`), d. h. nur eine Bedingung muss erfüllt sein.
 
 ```{r Ueberschaetzung, echo=FALSE}
-question("Wie ändert sich die Anzahl derjenigen, die den wahren Verlauf überschätzen, wenn nur diejenigen als *Überschätzer* gelten, die in beiden Wochen über den wahren Werten lagen, anstatt wie bisher nur für die 6. Woche?",
+question("Wie ändert sich die Anzahl derjenigen, die den wahren Verlauf überschätzen, wenn nur diejenigen als *Überschätzer\\*innen* gelten, die in beiden Wochen über den wahren Werten lagen, anstatt wie bisher nur für die 6. Woche?",
          answer("Die Anzahl steigt.", message = "Wenn zwei Bedingungen erfüllt sein müssen, d. h. Überschätzung des Verlaufs für Woche 6 *und* für Woche *7* kann die Anzahl der Personen die beide Kriterien erfüllen nicht steigen. I. d. R. fällt sie, sie kann aber auch gleich bleiben."),
          answer("Die Anzahl fällt.", correct = TRUE, message= "Wenn zwei Bedingungen erfüllt sein müssen, d. h. Überschätzung des Verlaufs für Woche 6 *und* für Woche *7* kann die Anzahl der Personen die beide Kriterien erfüllen nicht steigen. I. d. R. fällt sie, sie kann aber auch gleich bleiben.")
          )
