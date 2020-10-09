@@ -380,7 +380,7 @@ Plot_Verlauf %>%
 
 Da viele Verläufe exponentiell sind, d. h., die Daten ändern sich um einen konstanten Faktor (z. B. Anzahl verdoppelt sich jeden Monat) und nicht um eine konstante Summe (z. B. jeden Monat kommen 1000 neue Fälle dazu), ist das Problem leider universell und weit verbreitet. 
 
-**Versuchen Sie daher bitte daran zu denken:** Unsere Intuition kann exponentielles Wachstum schlecht einschätzen, wir unterschätzen es meist. Oder hätten Sie gedacht, dass die Antwort auf die Frage, wie oft Sie ein Papier falten müssten (sofern dies beliebig oft gefaltet werden könnte), damit die Dicke bis zum Mond reicht, 42 ist? 
+**Versuchen Sie daher bitte daran zu denken:** Unsere Intuition kann exponentielles Wachstum schlecht einschätzen, wir unterschätzen die Dynamik des Wachstums meist. Oder hätten Sie gedacht, dass die Antwort auf die Frage, wie oft Sie ein Papier falten müssten (sofern dies beliebig oft gefaltet werden könnte), damit die Dicke bis zum Mond reicht, 42 ist?
 
 ##
 
