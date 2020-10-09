@@ -43,7 +43,7 @@ Mit einem Anfangsbestand an Infizierten $I_0$ und einem Wachstumsfaktor $b$.
 
 <br>
 
-**Hinweis**: Realistischere Modelle des Verlaufs einer Epidemie wie z.B. das SIR-Modell berücksichtigen auch Aspekte wie nicht mehr ansteckende Personen sowie die Anzahl der noch infizierbaren Personen. Der exponentielle Verlauf ist nur eine Näherung, d.h. auch z.B. ohne zufällige Schwankungen für den Beginn der Verbreitung ohne das Präventionsmaßnahmen ergriffen werden.
+**Hinweis**: Realistischere Modelle des Verlaufs einer Epidemie, wie z.B. das SIR-Modell, berücksichtigen auch Aspekte, wie nicht mehr ansteckende Personen sowie die Anzahl der noch infizierbaren Personen. Der exponentielle Verlauf ist nur eine Näherung, d.h. auch z.B. ohne zufällige Schwankungen für den Beginn der Verbreitung, ohne das Präventionsmaßnahmen ergriffen werden.
 
 <br>
 
