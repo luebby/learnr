@@ -43,7 +43,7 @@ Mit einem Anfangsbestand an Infizierten $I_0$ und einem Wachstumsfaktor $b$.
 
 <br>
 
-**Hinweis**: Realistischere Modelle des Verlaufs einer Epidemie wie z.B. das SIR-Modell berücksichtigen auch Aspekte wie nicht mehr ansteckende Personen sowie die Anzahl der noch infizierbaren Personen. Der exponentielle Verlauf ist nur eine Näherung für den Beginn der Verbreitung.
+**Hinweis**: Realistischere Modelle des Verlaufs einer Epidemie wie z.B. das SIR-Modell berücksichtigen auch Aspekte wie nicht mehr ansteckende Personen sowie die Anzahl der noch infizierbaren Personen. Der exponentielle Verlauf ist nur eine Näherung, d.h. auch z.B. ohne zufällige Schwankungen für den Beginn der Verbreitung ohne das Präventionsmaßnahmen ergriffen werden.
 
 <br>
 
@@ -232,7 +232,7 @@ question("Was sind hier die beobachteten Untersuchungseinheiten?",
          )
 ```
 
-Für weitere Betrachtungen muss meist noch ein wenig Vorarbeit geleistet und (Teil-) Varialben bestimmt oder angepasst werden.
+Für weitere Betrachtungen muss meist noch ein wenig Vorarbeit geleistet und (Teil-)Variablen bestimmt oder angepasst werden.
 
 Über `filter()` können Beobachtungen, d. h. Zeilen, gemäß definierten Kriterien ausgewählt werden.
 
@@ -333,7 +333,11 @@ EpiEst %>%
   summarise(Anzahl = n())
 ```
 
-Wenn mehrere Bedingungen kombiniert werden sollen kann dies z. B. über ein (logisches) ***und*** (mathematisch: $\land$, in R: `&`), d. h. beide Bedingungen müssen erfüllt sein, erreicht werden, oder über ein ***oder*** (mathematisch: $\land$, in R: `|`), d. h. nur eine Bedingung muss erfüllt sein.
+Wenn mehrere Bedingungen vorliegen, die kombiniert werden sollen, gibt es mehrere Möglichkeiten: 
+
+- Wenn beide Bedingungen erfüllt sein müssen, wird ein (logisches) und (mathematisch: $\land$, in R: `&`) verwendet.
+
+- Wenn nur eine Bedingung erfüllt sein muss, wird in oder (mathematisch: $\lor$, in R: `|`) verwendet.
 
 ```{r Ueberschaetzung, echo=FALSE}
 question("Wie ändert sich die Anzahl derjenigen, die den wahren Verlauf überschätzen, wenn nur diejenigen als *Überschätzer\\*innen* gelten, die in beiden Wochen über den wahren Werten lagen, anstatt wie bisher nur für die 6. Woche?",
@@ -376,7 +380,7 @@ Plot_Verlauf %>%
 
 Da viele Verläufe exponentiell sind, d. h., die Daten ändern sich um einen konstanten Faktor (z. B. Anzahl verdoppelt sich jeden Monat) und nicht um eine konstante Summe (z. B. jeden Monat kommen 1000 neue Fälle dazu), ist das Problem leider universell und weit verbreitet. 
 
-**Versuchen Sie daher bitte daran zu denken:** unsere Intuition kann exponentielles Wachstum schlecht einschätzen, wir unterschätzen es meist. Oder hätten Sie gedacht, dass die Antwort auf die Frage, wie oft Sie ein Papier falten müssten (sofern dies beliebig oft gefaltet werden könnte), damit die Dicke bis zum Mond reicht, 42 ist? 
+**Versuchen Sie daher bitte daran zu denken:** Unsere Intuition kann exponentielles Wachstum schlecht einschätzen, wir unterschätzen es meist. Oder hätten Sie gedacht, dass die Antwort auf die Frage, wie oft Sie ein Papier falten müssten (sofern dies beliebig oft gefaltet werden könnte), damit die Dicke bis zum Mond reicht, 42 ist? 
 
 ##
 
