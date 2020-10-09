@@ -333,11 +333,11 @@ EpiEst %>%
   summarise(Anzahl = n())
 ```
 
-Wenn mehrere Bedingungen vorliegen, die kombiniert werden sollen, gibt es mehrere Möglichkeiten: 
+Wenn mehrere Bedingungen vorliegen, die verbinden werden sollen, gibt es mehrere Möglichkeiten: 
 
-- Wenn beide Bedingungen erfüllt sein müssen, wird ein (logisches) und (mathematisch: $\land$, in R: `&`) verwendet.
+- Wenn beide Bedingungen erfüllt sein müssen, wird ein (logisches) **und** (Symbol: $\land$, in R: `&`) verwendet.
 
-- Wenn nur eine Bedingung erfüllt sein muss, wird in oder (mathematisch: $\lor$, in R: `|`) verwendet.
+- Wenn nur eine Bedingung erfüllt sein muss, wird in **oder** (Symbol: $\lor$, in R: `|`) verwendet.
 
 ```{r Ueberschaetzung, echo=FALSE}
 question("Wie ändert sich die Anzahl derjenigen, die den wahren Verlauf überschätzen, wenn nur diejenigen als *Überschätzer\\*innen* gelten, die in beiden Wochen über den wahren Werten lagen, anstatt wie bisher nur für die 6. Woche?",
