@@ -67,13 +67,13 @@ Zufriedenheit <- read.csv2("gdp-vs-happiness-clean.csv")
 Erste Betrachtung:
 
 ```{r RL}
-Zufriedenheit
+head(Zufriedenheit)
 ```
 
-Übersicht:
+Stuktur:
 
 ```{r}
-inspect(Zufriedenheit)
+str(Zufriedenheit)
 ```
 
 ```{r Generalisierung, echo=FALSE}
@@ -154,9 +154,13 @@ $$\widehat{\text{ls}}_i=`r round(coef(Model.Zufriedenheit)[1],2)` + `r round(coe
 
 ```{r Schluss, echo=FALSE}
 question("Ist die Kausalaussage: *Eine höhere wirtschaftliche Leistungsfähigkeit führt zu einer höheren Lebenszufriedenheit* aufgrund dieser Analyse gerechtfertigt?",
-         answer("Nein", correct = TRUE, message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z. B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe ist der Zusammenhang aber positiv."),
-         answer("Ja", message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z. B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe ist der Zusammenhang aber positiv."))
+         answer("Nein", correct = TRUE, message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z. B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe (Länder!) ist der Zusammenhang aber positiv."),
+         answer("Ja", message = "Es liegen nur Daten einer Beobachtungsstudie vor, nicht die eines randomisierten Experimentes. Z. B. ist auch denkbar, dass bei einer höheren Lebenszufriedenheit die wirtschaftliche Leistungsfähigkeit steigt. Für die Beobachtungen der Stichprobe (Länder!) ist der Zusammenhang aber positiv."))
 ```
+
+##
+
+Beachten Sie auch die zu Beginn formulierte Einschränkung: Es liegen nicht die individuellen Daten der Personen sondern nur die Daten auf Länderebene vor.
 
 ## Illustration Regression
 
@@ -170,7 +174,7 @@ Für die kategoriale, erklärende Variable gilt:
 
 ![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/dragon_regression.png){width=80%}
 
-Und für die numerische, erklärende:
+Und für die metrische, erklärende:
 
 ![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/dragons_continuous.png){width=80%}
 

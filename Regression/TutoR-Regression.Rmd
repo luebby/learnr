@@ -44,7 +44,7 @@ In der Realität gibt es aber häufig (zufällige?) Abweichungen von einer solch
 
 Daten = Modell + Rest
 
-Für diesen Rest wird daher ein Residuum $\epsilon$ mit ins Modell genommen:
+Für diesen Rest wird daher ein Fehlerterm $\epsilon$ mit ins Modell genommen:
 
 $$y=\beta_0 + \beta_1 \cdot x + \epsilon$$
 
@@ -59,7 +59,7 @@ question("Wann ist eine Modellanpassung *gut*?",
 
 ### Kleinste-Quadrate-Schätzung
 
-Genau dies versucht anhand einer Stichprobe die *Kleinste-Quadrate-Schätzung*: Schätze Achsenabschnitt und Steigung so, dass $\sum \epsilon^2$ minimal ist. Die *Schätzwerte* für die eigentlich unbekannten Modellparameter $\beta_0$, $\beta_1$ werden mit $\hat{\beta}_0$ und $\hat{\beta}_1$ gekennzeichnet.
+Genau dies versucht anhand einer Stichprobe die *Kleinste-Quadrate-Schätzung*: Schätze Achsenabschnitt und Steigung so, dass $\sum \hat{\epsilon}^2$ minimal ist. Die *Schätzwerte* für die eigentlich unbekannten Modellparameter $\beta_0$, $\beta_1$ werden mit $\hat{\beta}_0$ und $\hat{\beta}_1$ gekennzeichnet.
 
 
 ```{r residuum, echo=FALSE}
@@ -96,15 +96,6 @@ Die verwendeten Variablen sind auf Länderebene (`country`):
 
 
 Für eine detaillierte Beschreibung siehe [Our World in Data](https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions#co2-emissions-and-prosperity).
-
-```{r skalennvieau, echo=FALSE}
-question("Welches Skalenniveau hat die Variable `log.gdp`?",
-  answer("Kategorial - nominal", message = "Falsch: Die Werte können nicht nur unterschieden werden, es gibt auch eine Reihenfolge, Abstände und einen natürlichen Nullpunkt."),
-  answer("Kategorial - ordinal", message = "Falsch: Die Werte können nicht nur unterschieden und in eine Reihenfolge gebracht werden. Es gibt auch natürliche Abstände und einen natürlichen Nullpunkt."), 
-    answer("Numerisch - intervall", message = "Falsch: Die Werte können nicht nur unterschieden und in eine Reihenfolge mit natürlichen Abständen gebracht werden. Es gibt auch einen natürlichen Nullpunkt."), 
-    answer("Numerisch - verhältnis", correct=TRUE, message = "Richtig: Die Werte können unterschieden werden, es gibt aber eine natürliche Ordnung. Auch können die Abstände verglichen werden und es gibt einen absoluten Nullpunkt.")
-)
-```
 
 
 ```{r scatterplot, exercise = TRUE}
@@ -236,7 +227,7 @@ lm(log.co2 ~ log.gdp, data = resample(Co2Gdp))
 
 ### `do()*`
 
-Über den Befehl `do()*` kann das resampeln öfter wiederholt werden -- und wir erhalten auch gleich eine interessante Übersicht wichtiger Ergebnisse der linearen Modellierung.
+Über den Befehl `do()*` kann das resampeln öfter wiederholt werden -- und wir erhalten auch gleich eine Übersicht wichtiger Ergebnisse der linearen Modellierung.
 
 Ohne Resamplen:
 ```{r do1, exercise = TRUE}
