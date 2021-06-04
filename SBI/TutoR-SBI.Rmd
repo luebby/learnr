@@ -18,6 +18,15 @@ Linda <- read.csv2("Linda.csv")
 
 Linda <- Linda %>%
   na.omit()
+
+Linda2 <- Linda %>%
+  mutate(linda = case_when(linda == "Linda ist Bankangestellte und in der Frauenbewegung aktiv." ~ "Falsch",
+                           linda == "Linda ist Bankangestellte." ~ "Richtig"))
+set.seed(1896)
+Nullvtlg <- do(10000) * rflip(n = 212, prob = 0.13)
+
+set.seed(1896)
+Bootvtlg <- do(10000) * prop(~linda, success = "Richtig", data = resample(Linda2))
 ```
 
 ## Willkommen
@@ -331,7 +340,7 @@ Eine *andere*, zufällige Stichprobe aus derselben Population könnte einen *and
 
 ### `resample()`
 
-Aber wie stark variiert der Anteil? $\pm 2\,\%$ oder $\pm 20\,\%$? Dies hängt u. a. vom Stichprobenumfang $n$ ab. Aber hier? Was wären bei unseren Daten andere, *plausible* Anteilswerte?
+Aber wie stark variiert der Anteil? $\pm 2\,\%$ oder $\pm 20\,\%$? Dies hängt u. a. vom Stichprobenumfang $n$ ab. Aber hier? Was wären bei unseren Daten andere, *kompatible* Anteilswerte?
 
 Glücklicherweise können wir das Ziehen einer zufälligen Stichprobe simulieren. Die simulierte Stichprobe sollte aber denselben Stichprobenumfang wie die uns vorliegenden Daten haben -- und wie es sich für eine zufällige Stichprobe gehört sollte stets jede mögliche Beobachtung der *Population* die gleiche Wahrscheinlichkeit haben Teil der Stichprobe zu sein. Damit dies gelingen kann müssen wir unsere simulierte Stichprobe mit Zurücklegen aus der Originalstichprobe ziehen; die Engländerin sagt dazu *resample*.
 
@@ -354,17 +363,13 @@ Eine solche simulierte Stichprobe nennt man auch *Bootstrap-Stichprobe*.
 
 Das Gute ist: Wir können das über `do() * ` ganz oft simulieren und so die Verteilung des Anteils simulieren -- Mittelwert (`mean()`) und co. gehen übrigens völlig analog.
 
-```{r bootvtlg}
+```{r bootstrapping}
 set.seed(1896)
 
 Bootvtlg <- do(10000) * prop(~linda, success = "Richtig", data = resample(Linda))
-```
-
-Resampling-Verteilung:
-
-```{r boot, exercise = TRUE}
 gf_histogram( ~ prop_Richtig, data = Bootvtlg)
 ```
+
 
 ```{r kicenter, echo=FALSE}
 question("Um welchen Wert variieren die Werte beim Resampling??",
@@ -390,7 +395,7 @@ gf_histogram( ~ prop_Richtig, data = Bootvtlg) %>%
 In welchem Bereich liegen z. B. $95\,\%$ der Anteile der Resamples? Diese Frage beantwortet z. B. das Bootstrap-Perzentil-**Konfidenzintervall**:
 
 ```{r ki, exercise = TRUE}
-quantile( ~ prop_Richtig, data = Bootvtlg, probs = c(0.025, 0.975))
+qdata( ~ prop_Richtig, p = c(0.025, 0.975), data = Bootvtlg)
 ```
 
 Oder auch kurz mit dem Befehl `confint()`:
