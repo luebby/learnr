@@ -35,6 +35,16 @@ Bootvtlg.diffmean <- do(1000) * diffmean(roa ~ report, data = resample(CsrCfp))
 set.seed(1896)
 Nullvtlg <- do(1000) * diffmean(roa ~ shuffle(report), data = CsrCfp)
 
+# Betrag Abweichung Stichprobe bilden:
+abs.abw.stipro <- abs(abw.stipro)
+
+# Betrag Abweichung Nullverteilung bestimmen:
+Nullvtlg <- Nullvtlg %>%
+  mutate(abs.abw.null = abs(diffmean))
+
+# Anteil Simulationen mit mindestens so großer Abweichung
+p_wert <- prop( ~ (abs.abw.null >= abs.abw.stipro), data = Nullvtlg)
+
 # Lineares Modell
 erglm <- lm(roa ~ report, data = CsrCfp)
 
@@ -214,9 +224,7 @@ mean(roa ~ report, data = CsrCfp)
 
 Es gilt in der Stichprobe: 
 
-\[
-\bar{x}_{Ja}=`r mean(roa ~ report, data = CsrCfp)[1]`>`r mean(roa ~ report, data = CsrCfp)[2]`=\bar{x}_{Nein}
-\]
+$$\bar{y}_{Ja}=`r mean(roa ~ report, data = CsrCfp)[1]`>`r mean(roa ~ report, data = CsrCfp)[2]`=\bar{y}_{Nein}$$
 
 
 *Hinweis*: Um den ungruppierten, allgemeinen, unbedingten Mittelwert für die Variable `roa` zu bekommen können Sie die erklärende Variable `X` (hier: `report`) durch `1` ersetzen:
@@ -239,14 +247,12 @@ Für den (unbekannten) Mittelwert $\mu$ der Gesamtkapitalrentabilität verwendet
 mean(~ roa, data = CsrCfp)
 ```
 
-\[
-\hat{\mu}=\bar{x}=`r mean(~roa, data = CsrCfp)`
-\]
+$$\hat{\mu}=\bar{y}=`r mean(~roa, data = CsrCfp)`$$
 
 
 ### Konfidenzintervall 
 
-Um die *Verteilung* des Mittelwertes zu schätzen kann (wieder) Bootstrapping, d. h. resampeln der Stichprobe, verwendet werden:
+Um die *Verteilung* des Mittelwertes zu schätzen kann Bootstrapping, d. h. Re-Sampeln der Stichprobe, verwendet werden:
 
 ```{r boot1, exercise=TRUE, eval=FALSE}
 # Reproduzierbarkeit
@@ -280,7 +286,7 @@ Analog ist auch eine Analyse der *Differenz* der Mittelwerte möglich:
 mean(roa ~ report, data = CsrCfp)
 ```
 
-`diffmean()` berechnet direkt die Differenz, d. h. $\bar{x}_{Nein}-\bar{x}_{Ja}$.
+`diffmean()` berechnet direkt die Differenz, d. h. $\bar{y}_{Nein}-\bar{y}_{Ja}$.
 
 ```{r diffmean, exercise=TRUE}
 diffmean(roa ~ report, data = CsrCfp)
@@ -344,7 +350,7 @@ Nullvtlg <- do(1000) * diffmean(roa ~ shuffle(report), data = CsrCfp)
 gf_histogram(~ diffmean, data = Nullvtlg)
 ```
 
-Die in der Stichprobe beobachtete Differenz von $\bar{x}_{Nein}-\bar{x}_{Ja}$ liegt bei:
+Die in der Stichprobe beobachtete Differenz von $\bar{y}_{Nein}-\bar{y}_{Ja}$ liegt bei:
 
 ```{r diffmeand, excercise=TRUE}
 diffmean(roa ~ report, data = CsrCfp)
@@ -407,7 +413,7 @@ prop( ~ (abs.abw.null >= abs.abw.stipro), data = Nullvtlg)
 ```
 
 ```{r pwerttest, echo=FALSE}
-question(paste("Stimmt die Aussage: Die Wahrscheinlichkeit, dass $H_0$ stimmt, liegt bei ", abw.stipro, "."),
+question(paste("Stimmt die Aussage: Die Wahrscheinlichkeit, dass $H_0$ stimmt, liegt bei ", p_wert, "."),
   answer("Ja", message = "Falsch: Der p-Wert gibt nicht mehr als die (Rand-) Wahrscheinlichkeit der beobachteten Differenz unter dem Modell der Nullhypothese an."),
   answer("Nein", correct = TRUE, message = "Richtig: Der p-Wert gibt nicht mehr als die (Rand-) Wahrscheinlichkeit der beobachteten Differenz unter dem Modell der Nullhypothese an.")
 )
@@ -447,7 +453,7 @@ $\hat{\beta}_0=\bar{x}_{Ja}$, $\hat{\beta}_1=\bar{x}_{Nein}-\bar{x}_{Ja}$.
 
 Und damit insgesamt:
 
-$$\widehat{roa}_i=`r coef(erglm)[1]`  `r coef(erglm)[2]` \cdot  \begin{cases}1, \,\text{i hat keinen Report veröffentlicht} \\ 0, \,\text{i hat einen Report veröffentlicht}\end{cases}  $$
+$$\widehat{roa}_i=`r coef(erglm)[1]`  `r coef(erglm)[2]` \cdot  \begin{cases}1: \,\text{i hat keinen Report veröffentlicht} \\ 0: \,\text{i hat einen Report veröffentlicht}\end{cases}  $$
  
 Näheres zur Regression folgt in einem anderen Tutorial.
 
@@ -513,17 +519,16 @@ Die Funktion `dabest()` erwartet als Argumente die unabhängige Variable `X`, di
 
 ```{r dabest, exercise = TRUE}
 CsrCfp %>%
-  dabest(x = report, y = roa, idx = c("Nein", "Ja")) %>%
+  dabest(x = report, y = roa, idx = c("Nein", "Ja")) %>% 
+  mean_diff() %>%
   plot()
 ```
 
 ## Ausblick
 
-Wenn Sie mehr als zwei Gruppen vergleichen wollen, gehen einfache Differenzen (`diffmean()` bzw. `diffprop()`) nicht mehr. Hier helfen dann z. B. die $\chi^2$-Statistik (kategorial, `xchisq.test()`) oder $F$-Statistik (numerisch, `aov()`) weiter.
+Wenn Sie mehr als zwei Gruppen vergleichen wollen, gehen einfache Differenzen (`diffmean()` bzw. `diffprop()`) nicht mehr. Hier helfen dann z. B. die $\chi^2$-Statistik (kategorial, `xchisq.test()`) oder $F$-Statistik (metrisch, `aov()`) weiter.
 
 Kausale Inferenz jenseits einer Beobachtungsstudie, sprich eines hier nicht möglichen randomisierten Experiments, kann über *Directed Acyclic Graphs* oder auch über das *Potential Outcome*-Konzept analysiert werden.
-
-In einem nächsten Tutorial analysieren wir über eine *Lineare Regression* einen Zusammenhang zwischen zwei numerischen Variablen.
 
 
 
