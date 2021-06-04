@@ -42,13 +42,13 @@ Muecken <- read.csv("mosquitos.csv")
 Erste Betrachtung:
 
 ```{r RL}
-Muecken
+head(Muecken)
 ```
 
-Übersicht:
+Struktur:
 
 ```{r}
-inspect(Muecken)
+str(Muecken)
 ```
 
 Was aktiviert wohl mehr Mücken? 
@@ -102,7 +102,7 @@ diffmean(mosquitoes ~ drink, data = Muecken)
 ```
 
 
-$$\bar{y}_\text{Water} - \bar{y}_\text{Beer} == `r diffmean(mosquitoes ~ drink, data = Muecken)`$$
+$$\bar{y}_\text{Water} - \bar{y}_\text{Beer} = `r diffmean(mosquitoes ~ drink, data = Muecken)`$$
 Wenn wir annehmen, die Nullhypothese -- es gibt keinen Unterschied, also auch $\mu_\text{Water} = \mu_\text{Beer} =0$ -- gilt, dann würde dieses Modell vorhersagen:
 
 $$\bar{y}_\text{Water} - \bar{y}_\text{Beer} \approx 0$$
@@ -192,7 +192,7 @@ prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)
 - `abs(diffmean)` ist der Betrag der simulierten Differenzen der Verteilung unter $H_0$ (`Nullvtlg`).
 - `abs(diff.stipro)` ist der Betrag der beobachteten Differenz der Stichprobe.
 
-**Fazit:** In `r prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)` der `r nrow(Nullvtlg)` Simulationen war die im Modell $H_0$ vorhergesagte Differenz größer als die tatsächlich beobachtete. Die beobachteten Daten können *nicht* plausibel durch das Modell *kein Unterschied in der Verteilung in der Population* erklärt werden. 
+**Fazit:** In `r prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)` der `r nrow(Nullvtlg)` Simulationen war die im Modell $H_0$ vorhergesagte Differenz größer als die tatsächlich beobachtete. Die beobachteten Daten der Stichprobe sind nicht *kompatibel* zum  Modell *kein Unterschied in der Verteilung in der Population*. 
 
 
 ## Fehlerarten
@@ -210,7 +210,7 @@ Ein Fehler 2. Art ($\beta$-Fehler) liegt vor, wenn die Nullhypothese nicht verwo
 Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 
 ```{r Fehler, echo=FALSE}
-question("Welche Fehler **könnte** hier vorliegen?",
+question("Welche Fehler **könnte** in der Analyse der Mückenstiche (s.o.) vorliegen?",
          answer("Fehler 1. Art", correct = TRUE, message = "Dieser läge vor, wenn es doch keinen Unterschied in der Verteilung in der Population gäbe. Ob ein solcher vorliegt wissen wir nicht."),
          answer("Fehler 2. Art.",  message = "Da wir aufgrund des kleinen p-Wertes die Nullhypothese verworfen haben, kann diese Fehlerart hier nicht vorliegen."))
 ```
