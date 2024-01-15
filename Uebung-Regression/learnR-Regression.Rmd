@@ -184,5 +184,5 @@ Die Vorhersagen aus dem Modell werden dann wie folgt berechnet:
 
 Und die Residuen sind die Differenzen zwischen den beobachteten und modellierten bzw. vorhergesagten Werten:
 
-![](www/dragon_residual.png){width=80%}
+![](www/dragon_residual.png){width=60%}
 
