@@ -236,7 +236,7 @@ Für weitere Betrachtungen muss meist noch ein wenig Vorarbeit geleistet und (Te
 
 Über `filter()` können Beobachtungen, d. h. Zeilen, gemäß definierten Kriterien ausgewählt werden.
 
-![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_filter.jpg){width=80%}
+![](www/dplyr_filter.jpg){width=80%}
 
 Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 
@@ -261,7 +261,7 @@ EpiEst %>%
 
 Über `mutate()` können Variablen verändert oder neu erzeugt werden:
 
-![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_mutate.png){width=80%}
+![](www/dplyr_mutate.png){width=60%}
 
 Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 
@@ -292,7 +292,7 @@ EpiEst %>%
 
 Über `group_by()` werden Zusammenfassungen (`summarise()`) gruppiert durchgeführt.
 
-![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/group_by_ungroup.png){width=80%}
+![](www/group_by_ungroup.png){width=60%}
 
 Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 
@@ -319,7 +319,7 @@ question("Sind die Mittelwerte der Abweichungen in den Datensätzen `EpiEst` und
 
 Über `case_when()` können neue Variablen (`mutate()`) je nach Ausprägung, d. h. bedingt, erzeugt werden:
 
-![](https://github.com/allisonhorst/stats-illustrations/raw/master/rstats-artwork/dplyr_case_when.png){width=80%}
+![](www/dplyr_case_when.png){width=80%}
 
 Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 
@@ -350,7 +350,7 @@ question("Wie ändert sich die Anzahl derjenigen, die den wahren Verlauf übersc
 
 Setzen Sie das passende Symbol, `&` für *und* oder `|` für *oder* ein, um die Anzahl derjenigen, die den Verlauf für beide Wochen überschätzen zu bestimmen.
 
-```{r case-when2, eval = FALSE, exercise = TRUE, message = FALSE, exercise.setup = "mutate-solution"}
+```{r case-when2, eval = FALSE, exercise = TRUE, message = FALSE, exercise.setup = "case-when2-solution"}
 EpiEst %>%
   mutate(Überschätzt = case_when((Woche6Abw > 0) ___ (Woche7Abw > 0) ~ "Ja",
                                  (Woche6Abw <= 0) ___ (Woche7Abw <= 0) ~ "Nein")) %>%

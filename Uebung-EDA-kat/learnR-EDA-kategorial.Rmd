@@ -107,7 +107,7 @@ question(" Wie hoch ist die Wahrscheinlichkeit rein durch Raten die richtige Ant
 
 Variablen wie diese, die nur zwei Werte (hier: richtig oder falsch) annehmen können, werden *binär* (engl.: binary) genannt.
 
-![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/nominal_ordinal_binary.png){width=80%}
+![](www/nominal_ordinal_binary.png){width=80%}
 
 Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 

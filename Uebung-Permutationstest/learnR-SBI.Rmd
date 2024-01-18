@@ -199,13 +199,13 @@ prop( ~ abs(diffmean) >= abs(diff.stipro), data = Nullvtlg)
 
 Ein Fehler 1. Art ($\alpha$-Fehler) liegt vor, wenn die Nullhypothese verworfen wird, obwohl sie gilt.
 
-![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/type_1_errors.png){width=80%}
+![](www/type_1_errors.png){width=60%}
 
 Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 
 Ein Fehler 2. Art ($\beta$-Fehler) liegt vor, wenn die Nullhypothese nicht verworfen wird, obwohl sie nicht gilt.
 
-![](https://github.com/allisonhorst/stats-illustrations/raw/master/other-stats-artwork/type_2_errors.png){width=80%}
+![](www/type_2_errors.png){width=80%}
 
 Abbildung von [\@allisonhorst](https://github.com/allisonhorst/stats-illustrations).
 
